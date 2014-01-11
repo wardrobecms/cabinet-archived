@@ -94,7 +94,6 @@ class DbPostRepository implements PostRepositoryInterface {
 
 		return Post::with(array('tags', 'user'))
 			->select('posts.*')
-			->join('tags', 'posts.id', '=', 'tags.post_id')
 			->where(function($query) use ($search)
 			{
 				$query->orWhere('title', 'like', '%'.$search.'%')
@@ -106,43 +105,6 @@ class DbPostRepository implements PostRepositoryInterface {
 			->groupBy('id')
 			->distinct()
 			->paginate($per_page);
-	}
-
-	/**
-	 * Search from the wardrobe facet
-	 *
-	 * @param  array   $params
-	 * @return array
-	 */
-	public function facadeSearch(array $params)
-	{
-		$search = isset($params['q']) ? $params['q'] : null;
-		$tag = isset($params['tag']) ? $params['tag'] : null;
-		$limit = isset($params['limit']) ? (int) $params['limit'] : 1;
-
-		$post = Post::with(array('tags', 'user'))
-			->select('posts.*')
-			->join('tags', 'posts.id', '=', 'tags.post_id')
-			->orderBy('posts.publish_date', 'desc')
-			->where('posts.active', 1)
-			->where('posts.publish_date', '<=', new DateTime)
-			->distinct();
-
-		if ($search)
-		{
-			$post->where(function($query) use ($search)
-			{
-				$query->orWhere('title', 'like', '%'.$search.'%')
-							->orWhere('content', 'like', '%'.$search.'%');
-			});
-		}
-
-		if ($tag)
-		{
-			$post->where('tags.tag', '=', $tag);
-		}
-
-		return $post->skip(0)->take($limit)->get();
 	}
 
 	/**
