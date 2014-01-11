@@ -1,0 +1,23 @@
+{
+    "name": "wardrobe/cabinet",
+    "description": "",
+    "authors": [
+        {
+            "name": "Wardrobe",
+            "email": "eric@ericlbarnes.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.1.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Wardrobe\\Cabinet\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
