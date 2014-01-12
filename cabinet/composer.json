@@ -3,7 +3,7 @@
     "description": "",
     "authors": [
         {
-            "name": "Wardrobe",
+            "name": "Eric Barnes",
             "email": "eric@ericlbarnes.com"
         }
     ],
@@ -13,7 +13,8 @@
     },
     "autoload": {
         "classmap": [
-            "src/migrations"
+            "src/migrations",
+            "src/controllers"
         ],
         "psr-0": {
             "Wardrobe\\Cabinet\\": "src/"
