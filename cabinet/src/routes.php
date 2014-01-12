@@ -43,8 +43,8 @@ Route::post('password/reset/{token}', function()
  */
 Route::group(Config::get('cabinet::routes.api_group_rules'), function() use ($wardrobeControllers)
 {
-	Route::get('/', array('as' => 'wardrobe.api.index'));
-//	Route::resource('post', $wardrobeControllers.'Api\PostController');
+//	Route::get('/', array('as' => 'wardrobe.api.index'));
+	Route::resource('post', $wardrobeControllers.'Api\PostController');
 //	Route::resource('tag', $wardrobeControllers.'Api\TagController');
 //	Route::resource('user', $wardrobeControllers.'Api\UserController');
 //	Route::controller('dropzone', $wardrobeControllers.'Api\DropzoneController');

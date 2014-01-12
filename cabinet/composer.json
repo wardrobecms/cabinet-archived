@@ -14,7 +14,8 @@
     "autoload": {
         "classmap": [
             "src/migrations",
-            "src/controllers"
+            "src/controllers",
+            "src/controllers/Api"
         ],
         "psr-0": {
             "Wardrobe\\Cabinet\\": "src/"
