@@ -5,11 +5,6 @@ use Wardrobe\Core\Models\User;
 
 class DbUserRepository implements UserRepositoryInterface {
 
-	public function __construct()
-	{
-		$this->auth = Wardrobe::getWardrobeAuth();
-	}
-
 	/**
 	 * Get all of the users.
 	 *
@@ -156,12 +151,8 @@ class DbUserRepository implements UserRepositoryInterface {
 	 */
 	public function login($email, $password, $remember = false)
 	{
-		$user = User::where('email', $email)->first();
-
-		if ($user and Hash::check($password, $user->password))
+		if (Auth::attempt(array('email' => mb_strtolower($email), 'password' => $password), $remember))
 		{
-			$this->auth->login($user, $remember);
-
 			return true;
 		}
 

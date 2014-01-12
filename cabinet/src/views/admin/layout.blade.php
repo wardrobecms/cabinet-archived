@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="Wardrobe">
+<html lang="en">
 <head>
   <title>@yield('title') | Wardrobe</title>
   <meta name="env" content="{{ App::environment() }}">

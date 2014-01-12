@@ -6,11 +6,11 @@ Route::group(Config::get('cabinet::routes.admin_group_rules'), function() use ($
 {
 
 	Route::get('/', array('uses' => $wardrobeControllers.'AdminController@index', 'as' => 'wardrobe.admin.index'));
-//	Route::get('logout', array('uses' => $wardrobeControllers.'LoginController@destroy', 'as' => 'wardrobe.admin.logout'));
-//	Route::get('login', array('uses' => $wardrobeControllers.'LoginController@create', 'as' => 'wardrobe.admin.login'));
-//	Route::post('login', array('uses' => $wardrobeControllers.'LoginController@store'));
-//	Route::get('login/remind', array('uses' => $wardrobeControllers.'LoginController@remindForm', 'as' => 'wardrobe.admin.remindForm'));
-//	Route::post('login/remind', array('uses' => $wardrobeControllers.'LoginController@remindSend'));
+	Route::get('logout', array('uses' => $wardrobeControllers.'LoginController@destroy', 'as' => 'wardrobe.admin.logout'));
+	Route::get('login', array('uses' => $wardrobeControllers.'LoginController@create', 'as' => 'wardrobe.admin.login'));
+	Route::post('login', array('uses' => $wardrobeControllers.'LoginController@store'));
+	Route::get('login/remind', array('uses' => $wardrobeControllers.'LoginController@remindForm', 'as' => 'wardrobe.admin.remindForm'));
+	Route::post('login/remind', array('uses' => $wardrobeControllers.'LoginController@remindSend'));
 
 });
 
