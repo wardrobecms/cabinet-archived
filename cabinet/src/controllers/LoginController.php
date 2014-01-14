@@ -1,29 +1,27 @@
 <?php namespace Wardrobe\Cabinet\Controllers;
 
-use View, Input, Redirect, Auth, Password;
+use Controller, View, Input, Redirect, Auth, Password;
 use Wardrobe\Cabinet\Repositories\UserRepositoryInterface;
 
-class LoginController extends BaseController {
+class LoginController extends Controller {
 
 	/**
 	 * The user repository implementations.
 	 *
 	 * @param  \Wardrobe\UserRepositoryInterface
 	 */
-	protected $users;
+	protected $user;
 
 	/**
 	 * Create a new login controller instance.
 	 *
-	 * @param UserRepositoryInterface $users
+	 * @param UserRepositoryInterface $user
 	 *
 	 * @return LoginController
 	 */
-	public function __construct(UserRepositoryInterface $users)
+	public function __construct(UserRepositoryInterface $user)
 	{
-		parent::__construct();
-
-		$this->users = $users;
+		$this->user = $user;
 	}
 
 	/**
@@ -39,7 +37,7 @@ class LoginController extends BaseController {
 	 */
 	public function store()
 	{
-		if ($this->users->login(Input::get('email'), Input::get('password'), Input::get('remember')))
+		if ($this->user->login(Input::get('email'), Input::get('password'), Input::get('remember')))
 		{
 			return Redirect::intended('wardrobe.admin.index');
 		}

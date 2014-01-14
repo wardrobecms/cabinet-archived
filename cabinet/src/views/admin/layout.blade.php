@@ -8,14 +8,20 @@
   <link rel="stylesheet" type="text/css" href="{{ asset('admin/style.css') }}">
 </head>
 <body>
-  <div id="header-region"></div>
-  <div id="js-alert"></div>
-  <div class="container-fluid">
-    <div class="row-fluid">
-      @yield('content')
-      <div id="main-region" class="span12"></div>
-    </div>
-  </div>
+
+	<nav>
+		<ul>
+			<li><a class="write" href="{{ URL::route('wardrobe.post.create') }} "><i class="icon-plus"></i> {{ Lang::get('cabinet::wardrobe.write') }}</a></li>
+			<li><a class="write" href="{{ URL::route('wardrobe.post.index') }} "><i class="icon-list"></i> {{ Lang::get('cabinet::wardrobe.posts') }}</a></li>
+			<li><a class="accounts" href="#accounts"><i class="icon-user"></i> {{ Lang::get('cabinet::wardrobe.accounts') }}</a></li>
+			<li><a href="{{ URL::route('wardrobe.admin.logout') }}"><i class="icon-off"></i> {{ Lang::get('cabinet::wardrobe.logout') }}</a></li>
+		</ul>
+	</nav>
+
+	@include('cabinet::admin.inc.errors')
+
+  @yield('content')
+
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   @yield('footer.js')
 </body>

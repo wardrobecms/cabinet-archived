@@ -4,7 +4,7 @@ $wardrobeControllers = 'Wardrobe\\Cabinet\\Controllers\\';
 
 Route::group(Config::get('cabinet::routes.admin_group_rules'), function() use ($wardrobeControllers)
 {
-
+	Route::resource('post', $wardrobeControllers.'PostController');
 	Route::get('/', array('uses' => $wardrobeControllers.'AdminController@index', 'as' => 'wardrobe.admin.index'));
 	Route::get('logout', array('uses' => $wardrobeControllers.'LoginController@destroy', 'as' => 'wardrobe.admin.logout'));
 	Route::get('login', array('uses' => $wardrobeControllers.'LoginController@create', 'as' => 'wardrobe.admin.login'));

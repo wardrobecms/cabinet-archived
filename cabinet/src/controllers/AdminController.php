@@ -1,8 +1,8 @@
 <?php namespace Wardrobe\Cabinet\Controllers;
 
-use Controller, View, Wardrobe;
+use View;
 
-class AdminController extends Controller {
+class AdminController extends BaseController {
 
 	/**
 	 * Get the main admin view.

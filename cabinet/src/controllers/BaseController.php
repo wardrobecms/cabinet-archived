@@ -1,6 +1,6 @@
 <?php namespace Wardrobe\Cabinet\Controllers;
 
-use Controller;
+use Controller, View;
 
 class BaseController extends Controller {
 
@@ -11,6 +11,6 @@ class BaseController extends Controller {
 	 */
 	public function __construct()
 	{
-
+		$this->beforeFilter('wardrobe_auth');
 	}
 } 
