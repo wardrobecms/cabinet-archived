@@ -1,6 +1,7 @@
 {
   "name": "wardrobe/cabinet",
   "description": "Core files for Wardrobe v2. (alpha)",
+  "license": "MIT",
   "authors": [
     {
       "name": "Eric Barnes",
@@ -21,6 +22,6 @@
     "psr-4": {
       "Wardrobe\\Cabinet\\": "src/Wardrobe/Cabinet/"
     }
-},
+  },
   "minimum-stability": "dev"
 }
