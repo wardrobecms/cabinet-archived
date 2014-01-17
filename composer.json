@@ -18,9 +18,9 @@
       "src/controllers",
       "src/controllers/Api"
     ],
-    "psr-0": {
-      "Wardrobe\\Cabinet\\": "src/"
+    "psr-4": {
+      "Wardrobe\\Cabinet\\": "src/Wardrobe/Cabinet/"
     }
-  },
+},
   "minimum-stability": "dev"
 }
