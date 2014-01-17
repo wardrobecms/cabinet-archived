@@ -1,6 +1,7 @@
 <?php namespace Wardrobe\Cabinet;
 
 use Illuminate\Support\ServiceProvider;
+use \Wardrobe\Cabinet\Parsers\MarkdownParser;
 
 class CabinetServiceProvider extends ServiceProvider {
 
@@ -58,10 +59,10 @@ class CabinetServiceProvider extends ServiceProvider {
 
 		$this->app->singleton('Wardrobe\Cabinet\Repositories\UserRepositoryInterface', 'Wardrobe\Cabinet\Repositories\DbUserRepository');
 
-//		$this->app->bind('Wardrobe', function()
-//		{
-//			return new \Wardrobe\Core\Facades\Wardrobe(new Repositories\DbPostRepository);
-//		});
+		$this->app->bind('parser', function() {
+			return new MarkdownParser();
+		});
+
 	}
 
 }

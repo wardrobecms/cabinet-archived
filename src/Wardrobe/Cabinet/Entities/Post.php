@@ -1,6 +1,6 @@
-<?php namespace Wardrobe\Cabinet;
+<?php namespace Wardrobe\Cabinet\Entities;
 
-use Config, Cache;
+use App, Config, Cache;
 use Carbon\Carbon;
 
 class Post extends Entity {
@@ -52,11 +52,11 @@ class Post extends Entity {
 
 			return Cache::rememberForever('post-'.$this->attributes['id'], function() use ($content)
 			{
-				return md($content);
+				return App::make('parser')->parse($content);
 			});
 		}
 
-		return md($this->attributes['content']);
+		return App::make('parser')->parse($this->attributes['content']);
 	}
 
 	/**
@@ -118,11 +118,11 @@ class Post extends Entity {
 		{
 			return Cache::rememberForever('post-intro-'.$this->attributes['id'], function() use ($intro)
 			{
-				return md($intro);
+				return App::make('parser')->parse($intro);
 			});
 		}
 
-		return md($intro);
+		return App::make('parser')->parse($intro);
 	}
 
 }

@@ -1,4 +1,4 @@
-<?php namespace Wardrobe\Cabinet;
+<?php namespace Wardrobe\Cabinet\Entities;
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;

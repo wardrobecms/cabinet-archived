@@ -28,21 +28,3 @@ function theme_view($file = null)
 	return "themes.". Config::get('wardrobe.theme') .'.'.$file;
 }
 
-/**
- * Markdown Helper
- *
- * Helper that allows you to easily get a theme view path inside the views.
- * This uses a wrapper so its easy to be overridden from the base app if
- * prefered. Here is a quick example of how you can use it md(string)
- *
- * @param string $str
- *
- * @return string
- */
-if ( ! function_exists('md'))
-{
-	function md($str)
-	{
-		return $str;
-	}
-}

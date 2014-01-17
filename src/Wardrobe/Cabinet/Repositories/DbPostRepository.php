@@ -1,8 +1,9 @@
 <?php namespace Wardrobe\Cabinet\Repositories;
 
 use Config, Cache, DateTime, Validator;
-use Wardrobe\Cabinet\Post;
-use Wardrobe\Cabinet\Tag;
+use Wardrobe\Cabinet\Entities\Post;
+use Wardrobe\Cabinet\Entities\Tag;
+use Wardrobe\Cabinet\Parsers;
 
 class DbPostRepository implements PostRepositoryInterface {
 

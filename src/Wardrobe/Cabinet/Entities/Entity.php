@@ -1,4 +1,4 @@
-<?php namespace Wardrobe\Cabinet;
+<?php namespace Wardrobe\Cabinet\Entities;
 
 abstract class Entity extends \Illuminate\Database\Eloquent\Model {
 
@@ -12,7 +12,7 @@ abstract class Entity extends \Illuminate\Database\Eloquent\Model {
 	 */
 	public function hasOne($related, $foreignKey = null, $localKey = null)
 	{
-		return parent::hasOne('Wardrobe\\Cabinet\\'.$model, $foreignKey, $localKey);
+		return parent::hasOne('Wardrobe\\Cabinet\\Entities\\'.$model, $foreignKey, $localKey);
 	}
 
 	/**
@@ -25,7 +25,7 @@ abstract class Entity extends \Illuminate\Database\Eloquent\Model {
 	 */
 	public function hasMany($related, $foreignKey = null, $localKey = null)
 	{
-		return parent::hasMany('Wardrobe\\Cabinet\\'.$related, $foreignKey, $localKey);
+		return parent::hasMany('Wardrobe\\Cabinet\\Entities\\'.$related, $foreignKey, $localKey);
 	}
 
 	/**
@@ -39,7 +39,7 @@ abstract class Entity extends \Illuminate\Database\Eloquent\Model {
 	 */
 	public function belongsTo($related, $foreignKey = null, $otherKey = null, $relation = null)
 	{
-		return parent::belongsTo('Wardrobe\\Cabinet\\'.$related, $foreignKey, $otherKey, $relation);
+		return parent::belongsTo('Wardrobe\\Cabinet\\Entities\\'.$related, $foreignKey, $otherKey, $relation);
 	}
 
 	/**
@@ -54,7 +54,7 @@ abstract class Entity extends \Illuminate\Database\Eloquent\Model {
 	 */
 	public function belongsToMany($related, $table = null, $foreignKey = null, $otherKey = null, $relation = null)
 	{
-		return parent::belongsToMany('Wardrobe\\Cabinet\\'.$related, $table, $foreignKey, $otherKey, $relation);
+		return parent::belongsToMany('Wardrobe\\Cabinet\\Entities\\'.$related, $table, $foreignKey, $otherKey, $relation);
 	}
 
 }
