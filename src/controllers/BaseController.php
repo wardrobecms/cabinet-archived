@@ -1,6 +1,6 @@
 <?php namespace Wardrobe\Cabinet\Controllers;
 
-use Controller, View;
+use Controller;
 
 class BaseController extends Controller {
 
@@ -12,5 +12,6 @@ class BaseController extends Controller {
 	public function __construct()
 	{
 		$this->beforeFilter('wardrobe_auth');
+		$this->beforeFilter('csrf', array('on' => array('post', 'put', 'patch', 'delete')));
 	}
-} 
+}
