@@ -1,8 +1,15 @@
 <?php namespace Wardrobe\Cabinet\Parsers;
 
-use \Michelf\MarkdownExtra;
+use \Michelf\MarkdownExtra as Markdown;
 
 class MarkdownParser implements ParserInterface {
+
+	protected $markdown;
+
+	public function __construct(Markdown $markdown)
+	{
+		$this->markdown = $markdown;
+	}
 
 	/**
 	 * Convert a string to markdown.
@@ -12,7 +19,6 @@ class MarkdownParser implements ParserInterface {
 	 */
 	public function parse($str)
 	{
-		return MarkdownExtra::defaultTransform($str);
+		return $this->markdown->defaultTransform($str);
 	}
-
-} 
+}
