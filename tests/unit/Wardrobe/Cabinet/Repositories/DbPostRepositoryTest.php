@@ -77,6 +77,20 @@ class DbPostRepositoryTest extends TestCase {
 		$this->assertSame($this->post, $returned);
 	}
 
+	public function testFindBySlug()
+	{
+		$this->post
+			->shouldReceive('with')->once()->with(array('tags', 'user'))->andReturn($this->post)
+			->shouldReceive('where')->once()->with('active', 1)->andReturn($this->post)
+			->shouldReceive('where')->once()->andReturn($this->post)
+			->shouldReceive('where')->once()->with('slug', 'wardrobe')->andReturn($this->post)
+			->shouldReceive('first')->once()->withNoArgs()->andReturn($this->post);
+
+		$returned = $this->DbPostRepository()->findBySlug('wardrobe');
+
+		$this->assertSame($this->post, $returned);
+	}
+
 	public function testActiveByTag()
 	{
 		$this->mockActiveByTag('wardrobe', 15);
@@ -140,7 +154,6 @@ class DbPostRepositoryTest extends TestCase {
 			->shouldReceive('distinct')->once()->withNoArgs()->andReturn($this->post)
 			->shouldReceive('paginate')->once()->with($per_page)->andReturn(array('wardrobe', 'cabinet'));
 	}
-
 	public function testCreate()
 	{
 		$this->post->shouldReceive('create')->once()->andReturn($this->post);

@@ -62,10 +62,12 @@ class DbPostRepository implements PostRepositoryInterface {
 	 */
 	public function findBySlug($slug)
 	{
-		return Post::with(array('tags', 'user'))
+		return $this->post
+			->with(array('tags', 'user'))
 			->where('active', 1)
 			->where('publish_date', '<=', new DateTime)
-			->where('slug', $slug)->first();
+			->where('slug', $slug)
+			->first();
 	}
 
 	/**
