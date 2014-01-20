@@ -1,7 +1,9 @@
 <?php namespace Wardrobe\Cabinet\Repositories;
 
 use DateTime;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
+use Validator;
 use Mockery;
 use Orchestra\Testbench\TestCase;
 
@@ -181,6 +183,10 @@ class DbPostRepositoryTest extends TestCase {
 	public function testUpdate()
 	{
 		$this->mockFind(1);
+
+		Config::shouldReceive('get')->once()->with('wardrobe.cache')->andReturn(true);
+		$this->post->shouldReceive('getAttribute')->andReturn(1);
+		Cache::shouldReceive('forget')->once()->with('post-1')->andReturn(Mockery::self());
 
 		$this->post
 			->shouldReceive('fill')->once()->andReturn($this->post)
