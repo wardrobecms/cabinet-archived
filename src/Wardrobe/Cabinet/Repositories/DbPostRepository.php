@@ -8,10 +8,12 @@ use Wardrobe\Cabinet\Parsers;
 class DbPostRepository implements PostRepositoryInterface {
 
 	protected $post;
+	protected $tag;
 
-	public function __construct(Post $post)
+	public function __construct(Post $post, Tag $tag)
 	{
 		$this->post = $post;
+		$this->tag = $tag;
 	}
 
 	/**
@@ -214,7 +216,7 @@ class DbPostRepository implements PostRepositoryInterface {
 	 */
 	public function allTags()
 	{
-		return Tag::orderBy('tag', 'asc')->groupBy('tag')->distinct()->get()->toArray();
+		return $this->tag->orderBy('tag', 'asc')->groupBy('tag')->distinct()->get()->toArray();
 	}
 
 	/**

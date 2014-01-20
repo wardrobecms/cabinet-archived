@@ -11,12 +11,14 @@ use Orchestra\Testbench\TestCase;
 class DbPostRepositoryTest extends TestCase {
 
 	private $post;
+	private $tag;
 
 	public function setUp()
 	{
 		parent::setUp();
 
 		$this->post = Mockery::mock('Wardrobe\Cabinet\Entities\Post');
+		$this->tag = Mockery::mock('Wardrobe\Cabinet\Entities\Tag');
 	}
 
 	public function tearDown()
@@ -26,7 +28,7 @@ class DbPostRepositoryTest extends TestCase {
 
 	private function DbPostRepository()
 	{
-		return new DbPostRepository($this->post);
+		return new DbPostRepository($this->post, $this->tag);
 	}
 
 	public function testAll()
@@ -207,5 +209,17 @@ class DbPostRepositoryTest extends TestCase {
 		$this->assertNull($returned);
 	}
 
+	public function testAllTags()
+	{
+		$this->tag
+			->shouldReceive('orderBy')->once()->with('tag', 'asc')->andReturn($this->tag)
+			->shouldReceive('groupBy')->once()->with('tag')->andReturn($this->tag)
+			->shouldReceive('distinct')->once()->withNoArgs()->andReturn($this->tag)
+			->shouldReceive('get')->once()->withNoArgs()->andReturn($this->tag)
+			->shouldReceive('toArray')->once()->withNoArgs()->andReturn(array('wardrobe', 'laravel'));
 
+		$returned = $this->DbPostRepository()->allTags();
+
+		$this->assertSame(array('wardrobe', 'laravel'), $returned);
+	}
 }
