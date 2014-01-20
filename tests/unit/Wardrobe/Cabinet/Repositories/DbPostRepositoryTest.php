@@ -1,5 +1,6 @@
 <?php namespace Wardrobe\Cabinet\Repositories;
 
+use DateTime;
 use Mockery;
 use Orchestra\Testbench\TestCase;
 
@@ -125,5 +126,19 @@ class DbPostRepositoryTest extends TestCase {
 			->shouldReceive('distinct')->once()->withNoArgs()->andReturn($this->post)
 			->shouldReceive('paginate')->once()->with($per_page)->andReturn(array('wardrobe', 'cabinet'));
 	}
+
+	public function testCreate()
+	{
+		$this->post->shouldReceive('create')->once()->andReturn($this->post);
+
+		$this->post->shouldReceive('tags')->once()->withNoArgs()->andReturn($this->post);
+		$this->post->shouldReceive('delete')->once()->withNoArgs()->andReturn($this->post);
+
+		$this->post->shouldReceive('tags')->once()->withNoArgs()->andReturn($this->post);
+		$this->post->shouldReceive('createMany')->once()->andReturn($this->post);
+
+		$returned = $this->DbPostRepository()->create('Wardrobe', 'foo bar', 'wardrobe', array('wardrobe', 'cabinet'), 1, 1, new DateTime());
+
+		$this->assertSame($this->post, $returned);
+	}
 }
- 
