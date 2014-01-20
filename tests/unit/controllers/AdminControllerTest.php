@@ -12,6 +12,10 @@ class AdminControllerTest extends TestCase {
 		parent::setUp();
 
 		Route::get('/', array('uses' => 'Wardrobe\\Cabinet\\Controllers\\AdminController@index'));
+	}
+
+	public function tearDown()
+	{
 		Mockery::close();
 	}
 
