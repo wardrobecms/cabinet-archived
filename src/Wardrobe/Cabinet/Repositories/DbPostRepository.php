@@ -167,7 +167,9 @@ class DbPostRepository implements PostRepositoryInterface {
 			Cache::forget('post-'.$post->id);
 		}
 
-		$post->fill(compact('title', 'content', 'slug', 'active', 'user_id', 'publish_date'))->save();
+		$post
+			->fill(compact('title', 'content', 'slug', 'active', 'user_id', 'publish_date'))
+			->save();
 
 		$post->tags()->delete();
 
@@ -202,7 +204,7 @@ class DbPostRepository implements PostRepositoryInterface {
 	 */
 	public function delete($id)
 	{
-		Post::where('id', $id)->delete();
+		$this->post->where('id', $id)->delete();
 	}
 
 	/**

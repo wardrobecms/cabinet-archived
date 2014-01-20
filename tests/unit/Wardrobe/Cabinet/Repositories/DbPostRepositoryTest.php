@@ -68,13 +68,18 @@ class DbPostRepositoryTest extends TestCase {
 
 	public function testFind()
 	{
-		$this->post
-			->shouldReceive('with')->once()->with(array('tags', 'user'))->andReturn($this->post)
-			->shouldReceive('findOrFail')->once()->with(21)->andReturn($this->post);
+		$this->mockFind(21);
 
 		$returned = $this->DbPostRepository()->find(21);
 
 		$this->assertSame($this->post, $returned);
+	}
+
+	private function mockFind($id)
+	{
+		$this->post
+			->shouldReceive('with')->once()->with(array('tags', 'user'))->andReturn($this->post)
+			->shouldReceive('findOrFail')->once()->with($id)->andReturn($this->post);
 	}
 
 	public function testFindBySlug()
@@ -154,6 +159,7 @@ class DbPostRepositoryTest extends TestCase {
 			->shouldReceive('distinct')->once()->withNoArgs()->andReturn($this->post)
 			->shouldReceive('paginate')->once()->with($per_page)->andReturn(array('wardrobe', 'cabinet'));
 	}
+
 	public function testCreate()
 	{
 		$this->post->shouldReceive('create')->once()->andReturn($this->post);
@@ -168,4 +174,38 @@ class DbPostRepositoryTest extends TestCase {
 
 		$this->assertSame($this->post, $returned);
 	}
+
+	public function testUpdate()
+	{
+		$this->mockFind(1);
+
+		$this->post
+			->shouldReceive('fill')->once()->andReturn($this->post)
+			->shouldReceive('save')->once()->withNoArgs()->andReturn($this->post);
+
+		$this->post
+			->shouldReceive('tags')->once()->withNoArgs()->andReturn($this->post)
+			->shouldReceive('delete')->once()->withNoArgs()->andReturn($this->post);
+
+		$this->post
+			->shouldReceive('tags')->once()->withNoArgs()->andReturn($this->post)
+			->shouldReceive('createMany')->once()->andReturn($this->post);
+
+		$returned = $this->DbPostRepository()->update(1, 'Wardrobe', 'foo bar', 'wardrobe', array('wardrobe', 'cabinet'), 1, 1, new DateTime());
+
+		$this->assertSame($this->post, $returned);
+	}
+
+	public function testDelete()
+	{
+		$this->post
+			->shouldReceive('where')->once()->with('id', 12)->andReturn($this->post)
+			->shouldReceive('delete')->once()->withNoArgs();
+
+		$returned = $this->DbPostRepository()->delete(12);
+
+		$this->assertNull($returned);
+	}
+
+
 }
