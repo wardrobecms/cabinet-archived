@@ -1,6 +1,7 @@
 <?php namespace Wardrobe\Cabinet\Repositories;
 
 use DateTime;
+use Illuminate\Support\Facades\Validator;
 use Mockery;
 use Orchestra\Testbench\TestCase;
 
@@ -221,5 +222,30 @@ class DbPostRepositoryTest extends TestCase {
 		$returned = $this->DbPostRepository()->allTags();
 
 		$this->assertSame(array('wardrobe', 'laravel'), $returned);
+	}
+
+	public function testValidForCreation()
+	{
+		$this->mockValidatePost();
+
+		$returned = $this->DbPostRepository()->validForCreation('Wardrobe', 'wardrobe');
+
+		$this->assertInstanceOf("Illuminate\Support\MessageBag", $returned);
+	}
+
+	public function testValidForUpdate()
+	{
+		$this->mockValidatePost();
+
+		$returned = $this->DbPostRepository()->validForUpdate(12, 'Wardrobe', 'wardrobe');
+
+		$this->assertInstanceOf("Illuminate\Support\MessageBag", $returned);
+	}
+
+	private function mockValidatePost()
+	{
+		Validator::shouldReceive('make')->once()->andReturn(Mockery::self())
+				->shouldReceive('fails')->once()->withNoArgs()->andReturn(Mockery::self())
+				->shouldReceive('errors')->once()->withNoArgs()->andReturn(Mockery::mock('Illuminate\Support\MessageBag'));
 	}
 }
