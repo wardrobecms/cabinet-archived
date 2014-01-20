@@ -59,8 +59,8 @@ class DbPostRepositoryTest extends TestCase {
 			->shouldReceive('where')->once()->andReturn($this->post)
 			->shouldReceive('orderBy')->once()->with('publish_date', 'desc')->andReturn($this->post)
 			->shouldReceive('paginate')->once()->with($per_page)->andReturn('active post');
-
 	}
+
 	public function testFind()
 	{
 		$this->post
@@ -96,6 +96,34 @@ class DbPostRepositoryTest extends TestCase {
 			->shouldReceive('where')->once()->andReturn($this->post)
 			->shouldReceive('distinct')->once()->withNoArgs()->andReturn($this->post)
 			->shouldReceive('paginate')->once()->with($per_page)->andReturn('active post by tag');
+	}
+
+	public function testSearch()
+	{
+		$this->mockSearch('wardrobe', 15);
+
+		$this->DbPostRepository()->search('wardrobe', 15);
+	}
+
+	public function testSearchWithString()
+	{
+		$this->mockSearch('wardrobe', 5);
+
+		$this->DbPostRepository()->search('wardrobe', 'cabinet');
+	}
+
+	public function mockSearch($search, $per_page)
+	{
+		$this->post
+			->shouldReceive('with')->once()->with(array('tags', 'user'))->andReturn($this->post)
+			->shouldReceive('select')->once()->with('posts.*')->andReturn($this->post)
+			->shouldReceive('where')->once()->andReturn($this->post)
+			->shouldReceive('orderBy')->once()->with('posts.publish_date', 'desc')->andReturn($this->post)
+			->shouldReceive('where')->once()->with('posts.active', '=', 1)->andReturn($this->post)
+			->shouldReceive('where')->once()->andReturn($this->post)
+			->shouldReceive('groupBy')->once()->with('id')->andReturn($this->post)
+			->shouldReceive('distinct')->once()->withNoArgs()->andReturn($this->post)
+			->shouldReceive('paginate')->once()->with($per_page)->andReturn(array('wardrobe', 'cabinet'));
 	}
 }
  

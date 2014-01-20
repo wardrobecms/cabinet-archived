@@ -7,14 +7,14 @@ use Wardrobe\Cabinet\Parsers;
 
 class DbPostRepository implements PostRepositoryInterface {
 
-    protected $post;
+	protected $post;
 
-    public function __construct(Post $post)
-    {
-        $this->post = $post;
-    }
+	public function __construct(Post $post)
+	{
+		$this->post = $post;
+	}
 
-    /**
+	/**
 	 * Get all of the posts.
 	 *
 	 * @return array
@@ -36,7 +36,7 @@ class DbPostRepository implements PostRepositoryInterface {
 		$per_page = is_numeric($per_page) ? $per_page : 5;
 
 		return $this->post
-            ->with(array('tags', 'user'))
+			->with(array('tags', 'user'))
 			->where('active', 1)
 			->where('publish_date', '<=', new DateTime)
 			->orderBy('publish_date', 'desc')
@@ -80,7 +80,7 @@ class DbPostRepository implements PostRepositoryInterface {
 		$per_page = is_numeric($per_page) ? $per_page : 5;
 
 		return $this->post
-            ->with(array('tags', 'user'))
+			->with(array('tags', 'user'))
 			->select('posts.*')
 			->join('tags', 'posts.id', '=', 'tags.post_id')
 			->where('tags.tag', '=', $tag)
@@ -102,7 +102,8 @@ class DbPostRepository implements PostRepositoryInterface {
 	{
 		$per_page = is_numeric($per_page) ? $per_page : 5;
 
-		return Post::with(array('tags', 'user'))
+		return $this->post
+			->with(array('tags', 'user'))
 			->select('posts.*')
 			->where(function($query) use ($search)
 			{
