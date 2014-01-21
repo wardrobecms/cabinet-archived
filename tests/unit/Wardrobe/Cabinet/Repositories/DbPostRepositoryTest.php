@@ -1,6 +1,6 @@
 <?php namespace Wardrobe\Cabinet\Repositories;
 
-use DateTime;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Validator;
@@ -170,7 +170,7 @@ class DbPostRepositoryTest extends TestCase {
 		$this->post->shouldReceive('tags')->once()->withNoArgs()->andReturn($this->post);
 		$this->post->shouldReceive('createMany')->once()->andReturn($this->post);
 
-		$returned = $this->DbPostRepository()->create('Wardrobe', 'foo bar', 'wardrobe', array('wardrobe', 'cabinet'), 1, 1, new DateTime());
+		$returned = $this->DbPostRepository()->create('Wardrobe', 'foo bar', 'wardrobe', array('wardrobe', 'cabinet'), 1, 1, new Carbon);
 
 		$this->assertSame($this->post, $returned);
 	}
@@ -195,7 +195,7 @@ class DbPostRepositoryTest extends TestCase {
 			->shouldReceive('tags')->once()->withNoArgs()->andReturn($this->post)
 			->shouldReceive('createMany')->once()->andReturn($this->post);
 
-		$returned = $this->DbPostRepository()->update(1, 'Wardrobe', 'foo bar', 'wardrobe', array('wardrobe', 'cabinet'), 1, 1, new DateTime());
+		$returned = $this->DbPostRepository()->update(1, 'Wardrobe', 'foo bar', 'wardrobe', array('wardrobe', 'cabinet'), 1, 1, new Carbon);
 
 		$this->assertSame($this->post, $returned);
 	}

@@ -1,6 +1,6 @@
 <?php namespace Wardrobe\Cabinet\Repositories;
 
-use DateTime;
+use Carbon\Carbon;
 
 interface PostRepositoryInterface {
 
@@ -61,10 +61,10 @@ interface PostRepositoryInterface {
 	 * @param  array     $tags
 	 * @param  bool      $active
 	 * @param  int       $user_id
-	 * @param  DateTime  $publish_date
+	 * @param  Carbon    $publish_date
 	 * @return Post
 	 */
-	public function create($title, $content, $slug, array $tags, $active, $user_id, DateTime $publish_date);
+	public function create($title, $content, $slug, array $tags, $active, $user_id, Carbon $publish_date);
 
 	/**
 	 * Update a post's title and content.
@@ -76,11 +76,11 @@ interface PostRepositoryInterface {
 	 * @param  array    $tags
 	 * @param  bool     $active
 	 * @param  int      $user_id
-	 * @param  DateTime $publish_date
+	 * @param  Carbon   $publish_date
 	 *
 	 * @return Post
 	 */
-	public function update($id, $title, $content, $slug, array $tags, $active, $user_id, DateTime $publish_date);
+	public function update($id, $title, $content, $slug, array $tags, $active, $user_id, Carbon $publish_date);
 
 	/**
 	 * Delete the post with the given ID.

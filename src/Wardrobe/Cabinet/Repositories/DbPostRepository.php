@@ -2,7 +2,7 @@
 
 use Cache;
 use Config;
-use DateTime;
+use Carbon\Carbon;
 use Validator;
 use Wardrobe\Cabinet\Entities\Post;
 use Wardrobe\Cabinet\Entities\Tag;
@@ -42,7 +42,7 @@ class DbPostRepository implements PostRepositoryInterface {
 		return $this->post
 			->with(array('tags', 'user'))
 			->where('active', 1)
-			->where('publish_date', '<=', new DateTime)
+			->where('publish_date', '<=', new Carbon)
 			->orderBy('publish_date', 'desc')
 			->paginate($per_page);
 	}
@@ -69,7 +69,7 @@ class DbPostRepository implements PostRepositoryInterface {
 		return $this->post
 			->with(array('tags', 'user'))
 			->where('active', 1)
-			->where('publish_date', '<=', new DateTime)
+			->where('publish_date', '<=', new Carbon)
 			->where('slug', $slug)
 			->first();
 	}
@@ -92,7 +92,7 @@ class DbPostRepository implements PostRepositoryInterface {
 			->where('tags.tag', '=', $tag)
 			->orderBy('posts.publish_date', 'desc')
 			->where('posts.active', 1)
-			->where('posts.publish_date', '<=', new DateTime)
+			->where('posts.publish_date', '<=', new Carbon)
 			->distinct()
 			->paginate($per_page);
 	}
@@ -118,7 +118,7 @@ class DbPostRepository implements PostRepositoryInterface {
 			})
 			->orderBy('posts.publish_date', 'desc')
 			->where('posts.active', '=', 1)
-			->where('posts.publish_date', '<=', new DateTime)
+			->where('posts.publish_date', '<=', new Carbon)
 			->groupBy('id')
 			->distinct()
 			->paginate($per_page);
@@ -133,10 +133,10 @@ class DbPostRepository implements PostRepositoryInterface {
 	 * @param  array  $tags
 	 * @param  bool  $active
 	 * @param  int  $user_id
-	 * @param  DateTime  $publish_date
+	 * @param  Carbon  $publish_date
 	 * @return Post
 	 */
-	public function create($title, $content, $slug, array $tags, $active, $user_id, DateTime $publish_date)
+	public function create($title, $content, $slug, array $tags, $active, $user_id, Carbon $publish_date)
 	{
 		$post = $this->post->create(compact('title', 'content', 'slug', 'active', 'user_id', 'publish_date'));
 
@@ -157,11 +157,11 @@ class DbPostRepository implements PostRepositoryInterface {
 	 * @param  array    $tags
 	 * @param  string   $active
 	 * @param  int      $user_id
-	 * @param \DateTime $publish_date
+	 * @param  Carbon   $publish_date
 	 *
 	 * @return Post
 	 */
-	public function update($id, $title, $content, $slug, array $tags, $active, $user_id, DateTime $publish_date)
+	public function update($id, $title, $content, $slug, array $tags, $active, $user_id, Carbon $publish_date)
 	{
 		$post = $this->find($id);
 
