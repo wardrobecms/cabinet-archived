@@ -48,7 +48,7 @@ class LoginControllerTest extends TestCase {
 		$this->userRepositoryInterface
 			->shouldReceive('login')->once()->with($input['email'], $input['password'], $input['remember'])->andReturn(false);
 
-		Redirect::shouldReceive('action')->once()->with('wardrobe.admin.login')->andReturn(Mockery::self())
+		Redirect::shouldReceive('route')->once()->with('wardrobe.admin.login')->andReturn(Mockery::self())
 				->shouldReceive('withInput')->once()->withNoArgs()->andReturn(Mockery::self())
 				->shouldReceive('with')->once()->with('login_errors', true)->andReturn('wardrobe.admin.login');
 

@@ -46,7 +46,7 @@ class LoginController extends Controller {
 			return Redirect::intended('wardrobe.admin.index');
 		}
 
-		return Redirect::action('wardrobe.admin.login')
+		return Redirect::route('wardrobe.admin.login')
 			->withInput()
 			->with('login_errors', true);
 	}
