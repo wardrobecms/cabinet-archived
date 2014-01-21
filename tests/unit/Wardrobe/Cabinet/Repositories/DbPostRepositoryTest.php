@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Validator;
 use Mockery;
-use Orchestra\Testbench\TestCase;
+use Wardrobe\Cabinet\TestCase;
 
 /**
  * Class DbPostRepositoryTest
@@ -22,11 +22,6 @@ class DbPostRepositoryTest extends TestCase {
 
 		$this->post = Mockery::mock('Wardrobe\Cabinet\Entities\Post');
 		$this->tag = Mockery::mock('Wardrobe\Cabinet\Entities\Tag');
-	}
-
-	public function tearDown()
-	{
-		Mockery::close();
 	}
 
 	private function DbPostRepository()
