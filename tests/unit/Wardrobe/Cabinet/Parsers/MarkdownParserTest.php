@@ -1,7 +1,7 @@
 <?php namespace Wardrobe\Cabinet\Parsers;
 
 use Mockery;
-use TestCase;
+use Orchestra\Testbench\TestCase;
 
 class MarkdownParserTest extends TestCase {
 
