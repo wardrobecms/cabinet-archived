@@ -14,7 +14,9 @@ class AdminControllerTest extends TestCase {
 	{
 		View::shouldReceive('make')->once()->with('cabinet::admin.index')->andReturn('admin index!');
 
-		$this->action('GET', self::$wardrobeControllers . 'AdminController@index');
+		$response = $this->action('GET', self::$wardrobeControllers . 'AdminController@index');
+
+        $this->assertSame('admin index!', $response->original);
 	}
 }
  
