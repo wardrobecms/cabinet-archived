@@ -26,6 +26,8 @@ class LoginController extends Controller {
 
 	/**
 	 * Get the user login view.
+	 *
+	 * @return \Illuminate\View\View
 	 */
 	public function create()
 	{
@@ -34,6 +36,8 @@ class LoginController extends Controller {
 
 	/**
 	 * Handle a user login attempt.
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function store()
 	{
