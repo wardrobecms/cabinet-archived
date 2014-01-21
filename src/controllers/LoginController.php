@@ -1,6 +1,11 @@
 <?php namespace Wardrobe\Cabinet\Controllers;
 
-use Controller, View, Input, Redirect, Auth, Password;
+use Auth;
+use Controller;
+use Input;
+use Password;
+use Redirect;
+use View;
 use Wardrobe\Cabinet\Repositories\UserRepositoryInterface;
 
 class LoginController extends Controller {

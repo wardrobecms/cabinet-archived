@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 use Mockery;
@@ -76,5 +77,9 @@ class LoginControllerTest extends TestCase {
 
 		$this->assertSame('forgot my password', $response->original);
 	}
+
+	public function testRemindSend()
+	{
+		// TODO, how do you mock Password?
+	}
 }
- 
