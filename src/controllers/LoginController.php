@@ -37,7 +37,7 @@ class LoginController extends Controller {
 	/**
 	 * Handle a user login attempt.
 	 *
-	 * @return \Illuminate\Http\RedirectResponse
+	 * @return \Illuminate\Routing\Redirector
 	 */
 	public function store()
 	{
@@ -53,6 +53,8 @@ class LoginController extends Controller {
 
 	/**
 	 * Log out the user
+	 *
+	 * @return \Illuminate\Routing\Redirector
 	 */
 	public function destroy()
 	{

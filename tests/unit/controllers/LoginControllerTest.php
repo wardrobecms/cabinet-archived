@@ -1,8 +1,9 @@
 <?php namespace Wardrobe\Cabinet\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Input;
 use Mockery;
 use Wardrobe\Cabinet\TestCase;
 
@@ -55,6 +56,16 @@ class LoginControllerTest extends TestCase {
 		$response = $this->action('POST', self::$wardrobeControllers . 'LoginController@store', [], $input);
 
 		$this->assertSame('wardrobe.admin.login', $response->original);
+	}
+
+	public function testDestroy()
+	{
+		Auth::shouldReceive('logout')->once()->withNoArgs();
+		Redirect::shouldReceive('route')->once()->with('wardrobe.admin.login')->andReturn('cabinet');
+
+		$response = $this->action('GET', self::$wardrobeControllers . 'LoginController@destroy');
+
+		$this->assertSame('cabinet', $response->original);
 	}
 }
  
