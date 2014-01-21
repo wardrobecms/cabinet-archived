@@ -64,6 +64,8 @@ class LoginController extends Controller {
 
 	/**
 	 * Forgot password form
+	 *
+	 * @return \Illuminate\View\View
 	 */
 	public function remindForm()
 	{

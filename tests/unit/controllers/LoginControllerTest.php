@@ -67,5 +67,14 @@ class LoginControllerTest extends TestCase {
 
 		$this->assertSame('cabinet', $response->original);
 	}
+
+	public function testRemindForm()
+	{
+		View::shouldReceive('make')->once()->with('cabinet::admin.auth.forgot')->andReturn('forgot my password');
+
+		$response = $this->action('GET', self::$wardrobeControllers . 'LoginController@remindForm');
+
+		$this->assertSame('forgot my password', $response->original);
+	}
 }
  
