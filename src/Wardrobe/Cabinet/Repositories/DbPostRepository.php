@@ -1,11 +1,22 @@
 <?php namespace Wardrobe\Cabinet\Repositories;
 
-use Config, Cache, DateTime, Validator;
+use Cache;
+use Config;
+use DateTime;
+use Validator;
 use Wardrobe\Cabinet\Entities\Post;
 use Wardrobe\Cabinet\Entities\Tag;
-use Wardrobe\Cabinet\Parsers;
 
 class DbPostRepository implements PostRepositoryInterface {
+
+	protected $post;
+	protected $tag;
+
+	public function __construct(Post $post, Tag $tag)
+	{
+		$this->post = $post;
+		$this->tag = $tag;
+	}
 
 	/**
 	 * Get all of the posts.
@@ -14,7 +25,7 @@ class DbPostRepository implements PostRepositoryInterface {
 	 */
 	public function all()
 	{
-		return Post::with(array('tags', 'user'))->orderBy('publish_date', 'desc');
+		return $this->post->with(array('tags', 'user'))->orderBy('publish_date', 'desc');
 	}
 
 	/**
@@ -28,7 +39,8 @@ class DbPostRepository implements PostRepositoryInterface {
 	{
 		$per_page = is_numeric($per_page) ? $per_page : 5;
 
-		return Post::with(array('tags', 'user'))
+		return $this->post
+			->with(array('tags', 'user'))
 			->where('active', 1)
 			->where('publish_date', '<=', new DateTime)
 			->orderBy('publish_date', 'desc')
@@ -43,7 +55,7 @@ class DbPostRepository implements PostRepositoryInterface {
 	 */
 	public function find($id)
 	{
-		return Post::with(array('tags', 'user'))->findOrFail($id);
+		return $this->post->with(array('tags', 'user'))->findOrFail($id);
 	}
 
 	/**
@@ -54,10 +66,12 @@ class DbPostRepository implements PostRepositoryInterface {
 	 */
 	public function findBySlug($slug)
 	{
-		return Post::with(array('tags', 'user'))
+		return $this->post
+			->with(array('tags', 'user'))
 			->where('active', 1)
 			->where('publish_date', '<=', new DateTime)
-			->where('slug', $slug)->first();
+			->where('slug', $slug)
+			->first();
 	}
 
 	/**
@@ -71,7 +85,8 @@ class DbPostRepository implements PostRepositoryInterface {
 	{
 		$per_page = is_numeric($per_page) ? $per_page : 5;
 
-		return Post::with(array('tags', 'user'))
+		return $this->post
+			->with(array('tags', 'user'))
 			->select('posts.*')
 			->join('tags', 'posts.id', '=', 'tags.post_id')
 			->where('tags.tag', '=', $tag)
@@ -93,7 +108,8 @@ class DbPostRepository implements PostRepositoryInterface {
 	{
 		$per_page = is_numeric($per_page) ? $per_page : 5;
 
-		return Post::with(array('tags', 'user'))
+		return $this->post
+			->with(array('tags', 'user'))
 			->select('posts.*')
 			->where(function($query) use ($search)
 			{
@@ -122,7 +138,7 @@ class DbPostRepository implements PostRepositoryInterface {
 	 */
 	public function create($title, $content, $slug, array $tags, $active, $user_id, DateTime $publish_date)
 	{
-		$post = Post::create(compact('title', 'content', 'slug', 'active', 'user_id', 'publish_date'));
+		$post = $this->post->create(compact('title', 'content', 'slug', 'active', 'user_id', 'publish_date'));
 
 		$post->tags()->delete();
 
@@ -155,7 +171,9 @@ class DbPostRepository implements PostRepositoryInterface {
 			Cache::forget('post-'.$post->id);
 		}
 
-		$post->fill(compact('title', 'content', 'slug', 'active', 'user_id', 'publish_date'))->save();
+		$post
+			->fill(compact('title', 'content', 'slug', 'active', 'user_id', 'publish_date'))
+			->save();
 
 		$post->tags()->delete();
 
@@ -190,7 +208,7 @@ class DbPostRepository implements PostRepositoryInterface {
 	 */
 	public function delete($id)
 	{
-		Post::where('id', $id)->delete();
+		$this->post->where('id', $id)->delete();
 	}
 
 	/**
@@ -200,7 +218,7 @@ class DbPostRepository implements PostRepositoryInterface {
 	 */
 	public function allTags()
 	{
-		return Tag::orderBy('tag', 'asc')->groupBy('tag')->distinct()->get()->toArray();
+		return $this->tag->orderBy('tag', 'asc')->groupBy('tag')->distinct()->get()->toArray();
 	}
 
 	/**
