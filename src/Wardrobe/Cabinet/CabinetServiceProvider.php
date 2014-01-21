@@ -60,7 +60,7 @@ class CabinetServiceProvider extends ServiceProvider {
 		$this->app->singleton('Wardrobe\Cabinet\Repositories\UserRepositoryInterface', 'Wardrobe\Cabinet\Repositories\DbUserRepository');
 
 		$this->app->bind('parser', function() {
-			return new MarkdownParser();
+			return new MarkdownParser(new \Michelf\MarkdownExtra);
 		});
 
 	}
