@@ -1,6 +1,11 @@
 <?php namespace Wardrobe\Cabinet\Controllers;
 
-use Controller, View, Input, Redirect, Auth, Password;
+use Auth;
+use Controller;
+use Input;
+use Password;
+use Redirect;
+use View;
 use Wardrobe\Cabinet\Repositories\UserRepositoryInterface;
 
 class LoginController extends Controller {
@@ -26,6 +31,8 @@ class LoginController extends Controller {
 
 	/**
 	 * Get the user login view.
+	 *
+	 * @return \Illuminate\View\View
 	 */
 	public function create()
 	{
@@ -34,6 +41,8 @@ class LoginController extends Controller {
 
 	/**
 	 * Handle a user login attempt.
+	 *
+	 * @return \Illuminate\Routing\Redirector
 	 */
 	public function store()
 	{
@@ -42,13 +51,15 @@ class LoginController extends Controller {
 			return Redirect::intended('wardrobe.admin.index');
 		}
 
-		return Redirect::back()
+		return Redirect::route('wardrobe.admin.login')
 			->withInput()
 			->with('login_errors', true);
 	}
 
 	/**
 	 * Log out the user
+	 *
+	 * @return \Illuminate\Routing\Redirector
 	 */
 	public function destroy()
 	{
@@ -58,6 +69,8 @@ class LoginController extends Controller {
 
 	/**
 	 * Forgot password form
+	 *
+	 * @return \Illuminate\View\View
 	 */
 	public function remindForm()
 	{
