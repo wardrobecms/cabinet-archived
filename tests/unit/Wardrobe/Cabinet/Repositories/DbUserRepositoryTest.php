@@ -33,4 +33,13 @@ class DbUserRepositoryTest extends TestCase {
 
 		$this->assertSame(['eric', 'metalmatze'], $returned);
 	}
+
+	public function testFind()
+	{
+		$this->user->shouldReceive('findOrFail')->once()->with(42)->andReturn('Post about wardrobe');
+
+		$returned = $this->DbUserRepository()->find(42);
+
+		$this->assertSame('Post about wardrobe', $returned);
+	}
 }

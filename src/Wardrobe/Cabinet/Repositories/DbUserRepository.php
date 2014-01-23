@@ -32,7 +32,7 @@ class DbUserRepository implements UserRepositoryInterface {
 	 */
 	public function find($id)
 	{
-		return User::findOrFail($id);
+		return $this->user->findOrFail($id);
 	}
 
 	/**
