@@ -1,9 +1,18 @@
 <?php namespace Wardrobe\Cabinet\Repositories;
 
-use Auth, Hash, Validator, Wardrobe;
+use Auth;
+use Hash;
+use Validator;
 use Wardrobe\Core\Entities\User;
 
 class DbUserRepository implements UserRepositoryInterface {
+
+	protected $user;
+
+	public function __construct(User $user)
+	{
+		$this->user = $user;
+	}
 
 	/**
 	 * Get all of the users.
