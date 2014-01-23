@@ -21,7 +21,7 @@ class DbUserRepository implements UserRepositoryInterface {
 	 */
 	public function all()
 	{
-		return User::all();
+		return $this->user->all();
 	}
 
 	/**

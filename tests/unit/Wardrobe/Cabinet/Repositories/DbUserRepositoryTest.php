@@ -24,4 +24,13 @@ class DbUserRepositoryTest extends TestCase {
 	{
 		return new DbUserRepository($this->user);
 	}
+
+	public function testAll()
+	{
+		$this->user->shouldReceive('all')->once()->withNoArgs()->andReturn(['eric', 'metalmatze']);
+
+		$returned = $this->DbUserRepository()->all();
+
+		$this->assertSame(['eric', 'metalmatze'], $returned);
+	}
 }
