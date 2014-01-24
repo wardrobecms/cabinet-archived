@@ -162,9 +162,9 @@ class DbPostRepository implements PostRepositoryInterface {
 	 *
 	 * @return Post
 	 */
-	public function update($id, $title, $content, $slug, array $tags, $active, $user_id, Carbon $publish_date)
+	public function update(array $data)
 	{
-		$post = $this->find($id);
+		$post = $this->find($data['id']);
 
 		// Forget the old cache
 		if (Config::get('wardrobe.cache'))
@@ -172,13 +172,18 @@ class DbPostRepository implements PostRepositoryInterface {
 			Cache::forget('post-'.$post->id);
 		}
 
-		$post
-			->fill(compact('title', 'content', 'slug', 'active', 'user_id', 'publish_date'))
-			->save();
+		$post->fill(array(
+			'title'        => $data['title'],
+			'content'      => $data['content'],
+			'slug'         => $data['slug'],
+			'active'       => $data['active'],
+			'user_id'      => $data['user_id'],
+			'publish_date' => $data['publish_date'],
+		))->save();
 
 		$post->tags()->delete();
 
-		$post->tags()->createMany($this->prepareTags($tags));
+		$post->tags()->createMany($this->prepareTags($data['tags']));
 
 		return $post;
 	}

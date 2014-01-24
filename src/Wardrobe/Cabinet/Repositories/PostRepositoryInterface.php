@@ -63,18 +63,10 @@ interface PostRepositoryInterface {
 	/**
 	 * Update a post's title and content.
 	 *
-	 * @param  int      $id
-	 * @param  string   $title
-	 * @param  string   $content
-	 * @param  string   $slug
-	 * @param  array    $tags
-	 * @param  bool     $active
-	 * @param  int      $user_id
-	 * @param  Carbon   $publish_date
-	 *
+	 * @param  array $data
 	 * @return Post
 	 */
-	public function update($id, $title, $content, $slug, array $tags, $active, $user_id, Carbon $publish_date);
+	public function update(array $data);
 
 	/**
 	 * Delete the post with the given ID.
