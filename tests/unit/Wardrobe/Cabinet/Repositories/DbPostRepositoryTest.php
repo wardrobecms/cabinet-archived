@@ -170,7 +170,15 @@ class DbPostRepositoryTest extends TestCase {
 		$this->post->shouldReceive('tags')->once()->withNoArgs()->andReturn($this->post);
 		$this->post->shouldReceive('createMany')->once()->andReturn($this->post);
 
-		$returned = $this->DbPostRepository()->create('Wardrobe', 'foo bar', 'wardrobe', array('wardrobe', 'cabinet'), 1, 1, new Carbon);
+		$returned = $this->DbPostRepository()->create(array(
+			'title'        => 'Wardrobe',
+			'content'      => 'foo bar',
+			'slug'         => 'wardrobe',
+			'active'       => 1,
+			'user_id'      => 1,
+			'publish_date' => new Carbon,
+			'tags'         => array('test', 'test2'),
+		));
 
 		$this->assertSame($this->post, $returned);
 	}
@@ -195,7 +203,16 @@ class DbPostRepositoryTest extends TestCase {
 			->shouldReceive('tags')->once()->withNoArgs()->andReturn($this->post)
 			->shouldReceive('createMany')->once()->andReturn($this->post);
 
-		$returned = $this->DbPostRepository()->update(1, 'Wardrobe', 'foo bar', 'wardrobe', array('wardrobe', 'cabinet'), 1, 1, new Carbon);
+		$returned = $this->DbPostRepository()->update(array(
+			'id'           => 1,
+			'title'        => 'Wardrobe',
+			'content'      => 'foo bar',
+			'slug'         => 'wardrobe',
+			'active'       => 1,
+			'user_id'      => 1,
+			'publish_date' => new Carbon,
+			'tags'         => array('wardrobe', 'cabinet'),
+		));
 
 		$this->assertSame($this->post, $returned);
 	}
