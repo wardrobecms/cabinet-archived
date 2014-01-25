@@ -174,7 +174,7 @@ class DbUserRepository implements UserRepositoryInterface {
 	 */
 	public function delete($id)
 	{
-		return User::where('id', $id)->delete();
+		return $this->user->where('id', $id)->delete();
 	}
 
 }

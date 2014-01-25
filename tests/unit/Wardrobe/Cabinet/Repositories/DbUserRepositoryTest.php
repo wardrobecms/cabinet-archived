@@ -84,4 +84,14 @@ class DbUserRepositoryTest extends TestCase {
 
 		$this->assertFalse($returned);
 	}
+
+	public function testDelete()
+	{
+		$this->user->shouldReceive('where')->once()->with('id', 42)->andReturn($this->user)
+				->shouldReceive('delete')->once()->withNoArgs()->andReturn(true);
+
+		$returned = $this->DbUserRepository()->delete(42);
+
+		$this->assertTrue($returned);
+	}
 }
