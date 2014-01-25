@@ -1,9 +1,11 @@
 <?php namespace Wardrobe\Cabinet\Repositories;
 
+use Auth;
+use Hash;
 use Mockery;
+use Validator;
 use Wardrobe\Cabinet\Repositories\DbUserRepository;
 use Wardrobe\Cabinet\TestCase;
-use Hash;
 
 class DbUserRepositoryTest extends TestCase {
 
@@ -55,9 +57,31 @@ class DbUserRepositoryTest extends TestCase {
 		$person = $this->person();
 
 		Hash::shouldReceive('make')->once()->with($person->password)->andReturn($person->password);
-		$this->user->shouldReceive('create')->once()->with((array)$person);
+		$this->user->shouldReceive('create')->once()->with((array)$person)->andReturn('user cabinet created');
 
-		$this->DbUserRepository()->create($person->first_name, $person->last_name, $person->email, $person->active, $person->password);
+		$returned = $this->DbUserRepository()->create($person->first_name, $person->last_name, $person->email, $person->active, $person->password);
 
+		$this->assertSame('user cabinet created', $returned);
+	}
+
+	public function testLogin()
+	{
+		$person = $this->person();
+		Auth::shouldReceive('attempt')->once()->with(['email'=>'cabinet@wardrobecms.com','password'=>'laravel'], false)->andReturn(true);
+
+
+		$returned = $this->DbUserRepository()->login($person->email, $person->password);
+
+		$this->assertTrue($returned);
+	}
+
+	public function testLoginFails()
+	{
+		$person = $this->person();
+		Auth::shouldReceive('attempt')->once()->andReturn(false);
+
+		$returned = $this->DbUserRepository()->login($person->email, 'zend');
+
+		$this->assertFalse($returned);
 	}
 }
