@@ -49,7 +49,7 @@ class DbUserRepository implements UserRepositoryInterface {
 	{
 		$password = Hash::make($password);
 
-		return User::create(compact('first_name', 'last_name', 'email', 'password', 'active'));
+		return $this->user->create(compact('first_name', 'last_name', 'email', 'password', 'active'));
 	}
 
 	/**
