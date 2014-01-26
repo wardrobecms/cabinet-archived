@@ -1,9 +1,18 @@
 <?php namespace Wardrobe\Cabinet\Repositories;
 
-use Auth, Hash, Validator, Wardrobe;
+use Auth;
+use Hash;
+use Validator;
 use Wardrobe\Core\Entities\User;
 
 class DbUserRepository implements UserRepositoryInterface {
+
+	protected $user;
+
+	public function __construct(User $user)
+	{
+		$this->user = $user;
+	}
 
 	/**
 	 * Get all of the users.
@@ -12,7 +21,7 @@ class DbUserRepository implements UserRepositoryInterface {
 	 */
 	public function all()
 	{
-		return User::all();
+		return $this->user->all();
 	}
 
 	/**
@@ -23,7 +32,7 @@ class DbUserRepository implements UserRepositoryInterface {
 	 */
 	public function find($id)
 	{
-		return User::findOrFail($id);
+		return $this->user->findOrFail($id);
 	}
 
 	/**
@@ -40,7 +49,7 @@ class DbUserRepository implements UserRepositoryInterface {
 	{
 		$password = Hash::make($password);
 
-		return User::create(compact('first_name', 'last_name', 'email', 'password', 'active'));
+		return $this->user->create(compact('first_name', 'last_name', 'email', 'password', 'active'));
 	}
 
 	/**
@@ -165,7 +174,7 @@ class DbUserRepository implements UserRepositoryInterface {
 	 */
 	public function delete($id)
 	{
-		return User::where('id', $id)->delete();
+		return $this->user->where('id', $id)->delete();
 	}
 
 }
