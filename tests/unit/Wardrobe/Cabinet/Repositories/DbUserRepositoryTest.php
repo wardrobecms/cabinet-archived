@@ -15,7 +15,7 @@ class DbUserRepositoryTest extends TestCase {
 	{
 		parent::setUp();
 
-		$this->user = Mockery::mock('Wardrobe\Core\Entities\User');
+		$this->user = Mockery::mock('Wardrobe\Cabinet\Entities\User');
 	}
 
 	private function DbUserRepository()

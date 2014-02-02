@@ -3,7 +3,7 @@
 use Auth;
 use Hash;
 use Validator;
-use Wardrobe\Core\Entities\User;
+use Wardrobe\Cabinet\Entities\User;
 
 class DbUserRepository implements UserRepositoryInterface {
 
