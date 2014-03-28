@@ -12,7 +12,7 @@ abstract class Entity extends \Illuminate\Database\Eloquent\Model {
 	 */
 	public function hasOne($related, $foreignKey = null, $localKey = null)
 	{
-		return parent::hasOne('Wardrobe\\Cabinet\\Entities\\'.$model, $foreignKey, $localKey);
+		return parent::hasOne('Wardrobe\\Cabinet\\Entities\\'.$related, $foreignKey, $localKey);
 	}
 
 	/**
