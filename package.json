@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "gulp": "^3.6.0",
+    "gulp-sass": "^0.7.1",
+    "node-neat": "^1.1.0",
+    "node-bourbon": "^1.0.0"
+  }
+}

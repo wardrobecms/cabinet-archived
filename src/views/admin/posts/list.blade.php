@@ -6,7 +6,7 @@
 
 @section('content')
 
-	<table class="table center-col">
+	<table class="center-col">
 		<tr>
 			<th>{{ Lang::get('cabinet::wardrobe.post_title') }}</th>
 			<th>{{ Lang::get('cabinet::wardrobe.post_status') }}</th>

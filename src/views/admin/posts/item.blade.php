@@ -1,7 +1,9 @@
-<td><a href="{{ URL::route('wardrobe.post.edit', $post->id) }}">{{ $post->title }}</a></td>
+<td>
+	<a href="{{ URL::route('wardrobe.post.edit', $post->id) }}">{{ $post->title }}</a>
+	<a href="#" class="preview"><i class="fa fa-external-link fa-fw"></i></a>
+</td>
 <td>{{ $post->active }}</td>
 <td>{{ $post->publish_date }}</td>
 <td class="actions">
-	<button class="preview"><i class="icon-zoom-in"></i>Preview</button>
-	<button class="delete"><i class="icon-trash"></i> Delete</button>
+	<a href="#" class="delete"><i class="fa fa-trash-o fa-fw"></i>Delete</a>
 </td>
