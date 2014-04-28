@@ -3,7 +3,7 @@
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
-class User extends Entity implements UserInterface, RemindableInterface {
+class User extends \Eloquent implements UserInterface, RemindableInterface {
 
 	/**
 	 * The table associated with the model.
@@ -33,7 +33,7 @@ class User extends Entity implements UserInterface, RemindableInterface {
 	 */
 	public function posts()
 	{
-		return $this->hasMany('Post');
+		return $this->hasMany('Wardrobe\Cabinet\Entities\Post');
 	}
 
 	/**
@@ -80,4 +80,6 @@ class User extends Entity implements UserInterface, RemindableInterface {
 	{
 		return 'remember_token';
 	}
+
+
 }

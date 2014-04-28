@@ -71,7 +71,7 @@ interface UserRepositoryInterface {
 	 * If the credentials are invalid, returns false, else returns true.
 	 *
 	 * @param  string  $email
-	 * @param  stirng  $password
+	 * @param  string  $password
 	 * @param  bool    $remember
 	 * @return bool
 	 */

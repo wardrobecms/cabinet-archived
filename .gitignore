@@ -5,3 +5,5 @@ composer.phar
 composer.lock
 .DS_Store
 .idea
+/assets/src
+/assets/vendor

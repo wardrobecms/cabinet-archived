@@ -1,33 +1,32 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
-    <title>@yield('title') | Wardrobe</title>
-    <meta name="env" content="{{ App::environment() }}">
-    <meta name="token" content="{{ Session::token() }}">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="/packages/wardrobe/cabinet/css/style.css">
-	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+	<title>@yield('title') | Wardrobe</title>
+	<meta name="env" content="{{ App::environment() }}">
+	<meta name="token" content="{{ Session::token() }}">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="{{ asset(wardrobe_path('admin/css/style.css')) }}">
 </head>
 <body>
-
-	<nav>
-		<ul>
-			<li><a class="write" href="{{ URL::route('wardrobe.post.create') }} "><i class="fa fa-plus"></i> {{ Lang::get('cabinet::wardrobe.write') }}</a></li>
-			<li><a class="write" href="{{ URL::route('wardrobe.post.index') }} "><i class="fa fa-list"></i> {{ Lang::get('cabinet::wardrobe.posts') }}</a></li>
-			<li><a class="accounts" href="#accounts"><i class="fa fa-user"></i> {{ Lang::get('cabinet::wardrobe.accounts') }}</a></li>
-			<li><a href="{{ URL::route('wardrobe.admin.logout') }}"><i class="fa fa-power-off"></i> {{ Lang::get('cabinet::wardrobe.logout') }}</a></li>
-		</ul>
-	</nav>
-
-	@include('cabinet::admin.inc.errors')
-
-	<div class="container">
+<div id="header-region" class="header"></div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<div id="js-alert"></div>
+			<div id="js-errors" class="hide alert alert-danger">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				<span></span>
+			</div>
+		</div>
 		@yield('content')
+		<div id="main-region" class="col-md-12"></div>
 	</div>
-
-
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  @yield('footer.js')
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{ asset(wardrobe_path('admin/js/jquery.js')) }} "><\/script>')</script>
+<script type="text/javascript" src="{{ asset(wardrobe_path('admin/js/structure.js')) }}"></script>
+<script type="text/javascript" src="{{ asset(wardrobe_path('admin/js/app.js')) }}"></script>
+@yield('footer.js')
 </body>
 </html>

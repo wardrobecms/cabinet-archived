@@ -25,7 +25,7 @@ class DbPostRepository implements PostRepositoryInterface {
 	 */
 	public function all()
 	{
-		return $this->post->with(array('tags', 'user'))->orderBy('publish_date', 'desc');
+		return $this->post->with(['user','tags'])->orderBy('publish_date', 'desc')->get();
 	}
 
 	/**
@@ -40,7 +40,7 @@ class DbPostRepository implements PostRepositoryInterface {
 		$per_page = is_numeric($per_page) ? $per_page : 5;
 
 		return $this->post
-			->with(array('tags', 'user'))
+			->with(['tags', 'user'])
 			->where('active', 1)
 			->where('publish_date', '<=', new Carbon)
 			->orderBy('publish_date', 'desc')
@@ -67,7 +67,7 @@ class DbPostRepository implements PostRepositoryInterface {
 	public function findBySlug($slug)
 	{
 		return $this->post
-			->with(array('tags', 'user'))
+			->with(['tags', 'user'])
 			->where('active', 1)
 			->where('publish_date', '<=', new Carbon)
 			->where('slug', $slug)
@@ -86,7 +86,7 @@ class DbPostRepository implements PostRepositoryInterface {
 		$per_page = is_numeric($per_page) ? $per_page : 5;
 
 		return $this->post
-			->with(array('tags', 'user'))
+			->with(['tags', 'user'])
 			->select('posts.*')
 			->join('tags', 'posts.id', '=', 'tags.post_id')
 			->where('tags.tag', '=', $tag)
@@ -100,8 +100,8 @@ class DbPostRepository implements PostRepositoryInterface {
 	/**
 	 * Search all active posts
 	 *
-	 * @param  string   $tag
-	 * @param  int      $per_page
+	 * @param string $search
+	 * @param  int $per_page
 	 * @return array
 	 */
 	public function search($search, $per_page)
@@ -109,7 +109,7 @@ class DbPostRepository implements PostRepositoryInterface {
 		$per_page = is_numeric($per_page) ? $per_page : 5;
 
 		return $this->post
-			->with(array('tags', 'user'))
+			->with(['tags', 'user'])
 			->select('posts.*')
 			->where(function($query) use ($search)
 			{
@@ -132,14 +132,14 @@ class DbPostRepository implements PostRepositoryInterface {
 	 */
 	public function create(array $data)
 	{
-		$post = $this->post->create(array(
+		$post = $this->post->create([
 			'title'        => $data['title'],
 			'content'      => $data['content'],
 			'slug'         => $data['slug'],
-			'active'       => $data['active'],
+			'active'       => (int) $data['active'],
 			'user_id'      => $data['user_id'],
 			'publish_date' => $data['publish_date'],
-		));
+		]);
 
 		$post->tags()->delete();
 
@@ -151,14 +151,7 @@ class DbPostRepository implements PostRepositoryInterface {
 	/**
 	 * Update a post's title and content.
 	 *
-	 * @param  int      $id
-	 * @param  string   $title
-	 * @param  string   $content
-	 * @param  string   $slug
-	 * @param  array    $tags
-	 * @param  string   $active
-	 * @param  int      $user_id
-	 * @param  Carbon   $publish_date
+	 * @param array $data
 	 *
 	 * @return Post
 	 */
@@ -172,14 +165,14 @@ class DbPostRepository implements PostRepositoryInterface {
 			Cache::forget('post-'.$post->id);
 		}
 
-		$post->fill(array(
+		$post->fill([
 			'title'        => $data['title'],
 			'content'      => $data['content'],
 			'slug'         => $data['slug'],
 			'active'       => $data['active'],
 			'user_id'      => $data['user_id'],
 			'publish_date' => $data['publish_date'],
-		))->save();
+		])->save();
 
 		$post->tags()->delete();
 
@@ -262,10 +255,11 @@ class DbPostRepository implements PostRepositoryInterface {
 	 */
 	protected function validatePost($title, $slug, $id = null)
 	{
-		$rules = array(
+		$rules = [
 			'title' => 'required',
 			'slug'  => 'required|unique:posts,slug',
-		);
+			'link_url' => 'url',
+		];
 
 		if ($id)
 		{

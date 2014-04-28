@@ -3,7 +3,7 @@
 use App, Config, Cache;
 use Carbon\Carbon;
 
-class Post extends Entity {
+class Post extends \Eloquent {
 
 	/**
 	 * The table associated with the model.
@@ -26,7 +26,7 @@ class Post extends Entity {
 	 */
 	public function tags()
 	{
-		return $this->hasMany('Tag', 'post_id');
+		return $this->hasMany('Wardrobe\Cabinet\Entities\Tag', 'post_id');
 	}
 
 	/**
@@ -36,7 +36,7 @@ class Post extends Entity {
 	 */
 	public function user()
 	{
-		return $this->belongsTo('User');
+		return $this->belongsTo('Wardrobe\Cabinet\Entities\User');
 	}
 
 	/**

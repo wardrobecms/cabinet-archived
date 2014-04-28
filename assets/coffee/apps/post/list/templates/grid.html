@@ -1,0 +1,29 @@
+<div class="page-header">
+  <ul class="nav nav-pills pull-right">
+    <li class="active js-filter" data-type="draft"><a href="#post/draft"><i class="icon-edit"></i> &nbsp; Drafts</a></li>
+    <li class="js-filter" data-type="scheduled"><a href="#post/scheduled"><i class="icon-calendar"></i> &nbsp; Scheduled</a></li>
+    <li class="js-filter" data-type="published"><a href="#post/published"><i class="icon-laptop"></i> &nbsp; Published</a></li>
+  </ul>
+  <h1>Your Posts </h1>
+</div>
+
+<form class="filter form-inline hidden-xs hide" role="form">
+  <div class="form-group">
+    <input type="text" class="form-control filter" id="js-filter" name="filter" placeholder="Filter">
+  </div>
+</form>
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th><%= Lang.post_title %></th>
+			<th><%= Lang.post_published %></th>
+		</tr>
+	</thead>
+	<tbody></tbody>
+</table>
+
+<div class="well no-posts hide">
+  <h3>You do not have any <span>draft</span> posts.</h3>
+  <p class="lead js-quote"></p>
+  <a href="#" class="btn btn-default btn-lg">Start Writing</a>
+</div>

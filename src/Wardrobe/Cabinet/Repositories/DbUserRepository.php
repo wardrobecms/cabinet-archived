@@ -124,11 +124,11 @@ class DbUserRepository implements UserRepositoryInterface {
 	 */
 	protected function validateUser($first_name, $last_name, $email, $password, $id = null)
 	{
-		$rules = array(
+		$rules = [
 			'first_name' => 'required|max:255',
 			'last_name'  => 'required|max:255',
 			'email'      => 'required|email|unique:users,email',
-		);
+		];
 
 		if ($id)
 		{

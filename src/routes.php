@@ -11,7 +11,6 @@ Route::group(Config::get('cabinet::routes.admin_group_rules'), function() use ($
 	Route::post('login', array('uses' => $wardrobeControllers.'LoginController@store'));
 	Route::get('login/remind', array('uses' => $wardrobeControllers.'LoginController@remindForm', 'as' => 'wardrobe.admin.remindForm'));
 	Route::post('login/remind', array('uses' => $wardrobeControllers.'LoginController@remindSend'));
-
 });
 
 /**
@@ -43,9 +42,9 @@ Route::post('password/reset/{token}', function()
  */
 Route::group(Config::get('cabinet::routes.api_group_rules'), function() use ($wardrobeControllers)
 {
-//	Route::get('/', array('as' => 'wardrobe.api.index'));
+	Route::get('/', array('as' => 'wardrobe.api.index'));
 	Route::resource('post', $wardrobeControllers.'Api\PostController');
-//	Route::resource('tag', $wardrobeControllers.'Api\TagController');
-//	Route::resource('user', $wardrobeControllers.'Api\UserController');
-//	Route::controller('dropzone', $wardrobeControllers.'Api\DropzoneController');
+	Route::resource('tag', $wardrobeControllers.'Api\TagController');
+	Route::resource('user', $wardrobeControllers.'Api\UserController');
+	Route::controller('dropzone', $wardrobeControllers.'Api\DropzoneController');
 });

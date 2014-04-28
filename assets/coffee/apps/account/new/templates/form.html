@@ -1,0 +1,35 @@
+<form role="form" class="form-horizontal" id="account-form" method="post">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="form-group">
+                <label for="first_name"><%= Lang.account_first_name %></label>
+                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="<%= Lang.account_first_name %>">
+            </div>
+
+            <div class="form-group">
+                <label for="last_name"><%= Lang.account_last_name %></label>
+                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="<%= Lang.account_last_name %>">
+            </div>
+
+            <div class="form-group">
+                <label for="email"><%= Lang.account_email%></label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="<%= Lang.account_email%>">
+            </div>
+
+            <div class="form-group">
+                <label for="password"><%= Lang.account_password %></label>
+                <input id="password" class="form-control" type="password" name="password" value="">
+            </div>
+
+            <div class="form-group">
+                <label for="password_confirm"><%= Lang.account_password_confirm %></label>
+                <input id="password_confirm" class="form-control" type="password" name="password_confirm" value="">
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary save"><%= Lang.account_add %></button>
+            </div>
+
+        </div>
+    </div>
+</form>

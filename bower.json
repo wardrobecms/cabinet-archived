@@ -1,0 +1,42 @@
+{
+  "name": "Wardrobe",
+  "version": "2.0.0",
+  "dependencies": {
+    "jquery": "~1.10",
+    "backbone": "latest",
+    "underscore": "latest",
+    "backbone.marionette": "latest",
+    "momentjs": "latest",
+    "dropzone": "latest",
+    "jstorage": "latest",
+    "js-md5": "latest",
+    "selectize": "~0.7.7",
+    "html5shiv": "~3.7.0",
+    "backbone.syphon": "~0.4.1",
+    "bootstrap": "~3.1.1",
+    "fontawesome": "~3.2.1"
+  },
+  "devDependencies": {},
+  "exportsOverride": {
+      "backbone.marionette": {
+          "js": "lib/backbone.marionette.js"
+      },
+      "selectize": {
+          "js": "dist/js/standalone/selectize.js"
+      },
+    "backbone.syphon": {
+      "js": "lib/backbone.syphon.js"
+    },
+    "dropzone": {
+      "js": "downloads/dropzone.js"
+    },
+    "bootstrap": {
+      "js": "dist/js/bootstrap.js",
+      "less": "less/**/*.less"
+    },
+    "fontawesome": {
+        "less": "less/**/*.less",
+        "font": "font/*"
+    }
+  }
+}

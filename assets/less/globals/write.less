@@ -1,0 +1,142 @@
+.content-area {
+  background: #fff;
+  padding: 0 5px 5px;
+  border: 1px solid @input-border;
+  border-radius: @input-border-radius;
+  .box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+  .transition(~"border-color ease-in-out .15s, box-shadow ease-in-out .15s");
+  .editor-toolbar:before {
+    background-color: #fff;
+  }
+}
+
+.filter {
+  text-align: center;
+  margin: 10px 0;
+  input {
+    text-align: left;
+    width: 150px;
+  }
+  select {
+    width: 125px;
+  }
+}
+#write {
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 700px;
+  .popover {
+    max-width: 376px;
+    form {
+      margin: 0;
+      padding: 10px 0;
+    }
+  }
+  .actions {
+    a.options {
+      color: #B5B5B5;
+      font-size: 21px;
+      &:hover {
+        color: #005580;
+        text-decoration: none;
+      }
+    }
+    .btn-group {
+      margin-right: 10px;
+    }
+  }
+  .field {
+    margin: 5px 0;
+  }
+  input#title {
+    font-size: 25px;
+    &::-webkit-input-placeholder {
+      height: 25px;
+      font-size: 25px;
+    }
+  }
+  .details .field {
+    &:before {
+      opacity: 0.6;
+      display: block;
+      content: ' ';
+      height: 1px;
+      background-color: #bdc3c7;
+      // background: -moz-linear-gradient(45deg, #f9f9f9, #bdc3c7, #f9f9f9);
+      // background: -webkit-linear-gradient(45deg, #f9f9f9, #bdc3c7, #f9f9f9);
+      // background: -ms-linear-gradient(45deg, #f9f9f9, #bdc3c7, #f9f9f9);
+      // background: linear-gradient(45deg, #f9f9f9, #bdc3c7, #f9f9f9);
+    }
+  }
+  .info {
+    margin-bottom: 10px;
+    input {
+      margin: 0 0 0 10px;
+    }
+    i {
+      color: #ccc;
+      // float: left;
+      margin-top: 16px;
+      // margin-right: 6px;
+      &.js-toggle {
+        margin-top: 23px;
+      }
+    }
+  }
+  .content-area {
+    position: relative;
+  }
+  .author {
+    select {
+      margin-top: 11px;
+      margin-left: 5px;
+    }
+  }
+  label.radio {
+    display: inline-block;
+    color: #999999;
+    padding: 8px 0 0 0;
+    margin-top: 4px;
+    input {
+      padding: 0;
+      margin: 5px;
+    }
+  }
+}
+
+.editor-toolbar {
+  margin-bottom: 10px;
+  // text-align: center;
+}
+
+#write .info input,
+#write .info textarea {
+  padding: 14px 3px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  margin: 0;
+  &:focus {
+    outline: none;
+    box-shadow: none;
+    color: #111;
+  }
+}
+
+.qtip {
+  max-width: none !important;
+  .qtip-close {
+    display: none !important;
+  }
+}
+.CodeMirror pre {
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.3em;
+}
+
+#write .info textarea {
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.3em;
+}

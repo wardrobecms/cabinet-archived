@@ -1,6 +1,6 @@
 <?php namespace Wardrobe\Cabinet\Entities;
 
-class Tag extends Entity {
+class Tag extends \Eloquent {
 
 	/**
 	 * The table associated with the model.
@@ -30,7 +30,7 @@ class Tag extends Entity {
 	 */
 	public function posts()
 	{
-		return $this->belongsTo('Post');
+		return $this->belongsTo('Wardrobe\Cabinet\Entities\Post');
 	}
 
 }

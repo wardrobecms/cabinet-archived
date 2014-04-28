@@ -1,8 +1,6 @@
 <?php namespace Wardrobe\Cabinet\Controllers\Api;
 
-use Wardrobe\Cabinet\Controllers\BaseController;
-
-use Input, Response;
+use Auth, Input, Response;
 use Carbon\Carbon;
 use Wardrobe\Cabinet\Repositories\PostRepositoryInterface;
 
@@ -28,7 +26,7 @@ class PostController extends BaseController {
 
 		$this->posts = $posts;
 
-//		$this->beforeFilter('wardrobe.auth');
+		$this->beforeFilter('wardrobe.auth');
 	}
 
 	/**
@@ -57,15 +55,16 @@ class PostController extends BaseController {
 
 		$date = (Input::get('publish_date') == "") ? "Now" : Input::get('publish_date');
 
-		$post = $this->posts->create(
-			Input::get('title'),
-			Input::get('content'),
-			Input::get('slug'),
-			explode(',', Input::get('tags')),
-			(bool) Input::get('active'),
-			Input::get('user_id', $this->auth->user()->id),
-			Carbon::createFromTimestamp(strtotime($date))
-		);
+		$post = $this->posts->create([
+			'title' => Input::get('title'),
+			'content' => Input::get('content'),
+			'slug' => Input::get('slug'),
+			'link_url' => Input::get('link_url'),
+			'tags' => explode(',', Input::get('tags')),
+			'active' => (bool) Input::get('active'),
+			'user_id' => Input::get('user_id', Auth::user()->id),
+			'publish_date' => Carbon::createFromTimestamp(strtotime($date))
+		]);
 
 		return (string) $this->posts->find($post->id);
 	}
@@ -107,16 +106,19 @@ class PostController extends BaseController {
 			return Response::json($messages->all(), 400);
 		}
 
-		$post = $this->posts->update(
-			$id,
-			Input::get('title'),
-			Input::get('content'),
-			Input::get('slug'),
-			explode(',', Input::get('tags')),
-			(bool) Input::get('active'),
-			(int) Input::get('user_id'),
-			Carbon::createFromTimestamp(strtotime(Input::get('publish_date')))
-		);
+		$date = (Input::get('publish_date') == "") ? "Now" : Input::get('publish_date');
+
+		$this->posts->update([
+			'id' => $id,
+			'title' => Input::get('title'),
+			'content' => Input::get('content'),
+			'slug' => Input::get('slug'),
+			'link_url' => Input::get('link_url'),
+			'tags' => explode(',', Input::get('tags')),
+			'active' => (bool) Input::get('active'),
+			'user_id' => Input::get('user_id', Auth::user()->id),
+			'publish_date' => Carbon::createFromTimestamp(strtotime($date)),
+		]);
 
 		return (string) $this->posts->find($id);
 	}
