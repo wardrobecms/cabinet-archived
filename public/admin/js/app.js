@@ -1950,7 +1950,7 @@ this.Wardrobe.module("PostApp.List", function(List, App, Backbone, Marionette, $
         };
       } else if (this.model.get("active") === "1") {
         return {
-          "class": "post-item active post-" + this.model.id
+          "class": "post-item published post-" + this.model.id
         };
       } else {
         return {
