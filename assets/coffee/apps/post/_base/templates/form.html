@@ -1,65 +1,75 @@
 <form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">
-  <input type="hidden" name="publish_date" id="publish_date" value="">
-  <input type="hidden" name="active" id="active" class="js-active" value="1">
+    <input type="hidden" name="publish_date" id="publish_date" value="">
+    <input type="hidden" name="active" id="active" class="js-active" value="1">
 
-  <div class="field pull-right" style="margin-top: -20px;">
-    <div class="btn-group pull-right">
-      <button class="btn btn-sm btn-primary publish"><%= submitBtnText() %></button>
-      <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
-        <span class="caret"></span>
-        <span class="sr-only">Toggle Dropdown</span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><a href="#" class="js-status" data-action="publish"><%= Lang.post_publish %></a></li>
-        <li><a href="#" class="js-status" data-action="draft"><%= Lang.post_save %></a></li>
-        <li class="divider"></li>
-        <li><a href="<%= previewUrl() %>" target="_blank" class="preview"><%= Lang.post_preview %> <i class="icon-external-link"></i></a></li>
-      </ul>
-    </div>
-  </div>
+    <div class="row">
+        <div class="col-md-10">
+            <div class="form-group">
+                <label for="title"><%= Lang.post_title %></label>
+                <input type="text" class="form-control input-lg" name="title" id="title" placeholder="<%= Lang.post_title %>">
+            </div>
+            <div class="form-group">
+                <label for="slug"><%= Lang.post_slug %></label>
+                <input type="text" name="slug" id="slug" class="form-control" placeholder="<%= Lang.post_slug %>">
+            </div>
+            <div class="form-group author">
+                <label for="js-user"><%= Lang.post_author %></label>
+                <select id="js-user" class="form-control" name="user_id"></select>
+            </div>
+            <div class="form-group">
+                <label for="date"><%= Lang.post_publish_date %></label>
+                <input type="text" name="date" class="form-control js-date" id="date" value="" placeholder="now">
+            </div>
+            <div class="form-group">
+                <label for="link_url"><%= Lang.post_link %></label>
+                <input type="text" id="link_url" name="link_url" class="form-control" value=""
+                       placeholder="<%= Lang.post_link %>">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="field" style="margin-bottom: 20px">
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-primary publish"><%= submitBtnText() %></button>
+                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#" class="js-status" data-action="publish"><%= Lang.post_publish %></a></li>
+                        <li><a href="#" class="js-status" data-action="draft"><%= Lang.post_save %></a></li>
+                        <li class="divider"></li>
+                        <li><a href="<%= previewUrl() %>" target="_blank" class="preview"><%= Lang.post_preview %> <i class="icon-external-link"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="dropzone">Leader Image</label>
+                <input type="hidden" name="image" id="image">
 
-  <div class="form-group">
-    <label for="title"><%= Lang.post_title %></label>
-    <input type="text" class="form-control input-lg" name="title" id="title" placeholder="<%= Lang.post_title %>">
-  </div>
-  <div class="form-group">
-    <label for="slug"><%= Lang.post_slug %></label>
-    <input type="text" name="slug" id="slug" class="form-control" placeholder="<%= Lang.post_slug %>">
-  </div>
-  <div class="form-group author">
-    <label for="js-user"><%= Lang.post_author %></label>
-    <select id="js-user" class="form-control" name="user_id"></select>
-  </div>
-  <div class="form-group">
-    <label for="date"><%= Lang.post_publish_date %></label>
-    <input type="text" name="date" class="form-control js-date" id="date" value="" placeholder="now">
-  </div>
-  <div class="form-group">
-    <label for="link_url"><%= Lang.post_link %></label>
-    <input type="text" id="link_url" name="link_url" class="form-control" value="" placeholder="<%= Lang.post_link %>">
-  </div>
-    <div class="form-group">
-        <label for="dropzone">Leader Image</label>
-        <input type="hidden" name="image" id="image">
-        <div class="dropzone clickable inline" id="dropzone-attachment">
-            <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>
+                <div class="dropzone clickable inline" id="dropzone-attachment">
+                    <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>
+                </div>
+            </div>
+
         </div>
     </div>
-  <div class="form-group">
-      <label for="content"><%= Lang.post_content %></label>
-  </div>
-  <div class="content-area">
 
-    <textarea name="content" id="content" placeholder="<%= Lang.post_content %>"></textarea>
-      <input type="text" id="js-tags" name="tags" class="tags" style="width: 80%" value="" placeholder="<%= Lang.post_tags %>">
-  </div>
+    <div class="form-group">
+        <label for="content"><%= Lang.post_content %></label>
+    </div>
+
+    <div class="content-area">
+        <textarea name="content" id="content" placeholder="<%= Lang.post_content %>"></textarea>
+        <input type="text" id="js-tags" name="tags" class="tags" style="width: 80%" value="" placeholder="<%= Lang.post_tags %>">
+    </div>
 </form>
 
 <div id="film-form" style="display: none">
-  <form class="form-inline">
-    <label for="date">Video URL</label><br>
-    <input type="text" name="date" class="form-control js-film" id="film" value="" placeholder="http://youtube.com/">
-    <button class="btn btn-default js-submitfilm btn-sm"><%= Lang.post_publish_date_set %></button>
-  </form>
+    <form class="form-inline">
+        <label for="date">Video URL</label><br>
+        <input type="text" name="date" class="form-control js-film" id="film" value=""
+               placeholder="http://youtube.com/">
+        <button class="btn btn-default js-submitfilm btn-sm"><%= Lang.post_publish_date_set %></button>
+    </form>
 </div>
 

@@ -113,41 +113,41 @@ this["JST"]["post/_base/templates/form.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">\n  <input type="hidden" name="publish_date" id="publish_date" value="">\n  <input type="hidden" name="active" id="active" class="js-active" value="1">\n\n  <div class="field pull-right" style="margin-top: -20px;">\n    <div class="btn-group pull-right">\n      <button class="btn btn-sm btn-primary publish">' +
+__p += '<form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">\n    <input type="hidden" name="publish_date" id="publish_date" value="">\n    <input type="hidden" name="active" id="active" class="js-active" value="1">\n\n    <div class="row">\n        <div class="col-md-10">\n            <div class="form-group">\n                <label for="title">' +
+((__t = ( Lang.post_title )) == null ? '' : __t) +
+'</label>\n                <input type="text" class="form-control input-lg" name="title" id="title" placeholder="' +
+((__t = ( Lang.post_title )) == null ? '' : __t) +
+'">\n            </div>\n            <div class="form-group">\n                <label for="slug">' +
+((__t = ( Lang.post_slug )) == null ? '' : __t) +
+'</label>\n                <input type="text" name="slug" id="slug" class="form-control" placeholder="' +
+((__t = ( Lang.post_slug )) == null ? '' : __t) +
+'">\n            </div>\n            <div class="form-group author">\n                <label for="js-user">' +
+((__t = ( Lang.post_author )) == null ? '' : __t) +
+'</label>\n                <select id="js-user" class="form-control" name="user_id"></select>\n            </div>\n            <div class="form-group">\n                <label for="date">' +
+((__t = ( Lang.post_publish_date )) == null ? '' : __t) +
+'</label>\n                <input type="text" name="date" class="form-control js-date" id="date" value="" placeholder="now">\n            </div>\n            <div class="form-group">\n                <label for="link_url">' +
+((__t = ( Lang.post_link )) == null ? '' : __t) +
+'</label>\n                <input type="text" id="link_url" name="link_url" class="form-control" value=""\n                       placeholder="' +
+((__t = ( Lang.post_link )) == null ? '' : __t) +
+'">\n            </div>\n        </div>\n        <div class="col-md-2">\n            <div class="field" style="margin-bottom: 20px">\n                <div class="btn-group">\n                    <button class="btn btn-sm btn-primary publish">' +
 ((__t = ( submitBtnText() )) == null ? '' : __t) +
-'</button>\n      <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">\n        <span class="caret"></span>\n        <span class="sr-only">Toggle Dropdown</span>\n      </button>\n      <ul class="dropdown-menu" role="menu">\n        <li><a href="#" class="js-status" data-action="publish">' +
+'</button>\n                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">\n                        <span class="caret"></span>\n                        <span class="sr-only">Toggle Dropdown</span>\n                    </button>\n                    <ul class="dropdown-menu" role="menu">\n                        <li><a href="#" class="js-status" data-action="publish">' +
 ((__t = ( Lang.post_publish )) == null ? '' : __t) +
-'</a></li>\n        <li><a href="#" class="js-status" data-action="draft">' +
+'</a></li>\n                        <li><a href="#" class="js-status" data-action="draft">' +
 ((__t = ( Lang.post_save )) == null ? '' : __t) +
-'</a></li>\n        <li class="divider"></li>\n        <li><a href="' +
+'</a></li>\n                        <li class="divider"></li>\n                        <li><a href="' +
 ((__t = ( previewUrl() )) == null ? '' : __t) +
 '" target="_blank" class="preview">' +
 ((__t = ( Lang.post_preview )) == null ? '' : __t) +
-' <i class="icon-external-link"></i></a></li>\n      </ul>\n    </div>\n  </div>\n\n  <div class="form-group">\n    <label for="title">' +
-((__t = ( Lang.post_title )) == null ? '' : __t) +
-'</label>\n    <input type="text" class="form-control input-lg" name="title" id="title" placeholder="' +
-((__t = ( Lang.post_title )) == null ? '' : __t) +
-'">\n  </div>\n  <div class="form-group">\n    <label for="slug">' +
-((__t = ( Lang.post_slug )) == null ? '' : __t) +
-'</label>\n    <input type="text" name="slug" id="slug" class="form-control" placeholder="' +
-((__t = ( Lang.post_slug )) == null ? '' : __t) +
-'">\n  </div>\n  <div class="form-group author">\n    <label for="js-user">' +
-((__t = ( Lang.post_author )) == null ? '' : __t) +
-'</label>\n    <select id="js-user" class="form-control" name="user_id"></select>\n  </div>\n  <div class="form-group">\n    <label for="date">' +
-((__t = ( Lang.post_publish_date )) == null ? '' : __t) +
-'</label>\n    <input type="text" name="date" class="form-control js-date" id="date" value="" placeholder="now">\n  </div>\n  <div class="form-group">\n    <label for="link_url">' +
-((__t = ( Lang.post_link )) == null ? '' : __t) +
-'</label>\n    <input type="text" id="link_url" name="link_url" class="form-control" value="" placeholder="' +
-((__t = ( Lang.post_link )) == null ? '' : __t) +
-'">\n  </div>\n    <div class="form-group">\n        <label for="dropzone">Leader Image</label>\n        <input type="hidden" name="image" id="image">\n        <div class="dropzone clickable inline" id="dropzone-attachment">\n            <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>\n        </div>\n    </div>\n  <div class="form-group">\n      <label for="content">' +
+' <i class="icon-external-link"></i></a></li>\n                    </ul>\n                </div>\n            </div>\n            <div class="form-group">\n                <label for="dropzone">Leader Image</label>\n                <input type="hidden" name="image" id="image">\n\n                <div class="dropzone clickable inline" id="dropzone-attachment">\n                    <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>\n                </div>\n            </div>\n\n        </div>\n    </div>\n\n    <div class="form-group">\n        <label for="content">' +
 ((__t = ( Lang.post_content )) == null ? '' : __t) +
-'</label>\n  </div>\n  <div class="content-area">\n\n    <textarea name="content" id="content" placeholder="' +
+'</label>\n    </div>\n\n    <div class="content-area">\n        <textarea name="content" id="content" placeholder="' +
 ((__t = ( Lang.post_content )) == null ? '' : __t) +
-'"></textarea>\n      <input type="text" id="js-tags" name="tags" class="tags" style="width: 80%" value="" placeholder="' +
+'"></textarea>\n        <input type="text" id="js-tags" name="tags" class="tags" style="width: 80%" value="" placeholder="' +
 ((__t = ( Lang.post_tags )) == null ? '' : __t) +
-'">\n  </div>\n</form>\n\n<div id="film-form" style="display: none">\n  <form class="form-inline">\n    <label for="date">Video URL</label><br>\n    <input type="text" name="date" class="form-control js-film" id="film" value="" placeholder="http://youtube.com/">\n    <button class="btn btn-default js-submitfilm btn-sm">' +
+'">\n    </div>\n</form>\n\n<div id="film-form" style="display: none">\n    <form class="form-inline">\n        <label for="date">Video URL</label><br>\n        <input type="text" name="date" class="form-control js-film" id="film" value=""\n               placeholder="http://youtube.com/">\n        <button class="btn btn-default js-submitfilm btn-sm">' +
 ((__t = ( Lang.post_publish_date_set )) == null ? '' : __t) +
-'</button>\n  </form>\n</div>\n\n';
+'</button>\n    </form>\n</div>\n\n';
 
 }
 return __p
@@ -1322,7 +1322,6 @@ this.Wardrobe.module("DropzoneApp", function(DropzoneApp, App, Backbone, Marione
         return $("#js-alert").showAlert("Error!", message, "alert-danger");
       });
       myDropzone.on("success", function(file, contents) {
-        debugger;
         return $("#image").val(file.name);
       });
       if (defaultImg) {
