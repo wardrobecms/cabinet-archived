@@ -1,5 +1,4 @@
 <form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">
-    <input type="hidden" name="publish_date" id="publish_date" value="">
     <input type="hidden" name="active" id="active" class="js-active" value="1">
 
     <div class="row">
@@ -17,8 +16,8 @@
                 <select id="js-user" class="form-control" name="user_id"></select>
             </div>
             <div class="form-group">
-                <label for="date"><%= Lang.post_publish_date %></label>
-                <input type="text" name="date" class="form-control js-date" id="date" value="" placeholder="now">
+                <label for="publish_date"><%= Lang.post_publish_date %></label>
+                <input type="text" name="date" class="form-control js-date" id="publish_date" value="" placeholder="now">
             </div>
             <div class="form-group">
                 <label for="link_url"><%= Lang.post_link %></label>

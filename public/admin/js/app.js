@@ -113,7 +113,7 @@ this["JST"]["post/_base/templates/form.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">\n    <input type="hidden" name="publish_date" id="publish_date" value="">\n    <input type="hidden" name="active" id="active" class="js-active" value="1">\n\n    <div class="row">\n        <div class="col-md-10">\n            <div class="form-group">\n                <label for="title">' +
+__p += '<form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">\n    <input type="hidden" name="active" id="active" class="js-active" value="1">\n\n    <div class="row">\n        <div class="col-md-10">\n            <div class="form-group">\n                <label for="title">' +
 ((__t = ( Lang.post_title )) == null ? '' : __t) +
 '</label>\n                <input type="text" class="form-control input-lg" name="title" id="title" placeholder="' +
 ((__t = ( Lang.post_title )) == null ? '' : __t) +
@@ -123,9 +123,9 @@ __p += '<form role="form" class="post" id="post-form" method="post" action="/war
 ((__t = ( Lang.post_slug )) == null ? '' : __t) +
 '">\n            </div>\n            <div class="form-group author">\n                <label for="js-user">' +
 ((__t = ( Lang.post_author )) == null ? '' : __t) +
-'</label>\n                <select id="js-user" class="form-control" name="user_id"></select>\n            </div>\n            <div class="form-group">\n                <label for="date">' +
+'</label>\n                <select id="js-user" class="form-control" name="user_id"></select>\n            </div>\n            <div class="form-group">\n                <label for="publish_date">' +
 ((__t = ( Lang.post_publish_date )) == null ? '' : __t) +
-'</label>\n                <input type="text" name="date" class="form-control js-date" id="date" value="" placeholder="now">\n            </div>\n            <div class="form-group">\n                <label for="link_url">' +
+'</label>\n                <input type="text" name="date" class="form-control js-date" id="publish_date" value="" placeholder="now">\n            </div>\n            <div class="form-group">\n                <label for="link_url">' +
 ((__t = ( Lang.post_link )) == null ? '' : __t) +
 '</label>\n                <input type="text" id="link_url" name="link_url" class="form-control" value=""\n                       placeholder="' +
 ((__t = ( Lang.post_link )) == null ? '' : __t) +
@@ -1317,6 +1317,9 @@ this.Wardrobe.module("DropzoneApp", function(DropzoneApp, App, Backbone, Marione
       });
       myDropzone.on("maxfilesexceeded", function(file) {
         return this.removeFile(file);
+      });
+      myDropzone.on("removedfile", function(file) {
+        return $("#image").val("");
       });
       myDropzone.on("error", function(file, message, xhr) {
         return $("#js-alert").showAlert("Error!", message, "alert-danger");

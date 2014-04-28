@@ -15,6 +15,9 @@
       myDropzone.on "maxfilesexceeded", (file) ->
         @removeFile file
 
+      myDropzone.on "removedfile", (file) ->
+        $("#image").val ""
+
       # Show any errors if the file upload fails.
       myDropzone.on "error", (file, message, xhr) ->
         $("#js-alert").showAlert "Error!", message, "alert-danger"
