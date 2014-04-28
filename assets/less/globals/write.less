@@ -1,4 +1,5 @@
 .content-area {
+  position: relative;
   background: #fff;
   padding: 0 5px 5px;
   border: 1px solid @input-border;
@@ -7,6 +8,15 @@
   .transition(~"border-color ease-in-out .15s, box-shadow ease-in-out .15s");
   .editor-toolbar:before {
     background-color: #fff;
+  }
+  .editor-statusbar {
+    padding: 15px 10px;
+  }
+  .selectize-control {
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+
   }
 }
 
@@ -82,9 +92,6 @@
         margin-top: 23px;
       }
     }
-  }
-  .content-area {
-    position: relative;
   }
   .author {
     select {

@@ -25,13 +25,6 @@
       "keyup #title" : "localStorage"
       "change #js-user" : "localStorage"
 
-    insertReadMore: ->
-      if @editor.codemirror.getValue().match /!-- more/g
-        @$("#js-errors").show().find("span").html Lang.post_more_added
-      else
-        @$(".icon-ellipsis-horizontal").addClass("disabled")
-        @insert '<!-- more -->'
-
     # When the model changes it's private _errors method call the changeErrors method.
     modelEvents:
       "change:_errors"  : "changeErrors"
@@ -61,6 +54,8 @@
       # Fetch the tags and setup the selectize plugin.
       App.request "tag:entities", (tags) =>
         @setUpTags tags
+
+      App.vent.trigger "setup:dropzone", "#dropzone-attachment", @model.get("image")
 
     _triggerActive: ->
       return @ if @model.isNew()
@@ -98,6 +93,7 @@
       @storage.put
         title: @$('#title').val()
         slug: @$('#slug').val()
+        image: @$('#image').val()
         active: @$('input[type=radio]:checked').val()
         content: @editor.codemirror.getValue()
         tags: @$("#js-tags").val()
@@ -108,6 +104,7 @@
     setupUsers: ->
       $userSelect = @$("#js-user")
       users = App.request "get:all:users"
+      @$(".author").remove() if users.length is 1
       users.each (item) ->
         $userSelect.append $("<option></option>").val(item.id).html(item.get("first_name") + " " + item.get("last_name"))
 
@@ -211,6 +208,13 @@
       filmIframe = '<iframe src="' + filmUrl + '?title=0&amp;byline=0&amp;portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>'
       @insert filmIframe
 
+    insertReadMore: ->
+      if @editor.codemirror.getValue().match /!-- more/g
+        @$("#js-errors").show().find("span").html Lang.post_more_added
+      else
+        @$(".icon-ellipsis-horizontal").addClass("disabled")
+        @insert '<!-- more -->'
+
     insert: (string) ->
       @editor.codemirror.replaceSelection string
 
@@ -224,6 +228,7 @@
         active: @$('#active').val()
         content: @editor.codemirror.getValue()
         tags: @$("#js-tags").val()
+        image: @$("#image").val()
         link_url: @$("#link_url").val()
         user_id: @$("#js-user").val()
         publish_date: @$("#publish_date").val()

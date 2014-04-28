@@ -1,8 +1,7 @@
 <?php namespace Wardrobe\Cabinet\Controllers\Api;
 
 use Controller;
-use Input, Config, Response, Exception, File;
-use Symfony\Component\Yaml\Parser;
+use Input, Config, Response, File;
 use Intervention\Image\Image;
 
 class DropzoneController extends Controller {
@@ -18,41 +17,25 @@ class DropzoneController extends Controller {
 	}
 
 	/**
-	 * Display a listing of the resource.
+	 * Upload a big post image
 	 *
-	 * @throws Exception
-	 * @return Response
+	 * @return mixed
 	 */
-	public function postIndex()
+	public function postLeader()
 	{
-		if ( ! Input::hasFile('file'))
+		$file = Input::file('file');
+		$imageDir = Config::get('wardrobe.image_dir', 'img');
+		$destinationPath = public_path(). "/" . $imageDir ."/";
+		$filename = $file->getClientOriginalName();
+
+		$file->move($destinationPath, $filename);
+
+		if (File::exists($destinationPath.$filename))
 		{
-			return Response::json(array('error' => 'File is required'), 400);
+			return Response::json(['filename' => "/{$imageDir}/".$filename]);
 		}
 
-		$contents = trim(File::get(Input::file('file')->getRealPath()));
-
-		if (substr($contents, 0, 3) !== '---')
-		{
-			throw new Exception('Bad Markdown Formatting');
-		}
-
-		if ( ! ($pos = strpos($contents, '---', 3)))
-		{
-			throw new Exception('Bad Markdown Formatting');
-		}
-
-		$frontMatter = trim(substr($contents, 3, $pos - 3));
-		$contents = trim(substr($contents, $pos + 3));
-
-		$yaml = new Parser();
-
-		$fields = $yaml->parse($frontMatter);
-
-		return Response::json(array(
-			'fields' => $fields,
-			'content' => $contents
-		));
+		return Response::json(array('error' => 'Upload failed. Please ensure your public/'.$imageDir.' directory is writable.'));
 	}
 
 	/**

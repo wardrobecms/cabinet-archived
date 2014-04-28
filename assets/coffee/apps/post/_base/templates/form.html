@@ -35,15 +35,23 @@
     <input type="text" name="date" class="form-control js-date" id="date" value="" placeholder="now">
   </div>
   <div class="form-group">
-    <label for="tags"><%= Lang.post_tags %></label>
-    <input type="text" id="js-tags" name="tags" class="tags" style="width: 100%" value="" placeholder="<%= Lang.post_tags %>">
-  </div>
-  <div class="form-group">
     <label for="link_url"><%= Lang.post_link %></label>
     <input type="text" id="link_url" name="link_url" class="form-control" value="" placeholder="<%= Lang.post_link %>">
   </div>
+    <div class="form-group">
+        <label for="dropzone">Leader Image</label>
+        <input type="hidden" name="image" id="image">
+        <div class="dropzone clickable inline" id="dropzone-attachment">
+            <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>
+        </div>
+    </div>
+  <div class="form-group">
+      <label for="content"><%= Lang.post_content %></label>
+  </div>
   <div class="content-area">
+
     <textarea name="content" id="content" placeholder="<%= Lang.post_content %>"></textarea>
+      <input type="text" id="js-tags" name="tags" class="tags" style="width: 80%" value="" placeholder="<%= Lang.post_tags %>">
   </div>
 </form>
 

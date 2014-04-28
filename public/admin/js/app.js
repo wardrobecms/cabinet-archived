@@ -135,17 +135,17 @@ __p += '<form role="form" class="post" id="post-form" method="post" action="/war
 ((__t = ( Lang.post_author )) == null ? '' : __t) +
 '</label>\n    <select id="js-user" class="form-control" name="user_id"></select>\n  </div>\n  <div class="form-group">\n    <label for="date">' +
 ((__t = ( Lang.post_publish_date )) == null ? '' : __t) +
-'</label>\n    <input type="text" name="date" class="form-control js-date" id="date" value="" placeholder="now">\n  </div>\n  <div class="form-group">\n    <label for="tags">' +
-((__t = ( Lang.post_tags )) == null ? '' : __t) +
-'</label>\n    <input type="text" id="js-tags" name="tags" class="tags" style="width: 100%" value="" placeholder="' +
-((__t = ( Lang.post_tags )) == null ? '' : __t) +
-'">\n  </div>\n  <div class="form-group">\n    <label for="link_url">' +
+'</label>\n    <input type="text" name="date" class="form-control js-date" id="date" value="" placeholder="now">\n  </div>\n  <div class="form-group">\n    <label for="link_url">' +
 ((__t = ( Lang.post_link )) == null ? '' : __t) +
 '</label>\n    <input type="text" id="link_url" name="link_url" class="form-control" value="" placeholder="' +
 ((__t = ( Lang.post_link )) == null ? '' : __t) +
-'">\n  </div>\n  <div class="content-area">\n    <textarea name="content" id="content" placeholder="' +
+'">\n  </div>\n    <div class="form-group">\n        <label for="dropzone">Leader Image</label>\n        <input type="hidden" name="image" id="image">\n        <div class="dropzone clickable inline" id="dropzone-attachment">\n            <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>\n        </div>\n    </div>\n  <div class="form-group">\n      <label for="content">' +
 ((__t = ( Lang.post_content )) == null ? '' : __t) +
-'"></textarea>\n  </div>\n</form>\n\n<div id="film-form" style="display: none">\n  <form class="form-inline">\n    <label for="date">Video URL</label><br>\n    <input type="text" name="date" class="form-control js-film" id="film" value="" placeholder="http://youtube.com/">\n    <button class="btn btn-default js-submitfilm btn-sm">' +
+'</label>\n  </div>\n  <div class="content-area">\n\n    <textarea name="content" id="content" placeholder="' +
+((__t = ( Lang.post_content )) == null ? '' : __t) +
+'"></textarea>\n      <input type="text" id="js-tags" name="tags" class="tags" style="width: 80%" value="" placeholder="' +
+((__t = ( Lang.post_tags )) == null ? '' : __t) +
+'">\n  </div>\n</form>\n\n<div id="film-form" style="display: none">\n  <form class="form-inline">\n    <label for="date">Video URL</label><br>\n    <input type="text" name="date" class="form-control js-film" id="film" value="" placeholder="http://youtube.com/">\n    <button class="btn btn-default js-submitfilm btn-sm">' +
 ((__t = ( Lang.post_publish_date_set )) == null ? '' : __t) +
 '</button>\n  </form>\n</div>\n\n';
 
@@ -1301,29 +1301,43 @@ this.Wardrobe.module("AccountApp.New", function(New, App, Backbone, Marionette, 
 
 this.Wardrobe.module("DropzoneApp", function(DropzoneApp, App, Backbone, Marionette, $, _) {
   var API;
+  Dropzone.autoDiscover = false;
   API = {
-    setupDropzone: function() {
-      var myDropzone;
-      myDropzone = new Dropzone(document.body, {
-        url: App.request("get:url:api") + "/dropzone",
+    setupDropzone: function(el, defaultImg) {
+      var mockFile, myDropzone;
+      if (defaultImg == null) {
+        defaultImg = null;
+      }
+      myDropzone = new Dropzone(el, {
+        url: App.request("get:url:api") + "/dropzone/leader",
         method: "POST",
-        clickable: false
+        addRemoveLinks: true,
+        maxFiles: 1,
+        acceptedFiles: "image/*"
       });
-      myDropzone.on("drop", function(file) {
-        return App.vent.trigger("post:new");
+      myDropzone.on("maxfilesexceeded", function(file) {
+        return this.removeFile(file);
       });
       myDropzone.on("error", function(file, message, xhr) {
-        var msg;
-        msg = $.parseJSON(message);
-        return $("#js-alert").showAlert("Error!", msg.error.message, "alert-error");
+        return $("#js-alert").showAlert("Error!", message, "alert-danger");
       });
-      return myDropzone.on("success", function(file, contents) {
-        return App.vent.trigger("post:new:seed", contents);
+      myDropzone.on("success", function(file, contents) {
+        debugger;
+        return $("#image").val(file.name);
       });
+      if (defaultImg) {
+        mockFile = {
+          name: "Filename",
+          size: 12345
+        };
+        myDropzone.emit("addedfile", mockFile);
+        myDropzone.emit("thumbnail", mockFile, "/img/" + defaultImg);
+        return myDropzone.options.maxFiles = 0;
+      }
     }
   };
-  return DropzoneApp.on("start", function() {
-    return API.setupDropzone();
+  return App.vent.on("setup:dropzone", function(el, defaultImg) {
+    return API.setupDropzone(el, defaultImg);
   });
 });
 
@@ -1455,15 +1469,6 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
       "change #js-user": "localStorage"
     };
 
-    PostView.prototype.insertReadMore = function() {
-      if (this.editor.codemirror.getValue().match(/!-- more/g)) {
-        return this.$("#js-errors").show().find("span").html(Lang.post_more_added);
-      } else {
-        this.$(".icon-ellipsis-horizontal").addClass("disabled");
-        return this.insert('<!-- more -->');
-      }
-    };
-
     PostView.prototype.modelEvents = {
       "change:_errors": "changeErrors"
     };
@@ -1495,11 +1500,12 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
           output: "#slug"
         });
       }
-      return App.request("tag:entities", (function(_this) {
+      App.request("tag:entities", (function(_this) {
         return function(tags) {
           return _this.setUpTags(tags);
         };
       })(this));
+      return App.vent.trigger("setup:dropzone", "#dropzone-attachment", this.model.get("image"));
     };
 
     PostView.prototype._triggerActive = function() {
@@ -1532,6 +1538,7 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
       return this.storage.put({
         title: this.$('#title').val(),
         slug: this.$('#slug').val(),
+        image: this.$('#image').val(),
         active: this.$('input[type=radio]:checked').val(),
         content: this.editor.codemirror.getValue(),
         tags: this.$("#js-tags").val(),
@@ -1544,6 +1551,9 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
       var $userSelect, stored, user, users;
       $userSelect = this.$("#js-user");
       users = App.request("get:all:users");
+      if (users.length === 1) {
+        this.$(".author").remove();
+      }
       users.each(function(item) {
         return $userSelect.append($("<option></option>").val(item.id).html(item.get("first_name") + " " + item.get("last_name")));
       });
@@ -1694,6 +1704,15 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
       return this.insert(filmIframe);
     };
 
+    PostView.prototype.insertReadMore = function() {
+      if (this.editor.codemirror.getValue().match(/!-- more/g)) {
+        return this.$("#js-errors").show().find("span").html(Lang.post_more_added);
+      } else {
+        this.$(".icon-ellipsis-horizontal").addClass("disabled");
+        return this.insert('<!-- more -->');
+      }
+    };
+
     PostView.prototype.insert = function(string) {
       return this.editor.codemirror.replaceSelection(string);
     };
@@ -1706,6 +1725,7 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
         active: this.$('#active').val(),
         content: this.editor.codemirror.getValue(),
         tags: this.$("#js-tags").val(),
+        image: this.$("#image").val(),
         link_url: this.$("#link_url").val(),
         user_id: this.$("#js-user").val(),
         publish_date: this.$("#publish_date").val()

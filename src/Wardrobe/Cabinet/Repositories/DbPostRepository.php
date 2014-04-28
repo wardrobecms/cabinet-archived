@@ -132,14 +132,7 @@ class DbPostRepository implements PostRepositoryInterface {
 	 */
 	public function create(array $data)
 	{
-		$post = $this->post->create([
-			'title'        => $data['title'],
-			'content'      => $data['content'],
-			'slug'         => $data['slug'],
-			'active'       => (int) $data['active'],
-			'user_id'      => $data['user_id'],
-			'publish_date' => $data['publish_date'],
-		]);
+		$post = $this->post->create($data);
 
 		$post->tags()->delete();
 
@@ -165,14 +158,7 @@ class DbPostRepository implements PostRepositoryInterface {
 			Cache::forget('post-'.$post->id);
 		}
 
-		$post->fill([
-			'title'        => $data['title'],
-			'content'      => $data['content'],
-			'slug'         => $data['slug'],
-			'active'       => $data['active'],
-			'user_id'      => $data['user_id'],
-			'publish_date' => $data['publish_date'],
-		])->save();
+		$post->fill($data)->save();
 
 		$post->tags()->delete();
 
