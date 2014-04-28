@@ -1,4 +1,4 @@
-@extends('core::admin.layout')
+@extends('cabinet::admin.layout')
 
 @section('title')
   Installer | Complete

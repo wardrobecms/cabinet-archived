@@ -1,7 +1,7 @@
-@extends('core::admin.layout')
+@extends('cabinet::admin.layout')
 
 @section('title')
-  Installer | Step 1
+  Installer | Config
 @stop
 
 @section('content')
@@ -15,31 +15,27 @@
       @endforeach
     </div>
     @endif
-    <form method="post" style="text-align: center;" action="{{ url('install/config') }}" class="form-horizontal">
+    <form method="post" action="{{ url('install/config') }}" class="form-horizontal">
       <p>Don't worry you can always change these later inside app/config/</p>
-      <div class="control-group">
+      <div class="form-group">
         <label class="control-label" for="title">Site Title</label>
         <div class="controls">
-          <input type="text" id="title" name="title" placeholder="Site Title" value="{{ (isset($old) ? $old->title : '') }}">
+          <input class="form-control" type="text" id="title" name="title" placeholder="Site Title" value="{{ (isset($old) ? $old->title : '') }}">
         </div>
       </div>
-      <div class="control-group">
+      <div class="form-group">
         <label class="control-label" for="theme">Site Theme</label>
-        <div class="controls">
-          <select name="theme">
+          <select name="theme" class="form-control">
             <option value="default">default</option>
             <option value="blocky">blocky</option>
             <option value="simple">simple</option>
           </select>
-        </div>
       </div>
-      <div class="control-group">
+      <div class="form-group">
         <label class="control-label" for="per_page">Posts Per Page</label>
-        <div class="controls">
-          <input type="number" name="per_page" value="5">
-        </div>
+        <input class="form-control" type="number" name="per_page" value="5">
       </div>
-      <button style="text-align: center;" type="submit" class="btn save">Save</button>
+      <button style="text-align: center;" type="submit" class="btn btn-primary save">Save</button>
     </form>
   </div>
 @stop

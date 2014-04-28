@@ -1,4 +1,4 @@
-@extends('core::admin.layout')
+@extends('cabinet::admin.layout')
 
 @section('title')
   Installer | Step 1
@@ -16,7 +16,7 @@
     </div>
     @endif
     <form method="post" style="text-align: center;" action="{{ url('install') }}" class="form-horizontal">
-      <button style="text-align: center;" type="submit" class="btn save">Install Database &amp; Continue</button>
+      <button style="text-align: center;" type="submit" class="btn btn-primary save">Install Database &amp; Continue</button>
     </form>
   </div>
 @stop

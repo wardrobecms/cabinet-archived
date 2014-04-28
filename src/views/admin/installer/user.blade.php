@@ -1,4 +1,4 @@
-@extends('core::admin.layout')
+@extends('cabinet::admin.layout')
 
 @section('title')
   Installer | Step 2
@@ -22,33 +22,33 @@
           <span></span>
         </div>
       </div>
-      <div class="control-group">
+      <div class="form-group">
         <label class="control-label" for="first_name">First Name</label>
         <div class="controls">
-          <input type="text" id="first_name" name="first_name" placeholder="First Name" value="{{ (isset($old) ? $old->first_name : '') }}">
+          <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name" value="{{ (isset($old) ? $old->first_name : '') }}">
         </div>
       </div>
-      <div class="control-group">
+      <div class="form-group">
         <label class="control-label" for="last_name">Last Name</label>
         <div class="controls">
-          <input type="text" id="last_name" name="last_name" placeholder="Last Name" value="{{ (isset($old) ? $old->last_name : '') }}">
+          <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name" value="{{ (isset($old) ? $old->last_name : '') }}">
         </div>
       </div>
-      <div class="control-group">
+      <div class="form-group">
         <label class="control-label" for="email">Email</label>
         <div class="controls">
-          <input type="text" id="email" name="email" placeholder="Email" value="{{ (isset($old) ? $old->email : '') }}">
+          <input type="text" class="form-control" id="email" name="email" placeholder="Email" value="{{ (isset($old) ? $old->email : '') }}">
         </div>
       </div>
-      <div class="control-group">
+      <div class="form-group">
         <label class="control-label" for="password">Password</label>
         <div class="controls">
-          <input id="password" type="password" name="password" value="">
+          <input id="password" class="form-control" type="password" name="password" value="">
         </div>
       </div>
-      <div class="control-group">
+      <div class="form-group">
         <div class="controls">
-          <button type="submit" class="btn save">Save</button>
+          <button type="submit" class="btn btn-primary save">Save</button>
         </div>
       </div>
     </form>
