@@ -39,6 +39,11 @@ class Post extends \Eloquent {
 		return $this->belongsTo('Wardrobe\Cabinet\Entities\User');
 	}
 
+	public function scopeActive($query)
+	{
+		return $query->where('active', 1)->where('publish_date', '<=', new Carbon);
+	}
+
 	/**
 	 * Get the content parsed into html
 	 *

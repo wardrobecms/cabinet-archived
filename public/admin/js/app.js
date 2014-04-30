@@ -113,7 +113,7 @@ this["JST"]["post/_base/templates/form.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">\n    <input type="hidden" name="active" id="active" class="js-active" value="1">\n\n    <div class="row">\n        <div class="col-md-10">\n            <div class="form-group">\n                <label for="title">' +
+__p += '<form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">\n    <input type="hidden" name="active" id="active" class="js-active" value="1">\n\n    <div class="btn-group" data-toggle="buttons">\n        <label class="btn btn-default">\n            <input type="radio" name="type" id="text" value="text"> <i class="icon-file-text"></i> Text\n        </label>\n        <label class="btn btn-default">\n            <input type="radio" name="type" id="photo" value="photo"> <i class="icon-picture"></i> Photo\n        </label>\n        <label class="btn btn-default">\n            <input type="radio" name="type" id="link" value="link"> <i class="icon-link"></i> Link\n        </label>\n        <label class="btn btn-default">\n            <input type="radio" name="type" id="quote" value="quote"> <i class="icon-quote-left"></i> Quote\n        </label>\n    </div>\n\n    <div class="row">\n        <div class="col-md-10">\n            <div class="form-group">\n                <label for="title">' +
 ((__t = ( Lang.post_title )) == null ? '' : __t) +
 '</label>\n                <input type="text" class="form-control input-lg" name="title" id="title" placeholder="' +
 ((__t = ( Lang.post_title )) == null ? '' : __t) +
@@ -1501,6 +1501,8 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
         $('#title').slugIt({
           output: "#slug"
         });
+      } else {
+        this.$("#" + (this.model.get("type"))).prop('checked', true).parent().addClass("active");
       }
       App.request("tag:entities", (function(_this) {
         return function(tags) {

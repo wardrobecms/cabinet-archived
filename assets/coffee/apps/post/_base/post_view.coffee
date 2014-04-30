@@ -50,6 +50,8 @@
         @$('.js-toggle').trigger "click"
         $('#title').slugIt
           output: "#slug"
+      else
+        @$("##{@model.get("type")}").prop('checked', true).parent().addClass("active")
 
       # Fetch the tags and setup the selectize plugin.
       App.request "tag:entities", (tags) =>

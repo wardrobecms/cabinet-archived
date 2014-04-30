@@ -1,6 +1,21 @@
 <form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">
     <input type="hidden" name="active" id="active" class="js-active" value="1">
 
+    <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-default">
+            <input type="radio" name="type" id="text" value="text"> <i class="icon-file-text"></i> Text
+        </label>
+        <label class="btn btn-default">
+            <input type="radio" name="type" id="photo" value="photo"> <i class="icon-picture"></i> Photo
+        </label>
+        <label class="btn btn-default">
+            <input type="radio" name="type" id="link" value="link"> <i class="icon-link"></i> Link
+        </label>
+        <label class="btn btn-default">
+            <input type="radio" name="type" id="quote" value="quote"> <i class="icon-quote-left"></i> Quote
+        </label>
+    </div>
+
     <div class="row">
         <div class="col-md-10">
             <div class="form-group">
