@@ -36,7 +36,7 @@ class LoginControllerTest extends TestCase {
 		$this->userRepositoryInterface
 			->shouldReceive('login')->once()->with($input['email'], $input['password'], $input['remember'])->andReturn(true);
 
-		Redirect::shouldReceive('intended')->once()->with('wardrobe.admin.index')->andReturn('wardrobe.admin.index');
+		Redirect::shouldReceive('route')->once()->with('wardrobe.admin.index')->andReturn('wardrobe.admin.index');
 
 		$response = $this->action('POST', self::$wardrobeControllers . 'LoginController@store', [], $input);
 
