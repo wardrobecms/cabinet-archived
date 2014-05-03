@@ -60,7 +60,7 @@ class PostController extends BaseController {
 			'content' => Input::get('content'),
 			'slug' => Input::get('slug'),
 			'link_url' => Input::get('link_url'),
-			'type' => Input::get('type'),
+			'type' => Input::get('type', 'text'),
 			'image' => Input::get('image'),
 			'tags' => explode(',', Input::get('tags')),
 			'active' => (bool) Input::get('active'),

@@ -32,7 +32,7 @@ this["JST"]["account/list/templates/grid.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="holder"></div>\n<button class="btn btn-primary add-new"><i class="icon-plus-sign"></i> ' +
+__p += '<div class="holder"></div>\n<button class="btn btn-default add-new"><i class="icon-plus-sign"></i> ' +
 ((__t = ( Lang.account_add_new )) == null ? '' : __t) +
 '</button>';
 
@@ -113,39 +113,35 @@ this["JST"]["post/_base/templates/form.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">\n    <input type="hidden" name="active" id="active" class="js-active" value="1">\n\n    <div class="btn-group" data-toggle="buttons">\n        <label class="btn btn-default">\n            <input type="radio" name="type" id="text" value="text"> <i class="icon-file-text"></i> Text\n        </label>\n        <label class="btn btn-default">\n            <input type="radio" name="type" id="photo" value="photo"> <i class="icon-picture"></i> Photo\n        </label>\n        <label class="btn btn-default">\n            <input type="radio" name="type" id="link" value="link"> <i class="icon-link"></i> Link\n        </label>\n        <label class="btn btn-default">\n            <input type="radio" name="type" id="quote" value="quote"> <i class="icon-quote-left"></i> Quote\n        </label>\n    </div>\n\n    <div class="row">\n        <div class="col-md-10">\n            <div class="form-group">\n                <label for="title">' +
+__p += '<form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">\n    <input type="hidden" name="active" id="active" class="js-active" value="1">\n\n    <div class="form-group">\n        <input type="text" class="form-control input-lg" name="title" id="title" placeholder="' +
 ((__t = ( Lang.post_title )) == null ? '' : __t) +
-'</label>\n                <input type="text" class="form-control input-lg" name="title" id="title" placeholder="' +
-((__t = ( Lang.post_title )) == null ? '' : __t) +
-'">\n            </div>\n            <div class="form-group">\n                <label for="slug">' +
+'">\n    </div>\n\n    <ul class="nav nav-tabs nav-justified">\n        <li class="active"><a href="#text" data-toggle="tab"><i class="icon-file-text"></i> Text</a></li>\n        <li><a href="#photo" data-toggle="tab"><i class="icon-picture"></i> Photo</a></li>\n        <li><a href="#settings" data-toggle="tab"><i class="icon-cog"></i> Settings</a></li>\n    </ul>\n\n    <!-- Tab panes -->\n    <div class="tab-content">\n        <div class="tab-pane active" id="text">\n            <div class="content-area">\n                <textarea name="content" id="content" placeholder="' +
+((__t = ( Lang.post_content )) == null ? '' : __t) +
+'"></textarea>\n                <div class="tags">\n                    <input type="text" id="js-tags" name="tags" class="tags" style="width: 50%" value="" placeholder="' +
+((__t = ( Lang.post_tags )) == null ? '' : __t) +
+'">\n                </div>\n            </div>\n        </div>\n        <div class="tab-pane" id="photo">\n            <div class="panel-well">\n                <div class="form-group">\n                    <label for="dropzone">Post Image</label>\n                    <input type="hidden" name="image" id="image">\n                    <div class="dropzone clickable inline" id="dropzone-attachment">\n                        <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class="tab-pane" id="settings">\n            <div class="panel-well">\n                <div class="form-group">\n                    <label for="slug">' +
 ((__t = ( Lang.post_slug )) == null ? '' : __t) +
-'</label>\n                <input type="text" name="slug" id="slug" class="form-control" placeholder="' +
+'</label>\n                    <input type="text" name="slug" id="slug" class="form-control" placeholder="' +
 ((__t = ( Lang.post_slug )) == null ? '' : __t) +
-'">\n            </div>\n            <div class="form-group author">\n                <label for="js-user">' +
+'">\n                </div>\n                <div class="form-group author">\n                    <label for="js-user">' +
 ((__t = ( Lang.post_author )) == null ? '' : __t) +
-'</label>\n                <select id="js-user" class="form-control" name="user_id"></select>\n            </div>\n            <div class="form-group">\n                <label for="publish_date">' +
+'</label>\n                    <select id="js-user" class="form-control" name="user_id"></select>\n                </div>\n                <div class="form-group">\n                    <label for="publish_date">' +
 ((__t = ( Lang.post_publish_date )) == null ? '' : __t) +
-'</label>\n                <input type="text" name="date" class="form-control js-date" id="publish_date" value="" placeholder="now">\n            </div>\n            <div class="form-group">\n                <label for="link_url">' +
+'</label>\n                    <input type="text" name="date" class="form-control js-date" id="publish_date" value="" placeholder="Tomorrow 10am">\n                    <span class="help-block">This uses <a href="http://www.php.net/manual/en/function.strtotime.php">strtotime</a> to parse into a timestamp. If empty it defaults to now.</span>\n                </div>\n                <div class="form-group">\n                    <label for="type">Post Type</label>\n                    <select class="form-control" name="type" id="type">\n                        <option value="text">Text</option>\n                        <option value="link">Link</option>\n                        <option value="photo">Photo</option>\n                        <option value="quote">Quote</option>\n                    </select>\n                </div>\n                <div class="form-group">\n                    <label for="link_url">' +
 ((__t = ( Lang.post_link )) == null ? '' : __t) +
-'</label>\n                <input type="text" id="link_url" name="link_url" class="form-control" value=""\n                       placeholder="' +
+'</label>\n                    <input type="text" id="link_url" name="link_url" class="form-control" value="" placeholder="' +
 ((__t = ( Lang.post_link )) == null ? '' : __t) +
-'">\n            </div>\n        </div>\n        <div class="col-md-2">\n            <div class="field" style="margin-bottom: 20px">\n                <div class="btn-group">\n                    <button class="btn btn-sm btn-primary publish">' +
+'">\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class="field" style="margin-top: 20px;">\n        <div class="btn-group pull-right">\n            <button class="btn btn-primary publish">' +
 ((__t = ( submitBtnText() )) == null ? '' : __t) +
-'</button>\n                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">\n                        <span class="caret"></span>\n                        <span class="sr-only">Toggle Dropdown</span>\n                    </button>\n                    <ul class="dropdown-menu" role="menu">\n                        <li><a href="#" class="js-status" data-action="publish">' +
+'</button>\n            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">\n                <span class="caret"></span>\n                <span class="sr-only">Toggle Dropdown</span>\n            </button>\n            <ul class="dropdown-menu" role="menu">\n                <li><a href="#" class="js-status" data-action="publish">' +
 ((__t = ( Lang.post_publish )) == null ? '' : __t) +
-'</a></li>\n                        <li><a href="#" class="js-status" data-action="draft">' +
+'</a></li>\n                <li><a href="#" class="js-status" data-action="draft">' +
 ((__t = ( Lang.post_save )) == null ? '' : __t) +
-'</a></li>\n                        <li class="divider"></li>\n                        <li><a href="' +
+'</a></li>\n                <li class="divider"></li>\n                <li><a href="' +
 ((__t = ( previewUrl() )) == null ? '' : __t) +
 '" target="_blank" class="preview">' +
 ((__t = ( Lang.post_preview )) == null ? '' : __t) +
-' <i class="icon-external-link"></i></a></li>\n                    </ul>\n                </div>\n            </div>\n            <div class="form-group">\n                <label for="dropzone">Leader Image</label>\n                <input type="hidden" name="image" id="image">\n\n                <div class="dropzone clickable inline" id="dropzone-attachment">\n                    <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>\n                </div>\n            </div>\n\n        </div>\n    </div>\n\n    <div class="form-group">\n        <label for="content">' +
-((__t = ( Lang.post_content )) == null ? '' : __t) +
-'</label>\n    </div>\n\n    <div class="content-area">\n        <textarea name="content" id="content" placeholder="' +
-((__t = ( Lang.post_content )) == null ? '' : __t) +
-'"></textarea>\n        <input type="text" id="js-tags" name="tags" class="tags" style="width: 80%" value="" placeholder="' +
-((__t = ( Lang.post_tags )) == null ? '' : __t) +
-'">\n    </div>\n</form>\n\n<div id="film-form" style="display: none">\n    <form class="form-inline">\n        <label for="date">Video URL</label><br>\n        <input type="text" name="date" class="form-control js-film" id="film" value=""\n               placeholder="http://youtube.com/">\n        <button class="btn btn-default js-submitfilm btn-sm">' +
+' <i class="icon-external-link"></i></a></li>\n            </ul>\n        </div>\n    </div>\n</form>\n\n<div id="film-form" style="display: none">\n    <form class="form-inline">\n        <label for="date">Video URL</label><br>\n        <input type="text" name="date" class="form-control js-film" id="film" value=""\n               placeholder="http://youtube.com/">\n        <button class="btn btn-default js-submitfilm btn-sm">' +
 ((__t = ( Lang.post_publish_date_set )) == null ? '' : __t) +
 '</button>\n    </form>\n</div>\n\n';
 
@@ -1543,6 +1539,7 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
         title: this.$('#title').val(),
         slug: this.$('#slug').val(),
         image: this.$('#image').val(),
+        type: this.$('#type').val(),
         active: this.$('input[type=radio]:checked').val(),
         content: this.editor.codemirror.getValue(),
         tags: this.$("#js-tags").val(),
@@ -1729,6 +1726,7 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
         active: this.$('#active').val(),
         content: this.editor.codemirror.getValue(),
         tags: this.$("#js-tags").val(),
+        type: this.$('#type').val(),
         image: this.$("#image").val(),
         link_url: this.$("#link_url").val(),
         user_id: this.$("#js-user").val(),

@@ -1,10 +1,24 @@
+#post-form {
+  .nav-tabs {
+    i {
+      padding-right: 5px;
+    }
+    li.active {
+      border-bottom: none;
+      a {
+        background-color: #fff;
+      }
+    }
+  }
+}
+
 .content-area {
   position: relative;
   background: #fff;
-  padding: 0 5px 5px;
+  padding: 5px 5px;
   border: 1px solid @input-border;
-  border-radius: @input-border-radius;
-  .box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+  border-top: none;
+  .border-bottom-radius(@input-border-radius);
   .transition(~"border-color ease-in-out .15s, box-shadow ease-in-out .15s");
   .editor-toolbar:before {
     background-color: #fff;
@@ -116,6 +130,11 @@
   // text-align: center;
 }
 
+.tags i {
+  color: #ccc;
+  padding-right: 5px;
+}
+
 #write .info input,
 #write .info textarea {
   padding: 14px 3px;
@@ -130,6 +149,14 @@
   }
 }
 
+.panel-well {
+  padding: 20px;
+  border: 1px solid @input-border;
+  border-top: none;
+  .border-bottom-radius(@input-border-radius);
+  background: #fff;
+}
+
 .qtip {
   max-width: none !important;
   .qtip-close {
@@ -138,12 +165,12 @@
 }
 .CodeMirror pre {
   font-weight: 400;
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1.3em;
 }
 
 #write .info textarea {
   font-weight: 400;
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1.3em;
 }

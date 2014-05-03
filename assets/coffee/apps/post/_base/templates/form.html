@@ -1,80 +1,83 @@
 <form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">
     <input type="hidden" name="active" id="active" class="js-active" value="1">
 
-    <div class="btn-group" data-toggle="buttons">
-        <label class="btn btn-default">
-            <input type="radio" name="type" id="text" value="text"> <i class="icon-file-text"></i> Text
-        </label>
-        <label class="btn btn-default">
-            <input type="radio" name="type" id="photo" value="photo"> <i class="icon-picture"></i> Photo
-        </label>
-        <label class="btn btn-default">
-            <input type="radio" name="type" id="link" value="link"> <i class="icon-link"></i> Link
-        </label>
-        <label class="btn btn-default">
-            <input type="radio" name="type" id="quote" value="quote"> <i class="icon-quote-left"></i> Quote
-        </label>
-    </div>
-
-    <div class="row">
-        <div class="col-md-10">
-            <div class="form-group">
-                <label for="title"><%= Lang.post_title %></label>
-                <input type="text" class="form-control input-lg" name="title" id="title" placeholder="<%= Lang.post_title %>">
-            </div>
-            <div class="form-group">
-                <label for="slug"><%= Lang.post_slug %></label>
-                <input type="text" name="slug" id="slug" class="form-control" placeholder="<%= Lang.post_slug %>">
-            </div>
-            <div class="form-group author">
-                <label for="js-user"><%= Lang.post_author %></label>
-                <select id="js-user" class="form-control" name="user_id"></select>
-            </div>
-            <div class="form-group">
-                <label for="publish_date"><%= Lang.post_publish_date %></label>
-                <input type="text" name="date" class="form-control js-date" id="publish_date" value="" placeholder="now">
-            </div>
-            <div class="form-group">
-                <label for="link_url"><%= Lang.post_link %></label>
-                <input type="text" id="link_url" name="link_url" class="form-control" value=""
-                       placeholder="<%= Lang.post_link %>">
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="field" style="margin-bottom: 20px">
-                <div class="btn-group">
-                    <button class="btn btn-sm btn-primary publish"><%= submitBtnText() %></button>
-                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#" class="js-status" data-action="publish"><%= Lang.post_publish %></a></li>
-                        <li><a href="#" class="js-status" data-action="draft"><%= Lang.post_save %></a></li>
-                        <li class="divider"></li>
-                        <li><a href="<%= previewUrl() %>" target="_blank" class="preview"><%= Lang.post_preview %> <i class="icon-external-link"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="dropzone">Leader Image</label>
-                <input type="hidden" name="image" id="image">
-
-                <div class="dropzone clickable inline" id="dropzone-attachment">
-                    <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
     <div class="form-group">
-        <label for="content"><%= Lang.post_content %></label>
+        <input type="text" class="form-control input-lg" name="title" id="title" placeholder="<%= Lang.post_title %>">
     </div>
 
-    <div class="content-area">
-        <textarea name="content" id="content" placeholder="<%= Lang.post_content %>"></textarea>
-        <input type="text" id="js-tags" name="tags" class="tags" style="width: 80%" value="" placeholder="<%= Lang.post_tags %>">
+    <ul class="nav nav-tabs nav-justified">
+        <li class="active"><a href="#text" data-toggle="tab"><i class="icon-file-text"></i> Text</a></li>
+        <li><a href="#photo" data-toggle="tab"><i class="icon-picture"></i> Photo</a></li>
+        <li><a href="#settings" data-toggle="tab"><i class="icon-cog"></i> Settings</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="text">
+            <div class="content-area">
+                <textarea name="content" id="content" placeholder="<%= Lang.post_content %>"></textarea>
+                <div class="tags">
+                    <input type="text" id="js-tags" name="tags" class="tags" style="width: 50%" value="" placeholder="<%= Lang.post_tags %>">
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="photo">
+            <div class="panel-well">
+                <div class="form-group">
+                    <label for="dropzone">Post Image</label>
+                    <input type="hidden" name="image" id="image">
+                    <div class="dropzone clickable inline" id="dropzone-attachment">
+                        <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="settings">
+            <div class="panel-well">
+                <div class="form-group">
+                    <label for="slug"><%= Lang.post_slug %></label>
+                    <input type="text" name="slug" id="slug" class="form-control" placeholder="<%= Lang.post_slug %>">
+                </div>
+                <div class="form-group author">
+                    <label for="js-user"><%= Lang.post_author %></label>
+                    <select id="js-user" class="form-control" name="user_id"></select>
+                </div>
+                <div class="form-group">
+                    <label for="publish_date"><%= Lang.post_publish_date %></label>
+                    <input type="text" name="date" class="form-control js-date" id="publish_date" value="" placeholder="Tomorrow 10am">
+                    <span class="help-block">This uses <a href="http://www.php.net/manual/en/function.strtotime.php">strtotime</a> to parse into a timestamp. If empty it defaults to now.</span>
+                </div>
+                <div class="form-group">
+                    <label for="type">Post Type</label>
+                    <select class="form-control" name="type" id="type">
+                        <option value="text">Text</option>
+                        <option value="link">Link</option>
+                        <option value="photo">Photo</option>
+                        <option value="quote">Quote</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="link_url"><%= Lang.post_link %></label>
+                    <input type="text" id="link_url" name="link_url" class="form-control" value="" placeholder="<%= Lang.post_link %>">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="field" style="margin-top: 20px;">
+        <div class="btn-group pull-right">
+            <button class="btn btn-primary publish"><%= submitBtnText() %></button>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#" class="js-status" data-action="publish"><%= Lang.post_publish %></a></li>
+                <li><a href="#" class="js-status" data-action="draft"><%= Lang.post_save %></a></li>
+                <li class="divider"></li>
+                <li><a href="<%= previewUrl() %>" target="_blank" class="preview"><%= Lang.post_preview %> <i class="icon-external-link"></i></a></li>
+            </ul>
+        </div>
     </div>
 </form>
 

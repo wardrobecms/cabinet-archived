@@ -14,7 +14,7 @@ return array(
 	'post_author' => 'Author',
 	'post_content' => 'Content',
 	'post_tags' => 'Tags',
-	'post_link' => 'External Link',
+	'post_link' => 'External Post Link',
 	'post_scheduled' => 'Scheduled',
 	'post_publish_date' => 'Publish Date',
 	'post_publish_date_set' => 'Set',

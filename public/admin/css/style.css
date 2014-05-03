@@ -7535,6 +7535,12 @@ body {
 .no-posts h3 {
   margin-bottom: 30px;
 }
+@media only screen and (max-width: 850px) {
+  #main-region {
+    margin: 0 auto;
+    width: 85%;
+  }
+}
 table tr:hover .actions {
   display: block;
 }
@@ -7601,14 +7607,23 @@ button {
   padding: 0 20px;
   max-width: 80%;
 }
+#post-form .nav-tabs i {
+  padding-right: 5px;
+}
+#post-form .nav-tabs li.active {
+  border-bottom: none;
+}
+#post-form .nav-tabs li.active a {
+  background-color: #fff;
+}
 .content-area {
   position: relative;
   background: #fff;
-  padding: 0 5px 5px;
+  padding: 5px 5px;
   border: 1px solid #cccccc;
-  border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  border-top: none;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
   -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
@@ -7704,6 +7719,10 @@ button {
 .editor-toolbar {
   margin-bottom: 10px;
 }
+.tags i {
+  color: #ccc;
+  padding-right: 5px;
+}
 #write .info input,
 #write .info textarea {
   padding: 14px 3px;
@@ -7718,6 +7737,14 @@ button {
   box-shadow: none;
   color: #111;
 }
+.panel-well {
+  padding: 20px;
+  border: 1px solid #cccccc;
+  border-top: none;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+  background: #fff;
+}
 .qtip {
   max-width: none !important;
 }
@@ -7726,12 +7753,12 @@ button {
 }
 .CodeMirror pre {
   font-weight: 400;
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1.3em;
 }
 #write .info textarea {
   font-weight: 400;
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1.3em;
 }
 .accounts {

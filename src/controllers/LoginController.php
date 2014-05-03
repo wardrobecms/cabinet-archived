@@ -48,7 +48,7 @@ class LoginController extends Controller {
 	{
 		if ($this->user->login(Input::get('email'), Input::get('password'), Input::get('remember')))
 		{
-			return Redirect::intended('wardrobe.admin.index');
+			return Redirect::route('wardrobe.admin.index');
 		}
 
 		return Redirect::route('wardrobe.admin.login')
