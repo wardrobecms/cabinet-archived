@@ -7825,6 +7825,10 @@ button {
 .header i {
   padding-right: 4px;
 }
+.header a:hover {
+  text-decoration: none;
+  color: #fff;
+}
 #login-region {
   width: 300px;
   margin: 0 auto;

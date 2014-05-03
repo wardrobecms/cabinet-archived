@@ -93,11 +93,11 @@ this["JST"]["header/list/templates/header.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="row">\n  <nav class="col-xs-12">\n    <ul>\n      <li><a class="write" href="#"><i class="icon-plus"></i> ' +
+__p += '<div class="row">\n  <nav class="col-xs-12">\n    <ul>\n      <li><a class="nav-write" href="#"><i class="icon-plus"></i> ' +
 ((__t = ( Lang.write )) == null ? '' : __t) +
-'</a></li>\n      <li><a class="posts" href="#post"><i class="icon-list"></i> ' +
+'</a></li>\n      <li><a class="nav-posts" href="#post"><i class="icon-list"></i> ' +
 ((__t = ( Lang.posts )) == null ? '' : __t) +
-'</a></li>\n      <li><a class="accounts" href="#accounts"><i class="icon-user"></i> ' +
+'</a></li>\n      <li><a class="nav-accounts" href="#accounts"><i class="icon-user"></i> ' +
 ((__t = ( Lang.accounts )) == null ? '' : __t) +
 '</a></li>\n      <li><a href="' +
 ((__t = ( logoutUrl() )) == null ? '' : __t) +
