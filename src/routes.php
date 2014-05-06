@@ -47,6 +47,7 @@ Route::group(Config::get('cabinet::routes.api_group_rules'), function() use ($wa
 	Route::resource('tag', $wardrobeControllers.'Api\TagController');
 	Route::resource('user', $wardrobeControllers.'Api\UserController');
 	Route::controller('dropzone', $wardrobeControllers.'Api\DropzoneController');
+	Route::controller('charts', $wardrobeControllers.'Api\ChartController');
 });
 
 /**

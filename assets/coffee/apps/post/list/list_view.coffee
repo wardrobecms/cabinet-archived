@@ -1,6 +1,6 @@
 @Wardrobe.module "PostApp.List", (List, App, Backbone, Marionette, $, _) ->
 
-  class List.PostItem extends App.Views.ItemView
+  class List.Chart extends App.Views.ItemView
     template: "post/list/templates/item"
     tagName: "tr"
 

@@ -89,11 +89,21 @@ __p += '<form role="form" class="form-horizontal" id="account-form" method="post
 return __p
 };
 
+this["JST"]["dashboard/list/templates/container.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<div class="page-header">\n    <div class="pull-right">\n        <span class="js-yearly-total"></span> posts this year\n    </div>\n    <h1>Your Dashboard Stats</h1>\n</div>\n<div class="row">\n    <div class="col-sm-6 js-words">\n        <h4>Posts Per Month</h4>\n        <div id="post-over-time" style="height: 250px;"></div>\n    </div>\n    <div class="col-sm-6 js-posts">\n        <h4>Words Per Month</h4>\n        <div id="words-per-month" style="height: 250px;"></div>\n    </div>\n</div>\n';
+
+}
+return __p
+};
+
 this["JST"]["header/list/templates/header.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="row">\n  <nav class="col-xs-12">\n    <ul>\n      <li><a class="nav-write" href="#"><i class="icon-plus"></i> ' +
+__p += '<div class="row">\n  <nav class="col-xs-12">\n    <ul>\n      <li><a class="nav-dashboard" href="#"><i class="icon-home"></i> Dashboard</a></li>\n      <li><a class="nav-write" href="#write"><i class="icon-plus"></i> ' +
 ((__t = ( Lang.write )) == null ? '' : __t) +
 '</a></li>\n      <li><a class="nav-posts" href="#post"><i class="icon-list"></i> ' +
 ((__t = ( Lang.posts )) == null ? '' : __t) +
@@ -570,6 +580,38 @@ this.Wardrobe.module("Entities", function(Entities, App, Backbone, Marionette, $
     return Model;
 
   })(Backbone.Model);
+});
+
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+this.Wardrobe.module("Entities", function(Entities, App, Backbone, Marionette, $, _) {
+  var API;
+  Entities.Chart = (function(_super) {
+    __extends(Chart, _super);
+
+    function Chart() {
+      return Chart.__super__.constructor.apply(this, arguments);
+    }
+
+    Chart.prototype.urlRoot = function() {
+      return App.request("get:url:api") + "/charts/words";
+    };
+
+    return Chart;
+
+  })(App.Entities.Model);
+  API = {
+    getChart: function(cb) {
+      var chart;
+      chart = new Entities.Chart;
+      chart.fetch();
+      return chart;
+    }
+  };
+  return App.reqres.setHandler("chart:entities", function(cb) {
+    return API.getChart(cb);
+  });
 });
 
 var __hasProp = {}.hasOwnProperty,
@@ -1295,6 +1337,113 @@ this.Wardrobe.module("AccountApp.New", function(New, App, Backbone, Marionette, 
   })(App.Views.ItemView);
 });
 
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+this.Wardrobe.module("DashboardApp", function(DashboardApp, App, Backbone, Marionette, $, _) {
+  var API;
+  DashboardApp.Router = (function(_super) {
+    __extends(Router, _super);
+
+    function Router() {
+      return Router.__super__.constructor.apply(this, arguments);
+    }
+
+    Router.prototype.appRoutes = {
+      "": "stats"
+    };
+
+    return Router;
+
+  })(Marionette.AppRouter);
+  API = {
+    stats: function() {
+      return new DashboardApp.List.Controller;
+    }
+  };
+  return App.addInitializer(function() {
+    return new DashboardApp.Router({
+      controller: API
+    });
+  });
+});
+
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+this.Wardrobe.module("DashboardApp.List", function(List, App, Backbone, Marionette, $, _) {
+  return List.Chart = (function(_super) {
+    __extends(Chart, _super);
+
+    function Chart() {
+      return Chart.__super__.constructor.apply(this, arguments);
+    }
+
+    Chart.prototype.template = "dashboard/list/templates/container";
+
+    Chart.prototype.onShow = function() {
+      var model;
+      model = this.model.toJSON();
+      this.$(".js-yearly-total").text(model.yearly_post);
+      new Morris.Line({
+        element: 'post-over-time',
+        data: model.posts.data,
+        parseTime: false,
+        xkey: 'label',
+        ykeys: ['a', 'b'],
+        labels: model.posts.labels,
+        lineColors: ["rgba(151,187,205,0.7)", "#cccccc"]
+      });
+      return new Morris.Line({
+        element: 'words-per-month',
+        data: model.words.data,
+        parseTime: false,
+        xkey: 'label',
+        ykeys: ['a', 'b'],
+        labels: model.words.labels,
+        lineColors: ["rgba(151,187,205,0.7)", "#cccccc"]
+      });
+    };
+
+    return Chart;
+
+  })(App.Views.ItemView);
+});
+
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+this.Wardrobe.module("DashboardApp.List", function(List, App, Backbone, Marionette, $, _) {
+  return List.Controller = (function(_super) {
+    __extends(Controller, _super);
+
+    function Controller() {
+      return Controller.__super__.constructor.apply(this, arguments);
+    }
+
+    Controller.prototype.initialize = function() {
+      var chart;
+      chart = App.request("chart:entities");
+      return App.execute("when:fetched", chart, (function(_this) {
+        return function() {
+          var view;
+          view = _this.getListView(chart);
+          return _this.show(view);
+        };
+      })(this));
+    };
+
+    Controller.prototype.getListView = function(chart) {
+      return new List.Chart({
+        model: chart
+      });
+    };
+
+    return Controller;
+
+  })(App.Controllers.Base);
+});
+
 this.Wardrobe.module("DropzoneApp", function(DropzoneApp, App, Backbone, Marionette, $, _) {
   var API;
   Dropzone.autoDiscover = false;
@@ -1396,8 +1545,8 @@ this.Wardrobe.module("HeaderApp.List", function(List, App, Backbone, Marionette,
     Header.prototype.className = "container";
 
     Header.prototype.events = {
-      "click .write": "newPost",
-      "click .accounts": "accounts"
+      "click .nav-write": "newPost",
+      "click .nav-accounts": "accounts"
     };
 
     Header.prototype.onRender = function() {
@@ -1932,18 +2081,18 @@ var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 this.Wardrobe.module("PostApp.List", function(List, App, Backbone, Marionette, $, _) {
-  List.PostItem = (function(_super) {
-    __extends(PostItem, _super);
+  List.Chart = (function(_super) {
+    __extends(Chart, _super);
 
-    function PostItem() {
-      return PostItem.__super__.constructor.apply(this, arguments);
+    function Chart() {
+      return Chart.__super__.constructor.apply(this, arguments);
     }
 
-    PostItem.prototype.template = "post/list/templates/item";
+    Chart.prototype.template = "post/list/templates/item";
 
-    PostItem.prototype.tagName = "tr";
+    Chart.prototype.tagName = "tr";
 
-    PostItem.prototype.attributes = function() {
+    Chart.prototype.attributes = function() {
       if (this.model.get("active") === "1" && this.model.get("publish_date") > moment().format('YYYY-MM-DD HH:mm:ss')) {
         return {
           "class": "post-item scheduled post-" + this.model.id
@@ -1959,16 +2108,16 @@ this.Wardrobe.module("PostApp.List", function(List, App, Backbone, Marionette, $
       }
     };
 
-    PostItem.prototype.triggers = {
+    Chart.prototype.triggers = {
       "click .delete": "post:delete:clicked"
     };
 
-    PostItem.prototype.events = {
+    Chart.prototype.events = {
       "click .details": "edit",
       "click .preview": "preview"
     };
 
-    PostItem.prototype.onShow = function() {
+    Chart.prototype.onShow = function() {
       var $emEl, allUsers, user;
       allUsers = App.request("get:all:users");
       $emEl = this.$("em");
@@ -1981,7 +2130,7 @@ this.Wardrobe.module("PostApp.List", function(List, App, Backbone, Marionette, $
       return this.$('.js-format-date').formatDates();
     };
 
-    PostItem.prototype.templateHelpers = {
+    Chart.prototype.templateHelpers = {
       status: function() {
         if (parseInt(this.active) === 1 && this.publish_date > moment().format('YYYY-MM-DD HH:mm:ss')) {
           return Lang.post_scheduled;
@@ -1993,12 +2142,12 @@ this.Wardrobe.module("PostApp.List", function(List, App, Backbone, Marionette, $
       }
     };
 
-    PostItem.prototype.edit = function(e) {
+    Chart.prototype.edit = function(e) {
       e.preventDefault();
       return App.vent.trigger("post:item:clicked", this.model);
     };
 
-    PostItem.prototype.preview = function(e) {
+    Chart.prototype.preview = function(e) {
       var storage;
       e.preventDefault();
       storage = new Storage({
@@ -2008,7 +2157,7 @@ this.Wardrobe.module("PostApp.List", function(List, App, Backbone, Marionette, $
       return window.open("" + (App.request("get:url:blog")) + "/post/preview/" + this.model.id, '_blank');
     };
 
-    return PostItem;
+    return Chart;
 
   })(App.Views.ItemView);
   List.Empty = (function(_super) {
@@ -2197,7 +2346,7 @@ this.Wardrobe.module("PostApp", function(PostApp, App, Backbone, Marionette, $, 
     }
 
     Router.prototype.appRoutes = {
-      "": "add",
+      "write": "add",
       "post": "list",
       "post/add": "add",
       "post/edit/:id": "edit"
@@ -2239,7 +2388,7 @@ this.Wardrobe.module("PostApp", function(PostApp, App, Backbone, Marionette, $, 
     return API.edit(item.id, item);
   });
   App.vent.on("post:new:clicked post:new", function() {
-    App.navigate("/", {
+    App.navigate("/write", {
       trigger: false
     });
     return API.add();

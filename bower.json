@@ -18,12 +18,12 @@
   },
   "devDependencies": {},
   "exportsOverride": {
-      "backbone.marionette": {
-          "js": "lib/backbone.marionette.js"
-      },
-      "selectize": {
-          "js": "dist/js/standalone/selectize.js"
-      },
+    "backbone.marionette": {
+      "js": "lib/backbone.marionette.js"
+    },
+    "selectize": {
+      "js": "dist/js/standalone/selectize.js"
+    },
     "backbone.syphon": {
       "js": "lib/backbone.syphon.js"
     },
@@ -35,8 +35,8 @@
       "less": "less/**/*.less"
     },
     "fontawesome": {
-        "less": "less/**/*.less",
-        "font": "font/*"
+      "less": "less/**/*.less",
+      "font": "font/*"
     }
   }
 }

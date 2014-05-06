@@ -5,8 +5,8 @@
     className: "container"
 
     events:
-      "click .write" : "newPost"
-      "click .accounts" : "accounts"
+      "click .nav-write" : "newPost"
+      "click .nav-accounts" : "accounts"
 
     onRender: ->
       @generateAvatar App.request "get:current:user"

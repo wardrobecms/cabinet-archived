@@ -5,7 +5,7 @@
 
   class PostApp.Router extends Marionette.AppRouter
     appRoutes:
-      "" : "add"
+      "write" : "add"
       "post" : "list"
       "post/add" : "add"
       "post/edit/:id" : "edit"
@@ -45,7 +45,7 @@
 
   # When the new post link is clicked then show the add routine.
   App.vent.on "post:new:clicked post:new", ->
-    App.navigate "/",
+    App.navigate "/write",
       trigger: false
     API.add()
 
