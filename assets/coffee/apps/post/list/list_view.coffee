@@ -1,6 +1,6 @@
 @Wardrobe.module "PostApp.List", (List, App, Backbone, Marionette, $, _) ->
 
-  class List.Chart extends App.Views.ItemView
+  class List.PostItem extends App.Views.ItemView
     template: "post/list/templates/item"
     tagName: "tr"
 
@@ -112,3 +112,4 @@
       pattern = new RegExp(filter,"gi")
       foundId = pattern.test post.get("title")
       @$el.find(".post-#{post.id}").show() if foundId
+

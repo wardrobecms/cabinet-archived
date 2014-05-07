@@ -2081,18 +2081,18 @@ var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 this.Wardrobe.module("PostApp.List", function(List, App, Backbone, Marionette, $, _) {
-  List.Chart = (function(_super) {
-    __extends(Chart, _super);
+  List.PostItem = (function(_super) {
+    __extends(PostItem, _super);
 
-    function Chart() {
-      return Chart.__super__.constructor.apply(this, arguments);
+    function PostItem() {
+      return PostItem.__super__.constructor.apply(this, arguments);
     }
 
-    Chart.prototype.template = "post/list/templates/item";
+    PostItem.prototype.template = "post/list/templates/item";
 
-    Chart.prototype.tagName = "tr";
+    PostItem.prototype.tagName = "tr";
 
-    Chart.prototype.attributes = function() {
+    PostItem.prototype.attributes = function() {
       if (this.model.get("active") === "1" && this.model.get("publish_date") > moment().format('YYYY-MM-DD HH:mm:ss')) {
         return {
           "class": "post-item scheduled post-" + this.model.id
@@ -2108,16 +2108,16 @@ this.Wardrobe.module("PostApp.List", function(List, App, Backbone, Marionette, $
       }
     };
 
-    Chart.prototype.triggers = {
+    PostItem.prototype.triggers = {
       "click .delete": "post:delete:clicked"
     };
 
-    Chart.prototype.events = {
+    PostItem.prototype.events = {
       "click .details": "edit",
       "click .preview": "preview"
     };
 
-    Chart.prototype.onShow = function() {
+    PostItem.prototype.onShow = function() {
       var $emEl, allUsers, user;
       allUsers = App.request("get:all:users");
       $emEl = this.$("em");
@@ -2130,7 +2130,7 @@ this.Wardrobe.module("PostApp.List", function(List, App, Backbone, Marionette, $
       return this.$('.js-format-date').formatDates();
     };
 
-    Chart.prototype.templateHelpers = {
+    PostItem.prototype.templateHelpers = {
       status: function() {
         if (parseInt(this.active) === 1 && this.publish_date > moment().format('YYYY-MM-DD HH:mm:ss')) {
           return Lang.post_scheduled;
@@ -2142,12 +2142,12 @@ this.Wardrobe.module("PostApp.List", function(List, App, Backbone, Marionette, $
       }
     };
 
-    Chart.prototype.edit = function(e) {
+    PostItem.prototype.edit = function(e) {
       e.preventDefault();
       return App.vent.trigger("post:item:clicked", this.model);
     };
 
-    Chart.prototype.preview = function(e) {
+    PostItem.prototype.preview = function(e) {
       var storage;
       e.preventDefault();
       storage = new Storage({
@@ -2157,7 +2157,7 @@ this.Wardrobe.module("PostApp.List", function(List, App, Backbone, Marionette, $
       return window.open("" + (App.request("get:url:blog")) + "/post/preview/" + this.model.id, '_blank');
     };
 
-    return Chart;
+    return PostItem;
 
   })(App.Views.ItemView);
   List.Empty = (function(_super) {

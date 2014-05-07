@@ -3,6 +3,7 @@
 use Cache;
 use Config;
 use Carbon\Carbon;
+use Event;
 use Validator;
 use Wardrobe\Cabinet\Entities\Post;
 use Wardrobe\Cabinet\Entities\Tag;
@@ -138,6 +139,8 @@ class DbPostRepository implements PostRepositoryInterface {
 
 		$post->tags()->createMany($this->prepareTags($data['tags']));
 
+		Event::fire('post.create', $post);
+
 		return $post;
 	}
 
@@ -163,6 +166,8 @@ class DbPostRepository implements PostRepositoryInterface {
 		$post->tags()->delete();
 
 		$post->tags()->createMany($this->prepareTags($data['tags']));
+
+		Event::fire('post.update', $post);
 
 		return $post;
 	}
