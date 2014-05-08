@@ -123,7 +123,7 @@ this["JST"]["post/_base/templates/form.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">\n    <input type="hidden" name="active" id="active" class="js-active" value="1">\n\n    <div class="form-group">\n        <input type="text" class="form-control input-lg" name="title" id="title" placeholder="' +
+__p += '<form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">\n    <input type="hidden" name="active" id="active" class="js-active" value="0">\n\n    <div class="form-group">\n        <input type="text" class="form-control input-lg" name="title" id="title" placeholder="' +
 ((__t = ( Lang.post_title )) == null ? '' : __t) +
 '">\n    </div>\n\n    <ul class="nav nav-tabs nav-justified">\n        <li class="active"><a href="#text" data-toggle="tab"><i class="icon-file-text"></i> Text</a></li>\n        <li><a href="#photo" data-toggle="tab"><i class="icon-picture"></i> Photo</a></li>\n        <li><a href="#settings" data-toggle="tab"><i class="icon-cog"></i> Settings</a></li>\n    </ul>\n\n    <!-- Tab panes -->\n    <div class="tab-content">\n        <div class="tab-pane active" id="text">\n            <div class="content-area">\n                <textarea name="content" id="content" placeholder="' +
 ((__t = ( Lang.post_content )) == null ? '' : __t) +
@@ -1647,6 +1647,7 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
           output: "#slug"
         });
       } else {
+        this.$("#active").val(this.model.get("active"));
         this.$("#" + (this.model.get("type"))).prop('checked', true).parent().addClass("active");
       }
       App.request("tag:entities", (function(_this) {
