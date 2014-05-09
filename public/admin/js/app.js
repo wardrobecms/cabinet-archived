@@ -163,7 +163,7 @@ this["JST"]["post/list/templates/empty.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="well no-posts">\n  <h3>You do not have any drafts.</h3>\n  <p class="lead">\n    quotes go here.\n  </p>\n\n  <a href="#" class="btn btn-default btn-lg">Start Writing</a>\n</div>';
+__p += '<div class="well no-posts">\n  <h3>You do not have any drafts.</h3>\n  <p class="lead">\n    quotes go here.\n  </p>\n\n  <a href="#write" class="btn btn-default btn-lg">Start Writing</a>\n</div>';
 
 }
 return __p
@@ -177,7 +177,7 @@ __p += '<div class="page-header">\n  <ul class="nav nav-pills pull-right">\n    
 ((__t = ( Lang.post_title )) == null ? '' : __t) +
 '</th>\n\t\t\t<th>' +
 ((__t = ( Lang.post_published )) == null ? '' : __t) +
-'</th>\n\t\t</tr>\n\t</thead>\n\t<tbody></tbody>\n</table>\n\n<div class="well no-posts hide">\n  <h3>You do not have any <span>draft</span> posts.</h3>\n  <p class="lead js-quote"></p>\n  <a href="#" class="btn btn-default btn-lg">Start Writing</a>\n</div>\n';
+'</th>\n\t\t</tr>\n\t</thead>\n\t<tbody></tbody>\n</table>\n\n<div class="well no-posts hide">\n  <h3>You do not have any <span>draft</span> posts.</h3>\n  <p class="lead js-quote"></p>\n  <a href="#write" class="btn btn-default btn-lg">Start Writing</a>\n</div>\n';
 
 }
 return __p
