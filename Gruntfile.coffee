@@ -140,4 +140,5 @@ module.exports = (grunt) ->
 
   # Default task(s).
   grunt.registerTask "default", ["clean", "bower", "copy", "less", "coffee", "jst", "concat"]
+  grunt.registerTask "js", ["clean", "coffee", "jst", "concat"]
   grunt.registerTask "deploy", ["clean", "bower", "copy", "less", "coffee", "jst", "concat"]

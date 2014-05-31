@@ -123,7 +123,7 @@ this["JST"]["post/_base/templates/form.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">\n    <input type="hidden" name="active" id="active" class="js-active" value="0">\n\n    <div class="form-group">\n        <input type="text" class="form-control input-lg" name="title" id="title" placeholder="' +
+__p += '<form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">\n    <input type="hidden" name="active" id="active" class="js-active" value="1">\n\n    <div class="form-group">\n        <input type="text" class="form-control input-lg" name="title" id="title" placeholder="' +
 ((__t = ( Lang.post_title )) == null ? '' : __t) +
 '">\n    </div>\n\n    <ul class="nav nav-tabs nav-justified">\n        <li class="active"><a href="#text" data-toggle="tab"><i class="icon-file-text"></i> Text</a></li>\n        <li><a href="#photo" data-toggle="tab"><i class="icon-picture"></i> Photo</a></li>\n        <li><a href="#settings" data-toggle="tab"><i class="icon-cog"></i> Settings</a></li>\n    </ul>\n\n    <!-- Tab panes -->\n    <div class="tab-content">\n        <div class="tab-pane active" id="text">\n            <div class="content-area">\n                <textarea name="content" id="content" placeholder="' +
 ((__t = ( Lang.post_content )) == null ? '' : __t) +
@@ -141,7 +141,7 @@ __p += '<form role="form" class="post" id="post-form" method="post" action="/war
 ((__t = ( Lang.post_link )) == null ? '' : __t) +
 '</label>\n                    <input type="text" id="link_url" name="link_url" class="form-control" value="" placeholder="' +
 ((__t = ( Lang.post_link )) == null ? '' : __t) +
-'">\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class="field" style="margin-top: 20px;">\n        <div class="btn-group pull-right">\n            <button class="btn btn-primary publish">' +
+'">\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class="field" style="margin-top: 20px;">\n        <div class="btn-group dropup pull-right">\n            <button class="btn btn-primary publish">' +
 ((__t = ( submitBtnText() )) == null ? '' : __t) +
 '</button>\n            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">\n                <span class="caret"></span>\n                <span class="sr-only">Toggle Dropdown</span>\n            </button>\n            <ul class="dropdown-menu" role="menu">\n                <li><a href="#" class="js-status" data-action="publish">' +
 ((__t = ( Lang.post_publish )) == null ? '' : __t) +

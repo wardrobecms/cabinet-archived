@@ -1,5 +1,5 @@
 <form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">
-    <input type="hidden" name="active" id="active" class="js-active" value="0">
+    <input type="hidden" name="active" id="active" class="js-active" value="1">
 
     <div class="form-group">
         <input type="text" class="form-control input-lg" name="title" id="title" placeholder="<%= Lang.post_title %>">
@@ -65,7 +65,7 @@
     </div>
 
     <div class="field" style="margin-top: 20px;">
-        <div class="btn-group pull-right">
+        <div class="btn-group dropup pull-right">
             <button class="btn btn-primary publish"><%= submitBtnText() %></button>
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                 <span class="caret"></span>
