@@ -10,7 +10,7 @@
   ],
   "require": {
     "php": ">=5.4.0",
-    "illuminate/support": "4.1.*",
+    "illuminate/support": "4.2.*",
     "michelf/php-markdown": "1.4.*@dev",
     "intervention/image": "1.*"
   },
@@ -29,5 +29,5 @@
       "Wardrobe\\Cabinet\\": "src/Wardrobe/Cabinet/"
     }
   },
-  "minimum-stability": "dev"
+  "minimum-stability": "stable"
 }
