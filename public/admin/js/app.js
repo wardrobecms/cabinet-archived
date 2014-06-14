@@ -125,11 +125,11 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">\n    <input type="hidden" name="active" id="active" class="js-active" value="1">\n\n    <div class="form-group">\n        <input type="text" class="form-control input-lg" name="title" id="title" placeholder="' +
 ((__t = ( Lang.post_title )) == null ? '' : __t) +
-'">\n    </div>\n\n    <ul class="nav nav-tabs nav-justified">\n        <li class="active"><a href="#text" data-toggle="tab"><i class="icon-file-text"></i> Text</a></li>\n        <li><a href="#photo" data-toggle="tab"><i class="icon-picture"></i> Photo</a></li>\n        <li><a href="#settings" data-toggle="tab"><i class="icon-cog"></i> Settings</a></li>\n    </ul>\n\n    <!-- Tab panes -->\n    <div class="tab-content">\n        <div class="tab-pane active" id="text">\n            <div class="content-area">\n                <textarea name="content" id="content" placeholder="' +
-((__t = ( Lang.post_content )) == null ? '' : __t) +
-'"></textarea>\n                <div class="tags">\n                    <input type="text" id="js-tags" name="tags" class="tags" style="width: 50%" value="" placeholder="' +
+'">\n    </div>\n    <div class="tags">\n        <input type="text" id="js-tags" name="tags" class="tags" style="width: 50%" value="" placeholder="' +
 ((__t = ( Lang.post_tags )) == null ? '' : __t) +
-'">\n                </div>\n            </div>\n        </div>\n        <div class="tab-pane" id="photo">\n            <div class="panel-well">\n                <div class="form-group">\n                    <label for="dropzone">Post Image</label>\n                    <input type="hidden" name="image" id="image">\n                    <div class="dropzone clickable inline" id="dropzone-attachment">\n                        <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class="tab-pane" id="settings">\n            <div class="panel-well">\n                <div class="form-group">\n                    <label for="slug">' +
+'">\n    </div>\n\n    <ul class="nav nav-tabs nav-justified">\n        <li class="active"><a href="#text" data-toggle="tab"><i class="icon-file-text"></i> Text</a></li>\n        <li><a href="#photo" data-toggle="tab"><i class="icon-picture"></i> Photo</a></li>\n        <li><a href="#settings" data-toggle="tab"><i class="icon-cog"></i> Settings</a></li>\n    </ul>\n\n    <!-- Tab panes -->\n    <div class="tab-content">\n        <div class="tab-pane active" id="text">\n            <div class="content-area">\n                <textarea name="content" id="content" style="max-height: 560px;" placeholder="' +
+((__t = ( Lang.post_content )) == null ? '' : __t) +
+'"></textarea>\n\n            </div>\n        </div>\n        <div class="tab-pane" id="photo">\n            <div class="panel-well">\n                <div class="form-group">\n                    <label for="dropzone">Post Image</label>\n                    <input type="hidden" name="image" id="image">\n                    <div class="dropzone clickable inline" id="dropzone-attachment">\n                        <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class="tab-pane" id="settings">\n            <div class="panel-well">\n                <div class="form-group">\n                    <label for="slug">' +
 ((__t = ( Lang.post_slug )) == null ? '' : __t) +
 '</label>\n                    <input type="text" name="slug" id="slug" class="form-control" placeholder="' +
 ((__t = ( Lang.post_slug )) == null ? '' : __t) +
@@ -1671,6 +1671,9 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
 
     PostView.prototype.setUpEditor = function() {
       var toolbar;
+      return $('#content').redactor({
+        toolbarFixedBox: true
+      });
       toolbar = ['bold', 'italic', '|', 'quote', 'unordered-list', 'ordered-list', 'ellipsis-horizontal', '|', 'link', 'image', 'code', 'film', '|', 'undo', 'redo'];
       this.editor = new Editor({
         element: document.getElementById("content"),
@@ -1691,7 +1694,6 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
         image: this.$('#image').val(),
         type: this.$('#type').val(),
         active: this.$('input[type=radio]:checked').val(),
-        content: this.editor.codemirror.getValue(),
         tags: this.$("#js-tags").val(),
         user_id: this.$("#js-user").val(),
         publish_date: this.$("#publish_date").val()
@@ -1874,7 +1876,7 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
         title: this.$('#title').val(),
         slug: this.$('#slug').val(),
         active: this.$('#active').val(),
-        content: this.editor.codemirror.getValue(),
+        content: this.$("#content").val(),
         tags: this.$("#js-tags").val(),
         type: this.$('#type').val(),
         image: this.$("#image").val(),

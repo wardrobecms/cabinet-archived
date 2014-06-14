@@ -69,6 +69,7 @@ module.exports = (grunt) ->
           'assets/vendor/components/backbone.marionette/**/*.js'
 #          'assets/vendor/components/backbone.syphon/**/*.js'
           'assets/vendor/components/momentjs/*.js'
+          'assets/plugins/redactor.js'
           'assets/plugins/editor/*.js'
           'assets/vendor/components/js-md5/*.js'
           'assets/vendor/components/jstorage/*.js'

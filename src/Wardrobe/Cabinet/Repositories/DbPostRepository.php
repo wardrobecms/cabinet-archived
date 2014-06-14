@@ -198,6 +198,7 @@ class DbPostRepository implements PostRepositoryInterface {
 	 */
 	public function delete($id)
 	{
+		Event::fire('post.delete', $id);
 		$this->post->where('id', $id)->delete();
 	}
 

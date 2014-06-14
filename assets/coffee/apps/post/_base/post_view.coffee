@@ -69,7 +69,12 @@
 
     # Setup the markdown editor
     setUpEditor: ->
-      # Custom toolbar items.
+      return $('#content').redactor(
+        toolbarFixedBox: true
+      )
+
+
+    # Custom toolbar items.
       toolbar = [
         'bold', 'italic', '|'
         'quote', 'unordered-list', 'ordered-list', 'ellipsis-horizontal', '|'
@@ -99,7 +104,7 @@
         image: @$('#image').val()
         type: @$('#type').val()
         active: @$('input[type=radio]:checked').val()
-        content: @editor.codemirror.getValue()
+#        content: @editor.codemirror.getValue()
         tags: @$("#js-tags").val()
         user_id: @$("#js-user").val()
         publish_date: @$("#publish_date").val()
@@ -230,7 +235,7 @@
         title: @$('#title').val()
         slug: @$('#slug').val()
         active: @$('#active').val()
-        content: @editor.codemirror.getValue()
+        content: @$("#content").val() # @editor.codemirror.getValue()
         tags: @$("#js-tags").val()
         type: @$('#type').val()
         image: @$("#image").val()
