@@ -19023,12 +19023,12 @@ global.Editor = Editor;
  * Licensed under Unlicense:
  *
  * This is free and unencumbered software released into the public domain.
- * 
+ *
  * Anyone is free to copy, modify, publish, use, compile, sell, or
  * distribute this software, either in source code form or as a compiled
  * binary, for any purpose, commercial or non-commercial, and by any
  * means.
- * 
+ *
  * In jurisdictions that recognize copyright laws, the author or authors
  * of this software dedicate any and all copyright interest in the
  * software to the public domain. We make this dedication for the benefit
@@ -19036,50 +19036,58 @@ global.Editor = Editor;
  * successors. We intend this dedication to be an overt act of
  * relinquishment in perpetuity of all present and future rights to this
  * software under copyright law.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ *
+ * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
  * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
- * 
+ *
  * For more information, please refer to <http://unlicense.org/>
  */
 
- (function(){
+(function() {
+    'use strict';
+
     var
-        /* jStorage version */
-        JSTORAGE_VERSION = "0.4.8",
+    /* jStorage version */
+        JSTORAGE_VERSION = '0.4.10',
 
         /* detect a dollar object or create one if not found */
         $ = window.jQuery || window.$ || (window.$ = {}),
 
         /* check for a JSON handling support */
         JSON = {
-            parse:
-                window.JSON && (window.JSON.parse || window.JSON.decode) ||
-                String.prototype.evalJSON && function(str){return String(str).evalJSON();} ||
+            parse: window.JSON && (window.JSON.parse || window.JSON.decode) ||
+                String.prototype.evalJSON && function(str) {
+                    return String(str).evalJSON();
+            } ||
                 $.parseJSON ||
                 $.evalJSON,
-            stringify:
-                Object.toJSON ||
+            stringify: Object.toJSON ||
                 window.JSON && (window.JSON.stringify || window.JSON.encode) ||
                 $.toJSON
         };
 
     // Break if no JSON support was found
-    if(!("parse" in JSON) || !("stringify" in JSON)){
-        throw new Error("No JSON support found, include //cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js to page");
+    if (!('parse' in JSON) || !('stringify' in JSON)) {
+        throw new Error('No JSON support found, include //cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js to page');
     }
 
     var
-        /* This is the object, that holds the cached values */
-        _storage = {__jstorage_meta:{CRC32:{}}},
+    /* This is the object, that holds the cached values */
+        _storage = {
+            __jstorage_meta: {
+                CRC32: {}
+            }
+        },
 
-        /* Actual browser storage (localStorage or globalStorage["domain"]) */
-        _storage_service = {jStorage:"{}"},
+        /* Actual browser storage (localStorage or globalStorage['domain']) */
+        _storage_service = {
+            jStorage: '{}'
+        },
 
         /* DOM element for older IE versions, holds userData behavior */
         _storage_elm = null,
@@ -19113,8 +19121,8 @@ global.Editor = Editor;
          * XML nodes are encoded and decoded if the node is the value to be saved
          * but not if it's as a property of another object
          * Eg. -
-         *   $.jStorage.set("key", xmlNode);        // IS OK
-         *   $.jStorage.set("key", {xml: xmlNode}); // NOT OK
+         *   $.jStorage.set('key', xmlNode);        // IS OK
+         *   $.jStorage.set('key', {xml: xmlNode}); // NOT OK
          */
         _XMLService = {
 
@@ -19122,9 +19130,9 @@ global.Editor = Editor;
              * Validates a XML node to be XML
              * based on jQuery.isXML function
              */
-            isXML: function(elm){
+            isXML: function(elm) {
                 var documentElement = (elm ? elm.ownerDocument || elm : 0).documentElement;
-                return documentElement ? documentElement.nodeName !== "HTML" : false;
+                return documentElement ? documentElement.nodeName !== 'HTML' : false;
             },
 
             /**
@@ -19132,15 +19140,15 @@ global.Editor = Editor;
              * based on http://www.mercurytide.co.uk/news/article/issues-when-working-ajax/
              */
             encode: function(xmlNode) {
-                if(!this.isXML(xmlNode)){
+                if (!this.isXML(xmlNode)) {
                     return false;
                 }
-                try{ // Mozilla, Webkit, Opera
+                try { // Mozilla, Webkit, Opera
                     return new XMLSerializer().serializeToString(xmlNode);
-                }catch(E1) {
-                    try {  // IE
+                } catch (E1) {
+                    try { // IE
                         return xmlNode.xml;
-                    }catch(E2){}
+                    } catch (E2) {}
                 }
                 return false;
             },
@@ -19149,20 +19157,20 @@ global.Editor = Editor;
              * Decodes a XML node from string
              * loosely based on http://outwestmedia.com/jquery-plugins/xmldom/
              */
-            decode: function(xmlString){
-                var dom_parser = ("DOMParser" in window && (new DOMParser()).parseFromString) ||
-                        (window.ActiveXObject && function(_xmlString) {
-                    var xml_doc = new ActiveXObject("Microsoft.XMLDOM");
-                    xml_doc.async = "false";
-                    xml_doc.loadXML(_xmlString);
-                    return xml_doc;
-                }),
-                resultXML;
-                if(!dom_parser){
+            decode: function(xmlString) {
+                var dom_parser = ('DOMParser' in window && (new DOMParser()).parseFromString) ||
+                    (window.ActiveXObject && function(_xmlString) {
+                        var xml_doc = new ActiveXObject('Microsoft.XMLDOM');
+                        xml_doc.async = 'false';
+                        xml_doc.loadXML(_xmlString);
+                        return xml_doc;
+                    }),
+                    resultXML;
+                if (!dom_parser) {
                     return false;
                 }
-                resultXML = dom_parser.call("DOMParser" in window && (new DOMParser()) || window, xmlString, "text/xml");
-                return this.isXML(resultXML)?resultXML:false;
+                resultXML = dom_parser.call('DOMParser' in window && (new DOMParser()) || window, xmlString, 'text/xml');
+                return this.isXML(resultXML) ? resultXML : false;
             }
         };
 
@@ -19173,76 +19181,75 @@ global.Editor = Editor;
      * Initialization function. Detects if the browser supports DOM Storage
      * or userData behavior and behaves accordingly.
      */
-    function _init(){
+    function _init() {
         /* Check if browser supports localStorage */
         var localStorageReallyWorks = false;
-        if("localStorage" in window){
+        if ('localStorage' in window) {
             try {
-                window.localStorage.setItem("_tmptest", "tmpval");
+                window.localStorage.setItem('_tmptest', 'tmpval');
                 localStorageReallyWorks = true;
-                window.localStorage.removeItem("_tmptest");
-            } catch(BogusQuotaExceededErrorOnIos5) {
+                window.localStorage.removeItem('_tmptest');
+            } catch (BogusQuotaExceededErrorOnIos5) {
                 // Thanks be to iOS5 Private Browsing mode which throws
                 // QUOTA_EXCEEDED_ERRROR DOM Exception 22.
             }
         }
 
-        if(localStorageReallyWorks){
+        if (localStorageReallyWorks) {
             try {
-                if(window.localStorage) {
+                if (window.localStorage) {
                     _storage_service = window.localStorage;
-                    _backend = "localStorage";
+                    _backend = 'localStorage';
                     _observer_update = _storage_service.jStorage_update;
                 }
-            } catch(E3) {/* Firefox fails when touching localStorage and cookies are disabled */}
+            } catch (E3) { /* Firefox fails when touching localStorage and cookies are disabled */ }
         }
         /* Check if browser supports globalStorage */
-        else if("globalStorage" in window){
+        else if ('globalStorage' in window) {
             try {
-                if(window.globalStorage) {
-                    if(window.location.hostname == "localhost"){
-                        _storage_service = window.globalStorage["localhost.localdomain"];
-                    }
-                    else{
+                if (window.globalStorage) {
+                    if (window.location.hostname == 'localhost') {
+                        _storage_service = window.globalStorage['localhost.localdomain'];
+                    } else {
                         _storage_service = window.globalStorage[window.location.hostname];
                     }
-                    _backend = "globalStorage";
+                    _backend = 'globalStorage';
                     _observer_update = _storage_service.jStorage_update;
                 }
-            } catch(E4) {/* Firefox fails when touching localStorage and cookies are disabled */}
+            } catch (E4) { /* Firefox fails when touching localStorage and cookies are disabled */ }
         }
         /* Check if browser supports userData behavior */
         else {
-            _storage_elm = document.createElement("link");
-            if(_storage_elm.addBehavior){
+            _storage_elm = document.createElement('link');
+            if (_storage_elm.addBehavior) {
 
                 /* Use a DOM element to act as userData storage */
-                _storage_elm.style.behavior = "url(#default#userData)";
+                _storage_elm.style.behavior = 'url(#default#userData)';
 
                 /* userData element needs to be inserted into the DOM! */
-                document.getElementsByTagName("head")[0].appendChild(_storage_elm);
+                document.getElementsByTagName('head')[0].appendChild(_storage_elm);
 
-                try{
-                    _storage_elm.load("jStorage");
-                }catch(E){
+                try {
+                    _storage_elm.load('jStorage');
+                } catch (E) {
                     // try to reset cache
-                    _storage_elm.setAttribute("jStorage", "{}");
-                    _storage_elm.save("jStorage");
-                    _storage_elm.load("jStorage");
+                    _storage_elm.setAttribute('jStorage', '{}');
+                    _storage_elm.save('jStorage');
+                    _storage_elm.load('jStorage');
                 }
 
-                var data = "{}";
-                try{
-                    data = _storage_elm.getAttribute("jStorage");
-                }catch(E5){}
+                var data = '{}';
+                try {
+                    data = _storage_elm.getAttribute('jStorage');
+                } catch (E5) {}
 
-                try{
-                    _observer_update = _storage_elm.getAttribute("jStorage_update");
-                }catch(E6){}
+                try {
+                    _observer_update = _storage_elm.getAttribute('jStorage_update');
+                } catch (E6) {}
 
                 _storage_service.jStorage = data;
-                _backend = "userDataBehavior";
-            }else{
+                _backend = 'userDataBehavior';
+            } else {
                 _storage_elm = null;
                 return;
             }
@@ -19261,9 +19268,9 @@ global.Editor = Editor;
         _handlePubSub();
 
         // handle cached navigation
-        if("addEventListener" in window){
-            window.addEventListener("pageshow", function(event){
-                if(event.persisted){
+        if ('addEventListener' in window) {
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted) {
                     _storageObserver();
                 }
             }, false);
@@ -19273,19 +19280,19 @@ global.Editor = Editor;
     /**
      * Reload data from storage when needed
      */
-    function _reloadData(){
-        var data = "{}";
+    function _reloadData() {
+        var data = '{}';
 
-        if(_backend == "userDataBehavior"){
-            _storage_elm.load("jStorage");
+        if (_backend == 'userDataBehavior') {
+            _storage_elm.load('jStorage');
 
-            try{
-                data = _storage_elm.getAttribute("jStorage");
-            }catch(E5){}
+            try {
+                data = _storage_elm.getAttribute('jStorage');
+            } catch (E5) {}
 
-            try{
-                _observer_update = _storage_elm.getAttribute("jStorage_update");
-            }catch(E6){}
+            try {
+                _observer_update = _storage_elm.getAttribute('jStorage_update');
+            } catch (E6) {}
 
             _storage_service.jStorage = data;
         }
@@ -19301,14 +19308,14 @@ global.Editor = Editor;
     /**
      * Sets up a storage change observer
      */
-    function _setupObserver(){
-        if(_backend == "localStorage" || _backend == "globalStorage"){
-            if("addEventListener" in window){
-                window.addEventListener("storage", _storageObserver, false);
-            }else{
-                document.attachEvent("onstorage", _storageObserver);
+    function _setupObserver() {
+        if (_backend == 'localStorage' || _backend == 'globalStorage') {
+            if ('addEventListener' in window) {
+                window.addEventListener('storage', _storageObserver, false);
+            } else {
+                document.attachEvent('onstorage', _storageObserver);
             }
-        }else if(_backend == "userDataBehavior"){
+        } else if (_backend == 'userDataBehavior') {
             setInterval(_storageObserver, 1000);
         }
     }
@@ -19317,22 +19324,22 @@ global.Editor = Editor;
      * Fired on any kind of data change, needs to check if anything has
      * really been changed
      */
-    function _storageObserver(){
+    function _storageObserver() {
         var updateTime;
         // cumulate change notifications with timeout
         clearTimeout(_observer_timeout);
-        _observer_timeout = setTimeout(function(){
+        _observer_timeout = setTimeout(function() {
 
-            if(_backend == "localStorage" || _backend == "globalStorage"){
+            if (_backend == 'localStorage' || _backend == 'globalStorage') {
                 updateTime = _storage_service.jStorage_update;
-            }else if(_backend == "userDataBehavior"){
-                _storage_elm.load("jStorage");
-                try{
-                    updateTime = _storage_elm.getAttribute("jStorage_update");
-                }catch(E5){}
+            } else if (_backend == 'userDataBehavior') {
+                _storage_elm.load('jStorage');
+                try {
+                    updateTime = _storage_elm.getAttribute('jStorage_update');
+                } catch (E5) {}
             }
 
-            if(updateTime && updateTime != _observer_update){
+            if (updateTime && updateTime != _observer_update) {
                 _observer_update = updateTime;
                 _checkUpdatedKeys();
             }
@@ -19343,7 +19350,7 @@ global.Editor = Editor;
     /**
      * Reloads the data and checks if any keys are changed
      */
-    function _checkUpdatedKeys(){
+    function _checkUpdatedKeys() {
         var oldCrc32List = JSON.parse(JSON.stringify(_storage.__jstorage_meta.CRC32)),
             newCrc32List;
 
@@ -19354,28 +19361,28 @@ global.Editor = Editor;
             updated = [],
             removed = [];
 
-        for(key in oldCrc32List){
-            if(oldCrc32List.hasOwnProperty(key)){
-                if(!newCrc32List[key]){
+        for (key in oldCrc32List) {
+            if (oldCrc32List.hasOwnProperty(key)) {
+                if (!newCrc32List[key]) {
                     removed.push(key);
                     continue;
                 }
-                if(oldCrc32List[key] != newCrc32List[key] && String(oldCrc32List[key]).substr(0,2) == "2."){
+                if (oldCrc32List[key] != newCrc32List[key] && String(oldCrc32List[key]).substr(0, 2) == '2.') {
                     updated.push(key);
                 }
             }
         }
 
-        for(key in newCrc32List){
-            if(newCrc32List.hasOwnProperty(key)){
-                if(!oldCrc32List[key]){
+        for (key in newCrc32List) {
+            if (newCrc32List.hasOwnProperty(key)) {
+                if (!oldCrc32List[key]) {
                     updated.push(key);
                 }
             }
         }
 
-        _fireObservers(updated, "updated");
-        _fireObservers(removed, "deleted");
+        _fireObservers(updated, 'updated');
+        _fireObservers(removed, 'deleted');
     }
 
     /**
@@ -19384,26 +19391,29 @@ global.Editor = Editor;
      * @param {Array|String} keys Array of key names or a key
      * @param {String} action What happened with the value (updated, deleted, flushed)
      */
-    function _fireObservers(keys, action){
+    function _fireObservers(keys, action) {
         keys = [].concat(keys || []);
-        if(action == "flushed"){
+
+        var i, j, len, jlen;
+
+        if (action == 'flushed') {
             keys = [];
-            for(var key in _observers){
-                if(_observers.hasOwnProperty(key)){
+            for (var key in _observers) {
+                if (_observers.hasOwnProperty(key)) {
                     keys.push(key);
                 }
             }
-            action = "deleted";
+            action = 'deleted';
         }
-        for(var i=0, len = keys.length; i<len; i++){
-            if(_observers[keys[i]]){
-                for(var j=0, jlen = _observers[keys[i]].length; j<jlen; j++){
+        for (i = 0, len = keys.length; i < len; i++) {
+            if (_observers[keys[i]]) {
+                for (j = 0, jlen = _observers[keys[i]].length; j < jlen; j++) {
                     _observers[keys[i]][j](keys[i], action);
                 }
             }
-            if(_observers["*"]){
-                for(var j=0, jlen = _observers["*"].length; j<jlen; j++){
-                    _observers["*"][j](keys[i], action);
+            if (_observers['*']) {
+                for (j = 0, jlen = _observers['*'].length; j < jlen; j++) {
+                    _observers['*'][j](keys[i], action);
                 }
             }
         }
@@ -19412,19 +19422,19 @@ global.Editor = Editor;
     /**
      * Publishes key change to listeners
      */
-    function _publishChange(){
+    function _publishChange() {
         var updateTime = (+new Date()).toString();
 
-        if(_backend == "localStorage" || _backend == "globalStorage"){
+        if (_backend == 'localStorage' || _backend == 'globalStorage') {
             try {
                 _storage_service.jStorage_update = updateTime;
             } catch (E8) {
                 // safari private mode has been enabled after the jStorage initialization
                 _backend = false;
             }
-        }else if(_backend == "userDataBehavior"){
-            _storage_elm.setAttribute("jStorage_update", updateTime);
-            _storage_elm.save("jStorage");
+        } else if (_backend == 'userDataBehavior') {
+            _storage_elm.setAttribute('jStorage_update', updateTime);
+            _storage_elm.save('jStorage');
         }
 
         _storageObserver();
@@ -19433,39 +19443,41 @@ global.Editor = Editor;
     /**
      * Loads the data from the storage based on the supported mechanism
      */
-    function _load_storage(){
+    function _load_storage() {
         /* if jStorage string is retrieved, then decode it */
-        if(_storage_service.jStorage){
-            try{
+        if (_storage_service.jStorage) {
+            try {
                 _storage = JSON.parse(String(_storage_service.jStorage));
-            }catch(E6){_storage_service.jStorage = "{}";}
-        }else{
-            _storage_service.jStorage = "{}";
+            } catch (E6) {
+                _storage_service.jStorage = '{}';
+            }
+        } else {
+            _storage_service.jStorage = '{}';
         }
-        _storage_size = _storage_service.jStorage?String(_storage_service.jStorage).length:0;
+        _storage_size = _storage_service.jStorage ? String(_storage_service.jStorage).length : 0;
 
-        if(!_storage.__jstorage_meta){
+        if (!_storage.__jstorage_meta) {
             _storage.__jstorage_meta = {};
         }
-        if(!_storage.__jstorage_meta.CRC32){
+        if (!_storage.__jstorage_meta.CRC32) {
             _storage.__jstorage_meta.CRC32 = {};
         }
     }
 
     /**
-     * This functions provides the "save" mechanism to store the jStorage object
+     * This functions provides the 'save' mechanism to store the jStorage object
      */
-    function _save(){
+    function _save() {
         _dropOldEvents(); // remove expired events
-        try{
+        try {
             _storage_service.jStorage = JSON.stringify(_storage);
             // If userData is used as the storage engine, additional
-            if(_storage_elm) {
-                _storage_elm.setAttribute("jStorage",_storage_service.jStorage);
-                _storage_elm.save("jStorage");
+            if (_storage_elm) {
+                _storage_elm.setAttribute('jStorage', _storage_service.jStorage);
+                _storage_elm.save('jStorage');
             }
-            _storage_size = _storage_service.jStorage?String(_storage_service.jStorage).length:0;
-        }catch(E7){/* probably cache is full, nothing is saved this way*/}
+            _storage_size = _storage_service.jStorage ? String(_storage_service.jStorage).length : 0;
+        } catch (E7) { /* probably cache is full, nothing is saved this way*/ }
     }
 
     /**
@@ -19473,12 +19485,12 @@ global.Editor = Editor;
      *
      * @param {String} key Key name
      */
-    function _checkKey(key){
-        if(typeof key != "string" && typeof key != "number"){
-            throw new TypeError("Key name must be string or numeric");
+    function _checkKey(key) {
+        if (typeof key != 'string' && typeof key != 'number') {
+            throw new TypeError('Key name must be string or numeric');
         }
-        if(key == "__jstorage_meta"){
-            throw new TypeError("Reserved key name");
+        if (key == '__jstorage_meta') {
+            throw new TypeError('Reserved key name');
         }
         return true;
     }
@@ -19486,12 +19498,14 @@ global.Editor = Editor;
     /**
      * Removes expired keys
      */
-    function _handleTTL(){
-        var curtime, i, TTL, CRC32, nextExpire = Infinity, changed = false, deleted = [];
+    function _handleTTL() {
+        var curtime, i, TTL, CRC32, nextExpire = Infinity,
+            changed = false,
+            deleted = [];
 
         clearTimeout(_ttl_timeout);
 
-        if(!_storage.__jstorage_meta || typeof _storage.__jstorage_meta.TTL != "object"){
+        if (!_storage.__jstorage_meta || typeof _storage.__jstorage_meta.TTL != 'object') {
             // nothing to do here
             return;
         }
@@ -19500,47 +19514,47 @@ global.Editor = Editor;
         TTL = _storage.__jstorage_meta.TTL;
 
         CRC32 = _storage.__jstorage_meta.CRC32;
-        for(i in TTL){
-            if(TTL.hasOwnProperty(i)){
-                if(TTL[i] <= curtime){
+        for (i in TTL) {
+            if (TTL.hasOwnProperty(i)) {
+                if (TTL[i] <= curtime) {
                     delete TTL[i];
                     delete CRC32[i];
                     delete _storage[i];
                     changed = true;
                     deleted.push(i);
-                }else if(TTL[i] < nextExpire){
+                } else if (TTL[i] < nextExpire) {
                     nextExpire = TTL[i];
                 }
             }
         }
 
         // set next check
-        if(nextExpire != Infinity){
-            _ttl_timeout = setTimeout(_handleTTL, nextExpire - curtime);
+        if (nextExpire != Infinity) {
+            _ttl_timeout = setTimeout(_handleTTL, Math.min(nextExpire - curtime, 0x7FFFFFFF));
         }
 
         // save changes
-        if(changed){
+        if (changed) {
             _save();
             _publishChange();
-            _fireObservers(deleted, "deleted");
+            _fireObservers(deleted, 'deleted');
         }
     }
 
     /**
      * Checks if there's any events on hold to be fired to listeners
      */
-    function _handlePubSub(){
+    function _handlePubSub() {
         var i, len;
-        if(!_storage.__jstorage_meta.PubSub){
+        if (!_storage.__jstorage_meta.PubSub) {
             return;
         }
         var pubelm,
             _pubsubCurrent = _pubsub_last;
 
-        for(i=len=_storage.__jstorage_meta.PubSub.length-1; i>=0; i--){
+        for (i = len = _storage.__jstorage_meta.PubSub.length - 1; i >= 0; i--) {
             pubelm = _storage.__jstorage_meta.PubSub[i];
-            if(pubelm[0] > _pubsub_last){
+            if (pubelm[0] > _pubsub_last) {
                 _pubsubCurrent = pubelm[0];
                 _fireSubscribers(pubelm[1], pubelm[2]);
             }
@@ -19555,13 +19569,13 @@ global.Editor = Editor;
      * @param {String} channel Channel name
      * @param {Mixed} payload Payload data to deliver
      */
-    function _fireSubscribers(channel, payload){
-        if(_pubsub_observers[channel]){
-            for(var i=0, len = _pubsub_observers[channel].length; i<len; i++){
+    function _fireSubscribers(channel, payload) {
+        if (_pubsub_observers[channel]) {
+            for (var i = 0, len = _pubsub_observers[channel].length; i < len; i++) {
                 // send immutable data that can't be modified by listeners
-                try{
+                try {
                     _pubsub_observers[channel][i](channel, JSON.parse(JSON.stringify(payload)));
-                }catch(E){};
+                } catch (E) {}
             }
         }
     }
@@ -19569,22 +19583,22 @@ global.Editor = Editor;
     /**
      * Remove old events from the publish stream (at least 2sec old)
      */
-    function _dropOldEvents(){
-        if(!_storage.__jstorage_meta.PubSub){
+    function _dropOldEvents() {
+        if (!_storage.__jstorage_meta.PubSub) {
             return;
         }
 
         var retire = +new Date() - 2000;
 
-        for(var i=0, len = _storage.__jstorage_meta.PubSub.length; i<len; i++){
-            if(_storage.__jstorage_meta.PubSub[i][0] <= retire){
+        for (var i = 0, len = _storage.__jstorage_meta.PubSub.length; i < len; i++) {
+            if (_storage.__jstorage_meta.PubSub[i][0] <= retire) {
                 // deleteCount is needed for IE6
                 _storage.__jstorage_meta.PubSub.splice(i, _storage.__jstorage_meta.PubSub.length - i);
                 break;
             }
         }
 
-        if(!_storage.__jstorage_meta.PubSub.length){
+        if (!_storage.__jstorage_meta.PubSub.length) {
             delete _storage.__jstorage_meta.PubSub;
         }
 
@@ -19596,15 +19610,15 @@ global.Editor = Editor;
      * @param {String} channel Channel name
      * @param {Mixed} payload Payload to send to the subscribers
      */
-    function _publish(channel, payload){
-        if(!_storage.__jstorage_meta){
+    function _publish(channel, payload) {
+        if (!_storage.__jstorage_meta) {
             _storage.__jstorage_meta = {};
         }
-        if(!_storage.__jstorage_meta.PubSub){
+        if (!_storage.__jstorage_meta.PubSub) {
             _storage.__jstorage_meta.PubSub = [];
         }
 
-        _storage.__jstorage_meta.PubSub.unshift([+new Date, channel, payload]);
+        _storage.__jstorage_meta.PubSub.unshift([+new Date(), channel, payload]);
 
         _save();
         _publishChange();
@@ -19616,9 +19630,9 @@ global.Editor = Editor;
      *
      *  SOURCE: https://github.com/garycourt/murmurhash-js (MIT licensed)
      *
-     * @author <a href="mailto:gary.court@gmail.com">Gary Court</a>
+     * @author <a href='mailto:gary.court@gmail.com'>Gary Court</a>
      * @see http://github.com/garycourt/murmurhash-js
-     * @author <a href="mailto:aappleby@gmail.com">Austin Appleby</a>
+     * @author <a href='mailto:aappleby@gmail.com'>Austin Appleby</a>
      * @see http://sites.google.com/site/murmurhash/
      *
      * @param {string} str ASCII only
@@ -19651,9 +19665,12 @@ global.Editor = Editor;
         }
 
         switch (l) {
-            case 3: h ^= (str.charCodeAt(i + 2) & 0xff) << 16;
-            case 2: h ^= (str.charCodeAt(i + 1) & 0xff) << 8;
-            case 1: h ^= (str.charCodeAt(i) & 0xff);
+            case 3:
+                h ^= (str.charCodeAt(i + 2) & 0xff) << 16;
+            case 2:
+                h ^= (str.charCodeAt(i + 1) & 0xff) << 8;
+            case 1:
+                h ^= (str.charCodeAt(i) & 0xff);
                 h = (((h & 0xffff) * 0x5bd1e995) + ((((h >>> 16) * 0x5bd1e995) & 0xffff) << 16));
         }
 
@@ -19678,36 +19695,39 @@ global.Editor = Editor;
          * @param {Mixed} value Value to set. This can be any value that is JSON
          *              compatible (Numbers, Strings, Objects etc.).
          * @param {Object} [options] - possible options to use
-         * @param {Number} [options.TTL] - optional TTL value
+         * @param {Number} [options.TTL] - optional TTL value, in milliseconds
          * @return {Mixed} the used value
          */
-        set: function(key, value, options){
+        set: function(key, value, options) {
             _checkKey(key);
 
             options = options || {};
 
             // undefined values are deleted automatically
-            if(typeof value == "undefined"){
+            if (typeof value == 'undefined') {
                 this.deleteKey(key);
                 return value;
             }
 
-            if(_XMLService.isXML(value)){
-                value = {_is_xml:true,xml:_XMLService.encode(value)};
-            }else if(typeof value == "function"){
+            if (_XMLService.isXML(value)) {
+                value = {
+                    _is_xml: true,
+                    xml: _XMLService.encode(value)
+                };
+            } else if (typeof value == 'function') {
                 return undefined; // functions can't be saved!
-            }else if(value && typeof value == "object"){
+            } else if (value && typeof value == 'object') {
                 // clone the object before saving to _storage tree
                 value = JSON.parse(JSON.stringify(value));
             }
 
             _storage[key] = value;
 
-            _storage.__jstorage_meta.CRC32[key] = "2." + murmurhash2_32_gc(JSON.stringify(value), 0x9747b28c);
+            _storage.__jstorage_meta.CRC32[key] = '2.' + murmurhash2_32_gc(JSON.stringify(value), 0x9747b28c);
 
             this.setTTL(key, options.TTL || 0); // also handles saving and _publishChange
 
-            _fireObservers(key, "updated");
+            _fireObservers(key, 'updated');
             return value;
         },
 
@@ -19718,16 +19738,16 @@ global.Editor = Editor;
          * @param {mixed} def - Default value to return, if key didn't exist.
          * @return {Mixed} the key value, default value or null
          */
-        get: function(key, def){
+        get: function(key, def) {
             _checkKey(key);
-            if(key in _storage){
-                if(_storage[key] && typeof _storage[key] == "object" && _storage[key]._is_xml) {
+            if (key in _storage) {
+                if (_storage[key] && typeof _storage[key] == 'object' && _storage[key]._is_xml) {
                     return _XMLService.decode(_storage[key].xml);
-                }else{
+                } else {
                     return _storage[key];
                 }
             }
-            return typeof(def) == "undefined" ? null : def;
+            return typeof(def) == 'undefined' ? null : def;
         },
 
         /**
@@ -19736,13 +19756,13 @@ global.Editor = Editor;
          * @param {String} key - Key to delete.
          * @return {Boolean} true if key existed or false if it didn't
          */
-        deleteKey: function(key){
+        deleteKey: function(key) {
             _checkKey(key);
-            if(key in _storage){
+            if (key in _storage) {
                 delete _storage[key];
                 // remove from TTL list
-                if(typeof _storage.__jstorage_meta.TTL == "object" &&
-                  key in _storage.__jstorage_meta.TTL){
+                if (typeof _storage.__jstorage_meta.TTL == 'object' &&
+                    key in _storage.__jstorage_meta.TTL) {
                     delete _storage.__jstorage_meta.TTL[key];
                 }
 
@@ -19750,7 +19770,7 @@ global.Editor = Editor;
 
                 _save();
                 _publishChange();
-                _fireObservers(key, "deleted");
+                _fireObservers(key, 'deleted');
                 return true;
             }
             return false;
@@ -19763,20 +19783,20 @@ global.Editor = Editor;
          * @param {Number} ttl - TTL timeout in milliseconds
          * @return {Boolean} true if key existed or false if it didn't
          */
-        setTTL: function(key, ttl){
+        setTTL: function(key, ttl) {
             var curtime = +new Date();
             _checkKey(key);
             ttl = Number(ttl) || 0;
-            if(key in _storage){
+            if (key in _storage) {
 
-                if(!_storage.__jstorage_meta.TTL){
+                if (!_storage.__jstorage_meta.TTL) {
                     _storage.__jstorage_meta.TTL = {};
                 }
 
                 // Set TTL value for the key
-                if(ttl>0){
+                if (ttl > 0) {
                     _storage.__jstorage_meta.TTL[key] = curtime + ttl;
-                }else{
+                } else {
                     delete _storage.__jstorage_meta.TTL[key];
                 }
 
@@ -19796,10 +19816,11 @@ global.Editor = Editor;
          * @param {String} key Key to check
          * @return {Number} Remaining TTL in milliseconds
          */
-        getTTL: function(key){
-            var curtime = +new Date(), ttl;
+        getTTL: function(key) {
+            var curtime = +new Date(),
+                ttl;
             _checkKey(key);
-            if(key in _storage && _storage.__jstorage_meta.TTL && _storage.__jstorage_meta.TTL[key]){
+            if (key in _storage && _storage.__jstorage_meta.TTL && _storage.__jstorage_meta.TTL[key]) {
                 ttl = _storage.__jstorage_meta.TTL[key] - curtime;
                 return ttl || 0;
             }
@@ -19811,11 +19832,15 @@ global.Editor = Editor;
          *
          * @return {Boolean} Always true
          */
-        flush: function(){
-            _storage = {__jstorage_meta:{CRC32:{}}};
+        flush: function() {
+            _storage = {
+                __jstorage_meta: {
+                    CRC32: {}
+                }
+            };
             _save();
             _publishChange();
-            _fireObservers(null, "flushed");
+            _fireObservers(null, 'flushed');
             return true;
         },
 
@@ -19823,8 +19848,8 @@ global.Editor = Editor;
          * Returns a read-only copy of _storage
          *
          * @return {Object} Read-only copy of _storage
-        */
-        storageObj: function(){
+         */
+        storageObj: function() {
             function F() {}
             F.prototype = _storage;
             return new F();
@@ -19832,14 +19857,15 @@ global.Editor = Editor;
 
         /**
          * Returns an index of all used keys as an array
-         * ["key1", "key2",.."keyN"]
+         * ['key1', 'key2',..'keyN']
          *
          * @return {Array} Used keys
-        */
-        index: function(){
-            var index = [], i;
-            for(i in _storage){
-                if(_storage.hasOwnProperty(i) && i != "__jstorage_meta"){
+         */
+        index: function() {
+            var index = [],
+                i;
+            for (i in _storage) {
+                if (_storage.hasOwnProperty(i) && i != '__jstorage_meta') {
                     index.push(i);
                 }
             }
@@ -19852,7 +19878,7 @@ global.Editor = Editor;
          * @return {Number} Storage size in chars (not the same as in bytes,
          *                  since some chars may take several bytes)
          */
-        storageSize: function(){
+        storageSize: function() {
             return _storage_size;
         },
 
@@ -19861,7 +19887,7 @@ global.Editor = Editor;
          *
          * @return {String} Backend name
          */
-        currentBackend: function(){
+        currentBackend: function() {
             return _backend;
         },
 
@@ -19870,7 +19896,7 @@ global.Editor = Editor;
          *
          * @return {Boolean} True if storage can be used
          */
-        storageAvailable: function(){
+        storageAvailable: function() {
             return !!_backend;
         },
 
@@ -19880,9 +19906,9 @@ global.Editor = Editor;
          * @param {String} key Key name
          * @param {Function} callback Function to run when the key changes
          */
-        listenKeyChange: function(key, callback){
+        listenKeyChange: function(key, callback) {
             _checkKey(key);
-            if(!_observers[key]){
+            if (!_observers[key]) {
                 _observers[key] = [];
             }
             _observers[key].push(callback);
@@ -19894,21 +19920,21 @@ global.Editor = Editor;
          * @param {String} key Key name to unregister listeners against
          * @param {Function} [callback] If set, unregister the callback, if not - unregister all
          */
-        stopListening: function(key, callback){
+        stopListening: function(key, callback) {
             _checkKey(key);
 
-            if(!_observers[key]){
+            if (!_observers[key]) {
                 return;
             }
 
-            if(!callback){
+            if (!callback) {
                 delete _observers[key];
                 return;
             }
 
-            for(var i = _observers[key].length - 1; i>=0; i--){
-                if(_observers[key][i] == callback){
-                    _observers[key].splice(i,1);
+            for (var i = _observers[key].length - 1; i >= 0; i--) {
+                if (_observers[key][i] == callback) {
+                    _observers[key].splice(i, 1);
                 }
             }
         },
@@ -19919,12 +19945,12 @@ global.Editor = Editor;
          * @param {String} channel Channel name
          * @param {Function} callback Function to run when the something is published to the channel
          */
-        subscribe: function(channel, callback){
-            channel = (channel || "").toString();
-            if(!channel){
-                throw new TypeError("Channel not defined");
+        subscribe: function(channel, callback) {
+            channel = (channel || '').toString();
+            if (!channel) {
+                throw new TypeError('Channel not defined');
             }
-            if(!_pubsub_observers[channel]){
+            if (!_pubsub_observers[channel]) {
                 _pubsub_observers[channel] = [];
             }
             _pubsub_observers[channel].push(callback);
@@ -19936,10 +19962,10 @@ global.Editor = Editor;
          * @param {String} channel Channel name
          * @param {Mixed} payload Payload to deliver
          */
-        publish: function(channel, payload){
-            channel = (channel || "").toString();
-            if(!channel){
-                throw new TypeError("Channel not defined");
+        publish: function(channel, payload) {
+            channel = (channel || '').toString();
+            if (!channel) {
+                throw new TypeError('Channel not defined');
             }
 
             _publish(channel, payload);
@@ -19948,31 +19974,30 @@ global.Editor = Editor;
         /**
          * Reloads the data from browser storage
          */
-        reInit: function(){
+        reInit: function() {
             _reloadData();
         },
 
         /**
          * Removes reference from global objects and saves it as jStorage
          *
-         * @param {Boolean} option if needed to save object as simple "jStorage" in windows context
+         * @param {Boolean} option if needed to save object as simple 'jStorage' in windows context
          */
-         noConflict: function( saveInGlobal ) {
-            delete window.$.jStorage
+        noConflict: function(saveInGlobal) {
+            delete window.$.jStorage;
 
-            if ( saveInGlobal ) {
+            if (saveInGlobal) {
                 window.jStorage = this;
             }
 
             return this;
-         }
+        }
     };
 
     // Initialize jStorage
     _init();
 
 })();
-
 /*!
  * Bootstrap v3.1.1 (http://getbootstrap.com)
  * Copyright 2011-2014 Twitter, Inc.
