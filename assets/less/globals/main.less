@@ -15,7 +15,18 @@ body {
       width: 85%;
   }
 }
-
+@media (min-width: @screen-sm-min) {
+  table {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+}
+@media (min-width: @screen-md-min) {
+  table {
+    max-width: 100%;
+    margin: 0;
+  }
+}
 table {
   tr:hover {
     .actions {
@@ -28,7 +39,7 @@ table {
     border-bottom: 1px solid #ddd;
   }
   td.title {
-    width: 70%;
+    width: 50%;
   }
 }
 

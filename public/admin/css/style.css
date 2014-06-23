@@ -7541,6 +7541,18 @@ body {
     width: 85%;
   }
 }
+@media (min-width: 768px) {
+  table {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+}
+@media (min-width: 992px) {
+  table {
+    max-width: 100%;
+    margin: 0;
+  }
+}
 table tr:hover .actions {
   display: block;
 }
@@ -7550,7 +7562,7 @@ table td {
   border-bottom: 1px solid #ddd;
 }
 table td.title {
-  width: 70%;
+  width: 50%;
 }
 .actions {
   position: absolute;

@@ -54,7 +54,7 @@
 
       @setUpEditor()
       @setupUsers()
-      
+
       # Fetch the tags and setup the selectize plugin.
       App.request "tag:entities", (tags) =>
         @setUpTags tags

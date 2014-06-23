@@ -70,12 +70,10 @@ module.exports = (grunt) ->
 #          'assets/vendor/components/backbone.syphon/**/*.js'
           'assets/vendor/components/momentjs/*.js'
           'assets/plugins/redactor.js'
-          'assets/plugins/editor/*.js'
           'assets/vendor/components/js-md5/*.js'
           'assets/vendor/components/jstorage/*.js'
           'assets/vendor/components/bootstrap/js/**/*.js'
           'assets/plugins/qtip.js'
-          'assets/plugins/editor/inline-attach.js'
           'assets/plugins/slugify.js'
           'assets/vendor/components/dropzone/**/*.js'
         ]

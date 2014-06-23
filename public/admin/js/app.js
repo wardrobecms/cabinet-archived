@@ -175,7 +175,7 @@ this["JST"]["post/list/templates/grid.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="page-header">\n  <ul class="nav nav-pills pull-right">\n    <li class="active js-filter" data-type="draft"><a href="#post/draft"><i class="icon-edit"></i> &nbsp; Drafts</a></li>\n    <li class="js-filter" data-type="scheduled"><a href="#post/scheduled"><i class="icon-calendar"></i> &nbsp; Scheduled</a></li>\n    <li class="js-filter" data-type="published"><a href="#post/published"><i class="icon-laptop"></i> &nbsp; Published</a></li>\n  </ul>\n  <h1>Your Posts </h1>\n</div>\n\n<form class="filter form-inline hidden-xs hide" role="form">\n  <div class="form-group">\n    <input type="text" class="form-control filter" id="js-filter" name="filter" placeholder="Filter">\n  </div>\n</form>\n<table class="table table-hover">\n\t<thead>\n\t\t<tr>\n\t\t\t<th>' +
+__p += '<div class="page-header">\n  <ul class="nav nav-pills pull-right">\n    <li class="active js-filter" data-type="draft"><a href="#post/draft"><i class="icon-edit"></i> &nbsp; Drafts</a></li>\n    <li class="js-filter" data-type="scheduled"><a href="#post/scheduled"><i class="icon-calendar"></i> &nbsp; Scheduled</a></li>\n    <li class="js-filter" data-type="published"><a href="#post/published"><i class="icon-laptop"></i> &nbsp; Published</a></li>\n  </ul>\n  <h1>Your Posts </h1>\n</div>\n\n<form class="filter form-inline hidden-xs hide" role="form">\n  <div class="form-group">\n    <input type="text" class="form-control filter" id="js-filter" name="filter" placeholder="Filter">\n  </div>\n</form>\n\n<table class="table table-hover">\n\t<thead>\n\t\t<tr>\n\t\t\t<th>' +
 ((__t = ( Lang.post_title )) == null ? '' : __t) +
 '</th>\n\t\t\t<th>' +
 ((__t = ( Lang.post_published )) == null ? '' : __t) +
@@ -245,7 +245,7 @@ $.fn.formatDates = function() {
     format = item.data("format");
     originalDate = item.data("date");
     if (typeof format === "undefined") {
-      format = "MMM Do YYYY, hh:mma";
+      format = "lll";
     }
     time = isNaN(originalDate) ? moment(originalDate, "YYYY-MM-DD HH:mm:ss") : moment.unix(originalDate);
     return item.text(time.local().format(format));
