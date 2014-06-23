@@ -40,8 +40,6 @@
 
     # When the view is shown in the DOM setup all the plugins
     onShow: ->
-      @setUpEditor()
-      @setupUsers()
       @localStorage()
       @_triggerActive()
 
@@ -52,7 +50,11 @@
       else
         @$("#active").val @model.get("active")
         @$("##{@model.get("type")}").prop('checked', true).parent().addClass("active")
+        @$("#content").val @model.get("parsed_content")
 
+      @setUpEditor()
+      @setupUsers()
+      
       # Fetch the tags and setup the selectize plugin.
       App.request "tag:entities", (tags) =>
         @setUpTags tags

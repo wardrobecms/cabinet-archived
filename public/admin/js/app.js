@@ -1638,8 +1638,6 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
     };
 
     PostView.prototype.onShow = function() {
-      this.setUpEditor();
-      this.setupUsers();
       this.localStorage();
       this._triggerActive();
       if (this.model.isNew()) {
@@ -1650,7 +1648,10 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
       } else {
         this.$("#active").val(this.model.get("active"));
         this.$("#" + (this.model.get("type"))).prop('checked', true).parent().addClass("active");
+        this.$("#content").val(this.model.get("parsed_content"));
       }
+      this.setUpEditor();
+      this.setupUsers();
       return App.request("tag:entities", (function(_this) {
         return function(tags) {
           return _this.setUpTags(tags);

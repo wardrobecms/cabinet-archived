@@ -19,6 +19,8 @@ class Post extends \Eloquent {
 	 */
 	protected $fillable = array('title', 'slug', 'content', 'image', 'type', 'link_url', 'active', 'publish_date', 'user_id');
 
+	protected $appends = array('parsed_content');
+
 	/**
 	 * Tags Relationship
 	 *
