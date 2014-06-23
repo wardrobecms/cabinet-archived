@@ -4,13 +4,9 @@
     <div class="form-group">
         <input type="text" class="form-control input-lg" name="title" id="title" placeholder="<%= Lang.post_title %>">
     </div>
-    <div class="tags">
-        <input type="text" id="js-tags" name="tags" class="tags" style="width: 50%" value="" placeholder="<%= Lang.post_tags %>">
-    </div>
 
     <ul class="nav nav-tabs nav-justified">
         <li class="active"><a href="#text" data-toggle="tab"><i class="icon-file-text"></i> Text</a></li>
-        <li><a href="#photo" data-toggle="tab"><i class="icon-picture"></i> Photo</a></li>
         <li><a href="#settings" data-toggle="tab"><i class="icon-cog"></i> Settings</a></li>
     </ul>
 
@@ -18,23 +14,15 @@
     <div class="tab-content">
         <div class="tab-pane active" id="text">
             <div class="content-area">
-                <textarea name="content" id="content" style="max-height: 560px;" placeholder="<%= Lang.post_content %>"></textarea>
-
-            </div>
-        </div>
-        <div class="tab-pane" id="photo">
-            <div class="panel-well">
-                <div class="form-group">
-                    <label for="dropzone">Post Image</label>
-                    <input type="hidden" name="image" id="image">
-                    <div class="dropzone clickable inline" id="dropzone-attachment">
-                        <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>
-                    </div>
-                </div>
+                <textarea name="content" id="content" placeholder="<%= Lang.post_content %>"></textarea>
             </div>
         </div>
         <div class="tab-pane" id="settings">
             <div class="panel-well">
+                <div class="form-group">
+                    <label for="tags"><%= Lang.post_tags %></label>
+                    <input type="text" id="js-tags" name="tags" class="tags" value="" placeholder="<%= Lang.post_tags %>">
+                </div>
                 <div class="form-group">
                     <label for="slug"><%= Lang.post_slug %></label>
                     <input type="text" name="slug" id="slug" class="form-control" placeholder="<%= Lang.post_slug %>">

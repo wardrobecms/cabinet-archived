@@ -125,11 +125,13 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">\n    <input type="hidden" name="active" id="active" class="js-active" value="1">\n\n    <div class="form-group">\n        <input type="text" class="form-control input-lg" name="title" id="title" placeholder="' +
 ((__t = ( Lang.post_title )) == null ? '' : __t) +
-'">\n    </div>\n    <div class="tags">\n        <input type="text" id="js-tags" name="tags" class="tags" style="width: 50%" value="" placeholder="' +
-((__t = ( Lang.post_tags )) == null ? '' : __t) +
-'">\n    </div>\n\n    <ul class="nav nav-tabs nav-justified">\n        <li class="active"><a href="#text" data-toggle="tab"><i class="icon-file-text"></i> Text</a></li>\n        <li><a href="#photo" data-toggle="tab"><i class="icon-picture"></i> Photo</a></li>\n        <li><a href="#settings" data-toggle="tab"><i class="icon-cog"></i> Settings</a></li>\n    </ul>\n\n    <!-- Tab panes -->\n    <div class="tab-content">\n        <div class="tab-pane active" id="text">\n            <div class="content-area">\n                <textarea name="content" id="content" style="max-height: 560px;" placeholder="' +
+'">\n    </div>\n\n    <ul class="nav nav-tabs nav-justified">\n        <li class="active"><a href="#text" data-toggle="tab"><i class="icon-file-text"></i> Text</a></li>\n        <li><a href="#settings" data-toggle="tab"><i class="icon-cog"></i> Settings</a></li>\n    </ul>\n\n    <!-- Tab panes -->\n    <div class="tab-content">\n        <div class="tab-pane active" id="text">\n            <div class="content-area">\n                <textarea name="content" id="content" placeholder="' +
 ((__t = ( Lang.post_content )) == null ? '' : __t) +
-'"></textarea>\n\n            </div>\n        </div>\n        <div class="tab-pane" id="photo">\n            <div class="panel-well">\n                <div class="form-group">\n                    <label for="dropzone">Post Image</label>\n                    <input type="hidden" name="image" id="image">\n                    <div class="dropzone clickable inline" id="dropzone-attachment">\n                        <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class="tab-pane" id="settings">\n            <div class="panel-well">\n                <div class="form-group">\n                    <label for="slug">' +
+'"></textarea>\n            </div>\n        </div>\n        <div class="tab-pane" id="settings">\n            <div class="panel-well">\n                <div class="form-group">\n                    <label for="tags">' +
+((__t = ( Lang.post_tags )) == null ? '' : __t) +
+'</label>\n                    <input type="text" id="js-tags" name="tags" class="tags" value="" placeholder="' +
+((__t = ( Lang.post_tags )) == null ? '' : __t) +
+'">\n                </div>\n                <div class="form-group">\n                    <label for="slug">' +
 ((__t = ( Lang.post_slug )) == null ? '' : __t) +
 '</label>\n                    <input type="text" name="slug" id="slug" class="form-control" placeholder="' +
 ((__t = ( Lang.post_slug )) == null ? '' : __t) +
@@ -1638,7 +1640,6 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
     PostView.prototype.onShow = function() {
       this.setUpEditor();
       this.setupUsers();
-      this.setupFilm();
       this.localStorage();
       this._triggerActive();
       if (this.model.isNew()) {
@@ -1650,12 +1651,11 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
         this.$("#active").val(this.model.get("active"));
         this.$("#" + (this.model.get("type"))).prop('checked', true).parent().addClass("active");
       }
-      App.request("tag:entities", (function(_this) {
+      return App.request("tag:entities", (function(_this) {
         return function(tags) {
           return _this.setUpTags(tags);
         };
       })(this));
-      return App.vent.trigger("setup:dropzone", "#dropzone-attachment", this.model.get("image"));
     };
 
     PostView.prototype._triggerActive = function() {
@@ -1670,22 +1670,16 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
     };
 
     PostView.prototype.setUpEditor = function() {
-      var toolbar;
       return $('#content').redactor({
         toolbarFixedBox: true,
-        imageUpload: App.request("get:url:api") + "/dropzone/image"
+        minHeight: 200,
+        imageUpload: App.request("get:url:api") + "/dropzone/image",
+        changeCallback: (function(_this) {
+          return function(html) {
+            return _this.localStorage();
+          };
+        })(this)
       });
-      toolbar = ['bold', 'italic', '|', 'quote', 'unordered-list', 'ordered-list', 'ellipsis-horizontal', '|', 'link', 'image', 'code', 'film', '|', 'undo', 'redo'];
-      this.editor = new Editor({
-        element: document.getElementById("content"),
-        toolbar: toolbar
-      });
-      this.imageUpload(this.editor);
-      return this.editor.codemirror.on("change", (function(_this) {
-        return function(cm, change) {
-          return _this.localStorage();
-        };
-      })(this));
     };
 
     PostView.prototype.localStorage = function() {
@@ -1695,6 +1689,7 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
         image: this.$('#image').val(),
         type: this.$('#type').val(),
         active: this.$('input[type=radio]:checked').val(),
+        content: this.$("#content").val(),
         tags: this.$("#js-tags").val(),
         user_id: this.$("#js-user").val(),
         publish_date: this.$("#publish_date").val()
@@ -1800,77 +1795,6 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
       return this.tagsShown = !this.tagsShown;
     };
 
-    PostView.prototype.setupFilm = function() {
-      return this.$(".icon-film").qtip({
-        show: {
-          event: "click"
-        },
-        content: {
-          text: $("#film-form").html()
-        },
-        position: {
-          at: "right center",
-          my: "left center",
-          viewport: $(window),
-          effect: false
-        },
-        events: {
-          render: (function(_this) {
-            return function(event, api) {
-              return $(".js-submitfilm").click(function(e) {
-                var filmInput, filmUrl;
-                e.preventDefault();
-                filmInput = $(e.currentTarget).parent().find('input');
-                filmUrl = filmInput.val();
-                _this.attachFilm(filmUrl);
-                filmInput.val('');
-                return $('.icon-film').qtip("hide");
-              });
-            };
-          })(this)
-        },
-        hide: "unfocus"
-      });
-    };
-
-    PostView.prototype.attachFilm = function(filmUrl) {
-      if (filmUrl.match(/youtube.com/g)) {
-        return this.bulidYoutubeIframe(filmUrl);
-      } else if (filmUrl.match(/vimeo.com/g)) {
-        return this.buildVimeoIframe(filmUrl);
-      } else {
-
-      }
-    };
-
-    PostView.prototype.bulidYoutubeIframe = function(filmUrl) {
-      var filmIframe;
-      filmUrl = filmUrl.replace(/https?:\/\//, '//');
-      filmUrl = filmUrl.replace(/watch\?v=/, 'embed/');
-      filmIframe = '<iframe width="560" height="315" src="' + filmUrl + '" frameborder="0" allowfullscreen></iframe>';
-      return this.insert(filmIframe);
-    };
-
-    PostView.prototype.buildVimeoIframe = function(originalFilmUrl) {
-      var filmIframe, filmUrl;
-      filmUrl = originalFilmUrl.replace(/https?:\/\/vimeo.com\//, '//player.vimeo.com/video/');
-      filmIframe = '<iframe src="' + filmUrl + '?title=0&amp;byline=0&amp;portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-      return this.insert(filmIframe);
-    };
-
-    PostView.prototype.insertReadMore = function() {
-      if (this.editor.codemirror.getValue().match(/!-- more/g)) {
-        return this.$("#js-errors").show().find("span").html(Lang.post_more_added);
-      } else {
-        this.$(".icon-ellipsis-horizontal").addClass("disabled");
-        return this.insert('<!-- more -->');
-      }
-    };
-
-    PostView.prototype.insert = function(string) {
-      return this.editor.codemirror.replaceSelection(string);
-    };
-
     PostView.prototype.save = function(e) {
       e.preventDefault();
       return this.processFormSubmit({
@@ -1893,27 +1817,6 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
       });
     };
 
-    PostView.prototype.collapse = function($toggle) {
-      this.$toggle = $toggle;
-      this.$toggle.data("dir", "up").addClass("icon-chevron-sign-right").removeClass("icon-chevron-sign-down");
-      return this.$(".details").addClass("hide");
-    };
-
-    PostView.prototype.expand = function($toggle) {
-      this.$toggle = $toggle;
-      this.$toggle.data("dir", "down").addClass("icon-chevron-sign-down").removeClass("icon-chevron-sign-right");
-      return this.$(".details").removeClass("hide");
-    };
-
-    PostView.prototype.toggleDetails = function(e) {
-      this.$toggle = $(e.currentTarget);
-      if (this.$toggle.data("dir") === "up") {
-        return this.expand(this.$toggle);
-      } else {
-        return this.collapse(this.$toggle);
-      }
-    };
-
     PostView.prototype.setStatus = function(e) {
       e.preventDefault();
       this.localStorage();
@@ -1924,18 +1827,6 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
         this.$(".publish").text(Lang.post_save);
         return this.$(".js-active").val(0);
       }
-    };
-
-    PostView.prototype.imageUpload = function(editor) {
-      var options;
-      options = {
-        uploadUrl: App.request("get:url:api") + "/dropzone/image",
-        allowedTypes: ["image/jpeg", "image/png", "image/jpg", "image/gif"],
-        progressText: "![Uploading file...]()",
-        urlText: "![file]({filename})",
-        errorText: "Error uploading file"
-      };
-      return inlineAttach.attachToCodeMirror(editor.codemirror, options);
     };
 
     return PostView;
