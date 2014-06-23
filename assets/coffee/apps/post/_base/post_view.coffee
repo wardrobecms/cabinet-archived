@@ -71,6 +71,7 @@
     setUpEditor: ->
       return $('#content').redactor(
         toolbarFixedBox: true
+        imageUpload: App.request("get:url:api") + "/dropzone/image"
       )
 
 

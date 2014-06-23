@@ -1672,7 +1672,8 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
     PostView.prototype.setUpEditor = function() {
       var toolbar;
       return $('#content').redactor({
-        toolbarFixedBox: true
+        toolbarFixedBox: true,
+        imageUpload: App.request("get:url:api") + "/dropzone/image"
       });
       toolbar = ['bold', 'italic', '|', 'quote', 'unordered-list', 'ordered-list', 'ellipsis-horizontal', '|', 'link', 'image', 'code', 'film', '|', 'undo', 'redo'];
       this.editor = new Editor({
