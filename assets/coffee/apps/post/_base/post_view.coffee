@@ -40,7 +40,6 @@
 
     # When the view is shown in the DOM setup all the plugins
     onShow: ->
-      @localStorage()
       @_triggerActive()
 
       if @model.isNew()
@@ -53,6 +52,7 @@
         @$("#content").val @model.get("parsed_content")
 
       @setUpEditor()
+      @localStorage()
       @setupUsers()
 
       # Fetch the tags and setup the selectize plugin.
@@ -68,12 +68,17 @@
 
     # Setup the markdown editor
     setUpEditor: ->
-      return $('#content').redactor
-        toolbarFixedBox: true
-        minHeight: 200 # pixels
-        imageUpload: App.request("get:url:api") + "/dropzone/image"
-        changeCallback: (html) =>
-          @localStorage()
+      opts = {
+        apiUrl: App.request("get:url:api")
+        storage: @storage
+      }
+
+      if App.editor is "lepture"
+        @editor = new Lepture opts
+      else
+        @editor = new Redactor opts
+
+      @editor.initialize()
 
     # Save the post data to local storage
     localStorage: ->
@@ -83,7 +88,7 @@
         image: @$('#image').val()
         type: @$('#type').val()
         active: @$('input[type=radio]:checked').val()
-        content: @$("#content").val()
+        content: @editor.getValue()
         tags: @$("#js-tags").val()
         user_id: @$("#js-user").val()
         publish_date: @$("#publish_date").val()
@@ -161,7 +166,7 @@
         title: @$('#title').val()
         slug: @$('#slug').val()
         active: @$('#active').val()
-        content: @$("#content").val()
+        content: @editor.getValue()
         tags: @$("#js-tags").val()
         type: @$('#type').val()
         image: @$("#image").val()

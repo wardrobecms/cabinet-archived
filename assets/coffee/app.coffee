@@ -6,6 +6,7 @@
   App.on "initialize:before", (options) ->
     App.environment = $('meta[name=env]').attr("content")
     App.csrfToken = $("meta[name='token']").attr('content')
+    App.editor = options.editor
     @currentUser = App.request "set:current:user", options.user
     @allUsers = App.request "set:all:users", options.users
     @apiUrl = _.stripTrailingSlash options.api_url

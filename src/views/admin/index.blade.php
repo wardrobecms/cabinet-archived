@@ -17,6 +17,7 @@
 			api_url: "{{ route('wardrobe.api.index') }}",
 			admin_url: "{{ route('wardrobe.admin.index') }}",
 			blog_url: "/",
+			editor: "{{ Config::get('wardrobe.editor') }}"
 		});
 	});
 	window.Lang = {@foreach($locale as $key => $item) {{ $key }}: "{{ $item }}", @endforeach}

@@ -125,9 +125,9 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">\n    <input type="hidden" name="active" id="active" class="js-active" value="1">\n\n    <div class="form-group">\n        <input type="text" class="form-control input-lg" name="title" id="title" placeholder="' +
 ((__t = ( Lang.post_title )) == null ? '' : __t) +
-'">\n    </div>\n\n    <ul class="nav nav-tabs nav-justified">\n        <li class="active"><a href="#text" data-toggle="tab"><i class="icon-file-text"></i> Text</a></li>\n        <li><a href="#settings" data-toggle="tab"><i class="icon-cog"></i> Settings</a></li>\n    </ul>\n\n    <!-- Tab panes -->\n    <div class="tab-content">\n        <div class="tab-pane active" id="text">\n            <div class="content-area">\n                <textarea name="content" id="content" placeholder="' +
+'">\n    </div>\n\n    <ul class="nav nav-tabs nav-justified">\n        <li class="active"><a href="#text" data-toggle="tab"><i class="icon-file-text"></i> Text</a></li>\n        <li><a href="#settings" data-toggle="tab"><i class="icon-cog"></i> Settings</a></li>\n    </ul>\n\n    <!-- Tab panes -->\n    <div class="tab-content">\n        <div class="tab-pane active" id="text">\n            <div class="content-area">\n\n                <div class="editor-wrapper">\n                    <textarea name="content" id="content" placeholder="' +
 ((__t = ( Lang.post_content )) == null ? '' : __t) +
-'"></textarea>\n            </div>\n        </div>\n        <div class="tab-pane" id="settings">\n            <div class="panel-well">\n                <div class="form-group">\n                    <label for="tags">' +
+'"></textarea>\n                </div>\n\n            </div>\n        </div>\n        <div class="tab-pane" id="settings">\n            <div class="panel-well">\n                <div class="form-group">\n                    <label for="tags">' +
 ((__t = ( Lang.post_tags )) == null ? '' : __t) +
 '</label>\n                    <input type="text" id="js-tags" name="tags" class="tags" value="" placeholder="' +
 ((__t = ( Lang.post_tags )) == null ? '' : __t) +
@@ -389,6 +389,7 @@ this.Wardrobe = (function(Backbone, Marionette) {
   App.on("initialize:before", function(options) {
     App.environment = $('meta[name=env]').attr("content");
     App.csrfToken = $("meta[name='token']").attr('content');
+    App.editor = options.editor;
     this.currentUser = App.request("set:current:user", options.user);
     this.allUsers = App.request("set:all:users", options.users);
     this.apiUrl = _.stripTrailingSlash(options.api_url);
@@ -1638,7 +1639,6 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
     };
 
     PostView.prototype.onShow = function() {
-      this.localStorage();
       this._triggerActive();
       if (this.model.isNew()) {
         this.$('.js-toggle').trigger("click");
@@ -1651,6 +1651,7 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
         this.$("#content").val(this.model.get("parsed_content"));
       }
       this.setUpEditor();
+      this.localStorage();
       this.setupUsers();
       return App.request("tag:entities", (function(_this) {
         return function(tags) {
@@ -1671,16 +1672,17 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
     };
 
     PostView.prototype.setUpEditor = function() {
-      return $('#content').redactor({
-        toolbarFixedBox: true,
-        minHeight: 200,
-        imageUpload: App.request("get:url:api") + "/dropzone/image",
-        changeCallback: (function(_this) {
-          return function(html) {
-            return _this.localStorage();
-          };
-        })(this)
-      });
+      var opts;
+      opts = {
+        apiUrl: App.request("get:url:api"),
+        storage: this.storage
+      };
+      if (App.editor === "lepture") {
+        this.editor = new Lepture(opts);
+      } else {
+        this.editor = new Redactor(opts);
+      }
+      return this.editor.initialize();
     };
 
     PostView.prototype.localStorage = function() {
@@ -1690,7 +1692,7 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
         image: this.$('#image').val(),
         type: this.$('#type').val(),
         active: this.$('input[type=radio]:checked').val(),
-        content: this.$("#content").val(),
+        content: this.editor.getValue(),
         tags: this.$("#js-tags").val(),
         user_id: this.$("#js-user").val(),
         publish_date: this.$("#publish_date").val()
@@ -1802,7 +1804,7 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
         title: this.$('#title').val(),
         slug: this.$('#slug').val(),
         active: this.$('#active').val(),
-        content: this.$("#content").val(),
+        content: this.editor.getValue(),
         tags: this.$("#js-tags").val(),
         type: this.$('#type').val(),
         image: this.$("#image").val(),
@@ -2299,3 +2301,76 @@ this.Wardrobe.module("PostApp", function(PostApp, App, Backbone, Marionette, $, 
     });
   });
 });
+
+var Lepture;
+
+Lepture = (function() {
+  function Lepture(options) {
+    this.apiUrl = options.apiUrl;
+    this.storage = options.storage;
+  }
+
+  Lepture.prototype.initialize = function() {
+    this.editor = new Editor({
+      element: document.getElementById("content")
+    });
+    this.imageUpload(this.editor);
+    return this.editor.codemirror.on("change", (function(_this) {
+      return function(cm, change) {
+        return _this.storage.put({
+          content: _this.getValue()
+        });
+      };
+    })(this));
+  };
+
+  Lepture.prototype.imageUpload = function(editor) {
+    var options;
+    options = {
+      uploadUrl: this.apiUrl + "/dropzone/image",
+      allowedTypes: ["image/jpeg", "image/png", "image/jpg", "image/gif"],
+      progressText: "![Uploading file...]()",
+      urlText: "![file]({filename})",
+      errorText: "Error uploading file"
+    };
+    return inlineAttach.attachToCodeMirror(editor.codemirror, options);
+  };
+
+  Lepture.prototype.getValue = function() {
+    return this.editor.codemirror.getValue();
+  };
+
+  return Lepture;
+
+})();
+
+var Redactor;
+
+Redactor = (function() {
+  function Redactor(options) {
+    this.apiUrl = options.apiUrl;
+    this.storage = options.storage;
+  }
+
+  Redactor.prototype.initialize = function() {
+    return $('#content').redactor({
+      toolbarFixedBox: true,
+      minHeight: 200,
+      imageUpload: this.apiUrl + "/dropzone/image",
+      changeCallback: (function(_this) {
+        return function(html) {
+          return _this.storage.put({
+            content: html
+          });
+        };
+      })(this)
+    });
+  };
+
+  Redactor.prototype.getValue = function() {
+    return $("#content").val();
+  };
+
+  return Redactor;
+
+})();
