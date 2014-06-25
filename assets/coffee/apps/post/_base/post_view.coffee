@@ -49,7 +49,7 @@
       else
         @$("#active").val @model.get("active")
         @$("##{@model.get("type")}").prop('checked', true).parent().addClass("active")
-        @$("#content").val @model.get("parsed_content")
+        @$("#content").val @model.get("content")
 
       @setUpEditor()
       @localStorage()
@@ -71,6 +71,7 @@
       opts = {
         apiUrl: App.request("get:url:api")
         storage: @storage
+        model: @model
       }
 
       if App.editor is "lepture"

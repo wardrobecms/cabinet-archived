@@ -1648,7 +1648,7 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
       } else {
         this.$("#active").val(this.model.get("active"));
         this.$("#" + (this.model.get("type"))).prop('checked', true).parent().addClass("active");
-        this.$("#content").val(this.model.get("parsed_content"));
+        this.$("#content").val(this.model.get("content"));
       }
       this.setUpEditor();
       this.localStorage();
@@ -1675,7 +1675,8 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
       var opts;
       opts = {
         apiUrl: App.request("get:url:api"),
-        storage: this.storage
+        storage: this.storage,
+        model: this.model
       };
       if (App.editor === "lepture") {
         this.editor = new Lepture(opts);
@@ -2350,10 +2351,11 @@ Redactor = (function() {
   function Redactor(options) {
     this.apiUrl = options.apiUrl;
     this.storage = options.storage;
+    this.model = options.model;
   }
 
   Redactor.prototype.initialize = function() {
-    return $('#content').redactor({
+    return $('#content').val(this.model.get("parsed_content")).redactor({
       toolbarFixedBox: true,
       minHeight: 200,
       imageUpload: this.apiUrl + "/dropzone/image",
