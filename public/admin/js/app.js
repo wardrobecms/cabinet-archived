@@ -143,7 +143,7 @@ __p += '<form role="form" class="post" id="post-form" method="post" action="/war
 ((__t = ( Lang.post_link )) == null ? '' : __t) +
 '</label>\n                    <input type="text" id="link_url" name="link_url" class="form-control" value="" placeholder="' +
 ((__t = ( Lang.post_link )) == null ? '' : __t) +
-'">\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class="field" style="margin-top: 20px;">\n        <div class="btn-group dropup pull-right">\n            <button class="btn btn-primary publish">' +
+'">\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class="field clearfix" style="margin: 20px 0;">\n        <div class="btn-group dropup pull-right">\n            <button class="btn btn-primary publish">' +
 ((__t = ( submitBtnText() )) == null ? '' : __t) +
 '</button>\n            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">\n                <span class="caret"></span>\n                <span class="sr-only">Toggle Dropdown</span>\n            </button>\n            <ul class="dropdown-menu" role="menu">\n                <li><a href="#" class="js-status" data-action="publish">' +
 ((__t = ( Lang.post_publish )) == null ? '' : __t) +
@@ -153,9 +153,7 @@ __p += '<form role="form" class="post" id="post-form" method="post" action="/war
 ((__t = ( previewUrl() )) == null ? '' : __t) +
 '" target="_blank" class="preview">' +
 ((__t = ( Lang.post_preview )) == null ? '' : __t) +
-' <i class="icon-external-link"></i></a></li>\n            </ul>\n        </div>\n    </div>\n</form>\n\n<div id="film-form" style="display: none">\n    <form class="form-inline">\n        <label for="date">Video URL</label><br>\n        <input type="text" name="date" class="form-control js-film" id="film" value=""\n               placeholder="http://youtube.com/">\n        <button class="btn btn-default js-submitfilm btn-sm">' +
-((__t = ( Lang.post_publish_date_set )) == null ? '' : __t) +
-'</button>\n    </form>\n</div>\n\n';
+' <i class="icon-external-link"></i></a></li>\n            </ul>\n        </div>\n    </div>\n</form>\n';
 
 }
 return __p
