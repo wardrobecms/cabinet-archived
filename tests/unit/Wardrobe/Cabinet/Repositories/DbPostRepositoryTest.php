@@ -175,7 +175,6 @@ class DbPostRepositoryTest extends TestCase {
 		$returned = $this->DbPostRepository()->create(array(
 			'title'        => 'Wardrobe',
 			'content'      => 'foo bar',
-			'slug'         => 'wardrobe',
 			'active'       => 1,
 			'user_id'      => 1,
 			'publish_date' => new Carbon,
@@ -209,7 +208,6 @@ class DbPostRepositoryTest extends TestCase {
 			'id'           => 1,
 			'title'        => 'Wardrobe',
 			'content'      => 'foo bar',
-			'slug'         => 'wardrobe',
 			'active'       => 1,
 			'user_id'      => 1,
 			'publish_date' => new Carbon,
@@ -248,7 +246,7 @@ class DbPostRepositoryTest extends TestCase {
 	{
 		$this->mockValidatePost();
 
-		$returned = $this->DbPostRepository()->validForCreation('Wardrobe', 'wardrobe');
+		$returned = $this->DbPostRepository()->validForCreation('Wardrobe');
 
 		$this->assertInstanceOf("Illuminate\Support\MessageBag", $returned);
 	}
@@ -257,7 +255,7 @@ class DbPostRepositoryTest extends TestCase {
 	{
 		$this->mockValidatePost();
 
-		$returned = $this->DbPostRepository()->validForUpdate(12, 'Wardrobe', 'wardrobe');
+		$returned = $this->DbPostRepository()->validForUpdate(12, 'Wardrobe');
 
 		$this->assertInstanceOf("Illuminate\Support\MessageBag", $returned);
 	}
