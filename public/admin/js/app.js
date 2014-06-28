@@ -131,10 +131,6 @@ __p += '<form role="form" class="post" id="post-form" method="post" action="/war
 ((__t = ( Lang.post_tags )) == null ? '' : __t) +
 '</label>\n                    <input type="text" id="js-tags" name="tags" class="tags" value="" placeholder="' +
 ((__t = ( Lang.post_tags )) == null ? '' : __t) +
-'">\n                </div>\n                <div class="form-group">\n                    <label for="slug">' +
-((__t = ( Lang.post_slug )) == null ? '' : __t) +
-'</label>\n                    <input type="text" name="slug" id="slug" class="form-control" placeholder="' +
-((__t = ( Lang.post_slug )) == null ? '' : __t) +
 '">\n                </div>\n                <div class="form-group author">\n                    <label for="js-user">' +
 ((__t = ( Lang.post_author )) == null ? '' : __t) +
 '</label>\n                    <select id="js-user" class="form-control" name="user_id"></select>\n                </div>\n                <div class="form-group">\n                    <label for="publish_date">' +
@@ -1640,9 +1636,6 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
       this._triggerActive();
       if (this.model.isNew()) {
         this.$('.js-toggle').trigger("click");
-        $('#title').slugIt({
-          output: "#slug"
-        });
       } else {
         this.$("#active").val(this.model.get("active"));
         this.$("#" + (this.model.get("type"))).prop('checked', true).parent().addClass("active");
@@ -1687,7 +1680,6 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
     PostView.prototype.localStorage = function() {
       return this.storage.put({
         title: this.$('#title').val(),
-        slug: this.$('#slug').val(),
         image: this.$('#image').val(),
         type: this.$('#type').val(),
         active: this.$('input[type=radio]:checked').val(),
@@ -1801,7 +1793,6 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
       e.preventDefault();
       return this.processFormSubmit({
         title: this.$('#title').val(),
-        slug: this.$('#slug').val(),
         active: this.$('#active').val(),
         content: this.editor.getValue(),
         tags: this.$("#js-tags").val(),

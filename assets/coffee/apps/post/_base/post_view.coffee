@@ -44,8 +44,6 @@
 
       if @model.isNew()
         @$('.js-toggle').trigger "click"
-        $('#title').slugIt
-          output: "#slug"
       else
         @$("#active").val @model.get("active")
         @$("##{@model.get("type")}").prop('checked', true).parent().addClass("active")
@@ -85,7 +83,6 @@
     localStorage: ->
       @storage.put
         title: @$('#title').val()
-        slug: @$('#slug').val()
         image: @$('#image').val()
         type: @$('#type').val()
         active: @$('input[type=radio]:checked').val()
@@ -165,7 +162,6 @@
 
       @processFormSubmit
         title: @$('#title').val()
-        slug: @$('#slug').val()
         active: @$('#active').val()
         content: @editor.getValue()
         tags: @$("#js-tags").val()

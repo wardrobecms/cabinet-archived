@@ -87,19 +87,17 @@ interface PostRepositoryInterface {
 	 * Determine if the given post is valid for creation.
 	 *
 	 * @param  string  $title
-	 * @param  string  $slug
 	 * @return \Illuminate\Support\MessageBag
 	 */
-	public function validForCreation($title, $slug);
+	public function validForCreation($title);
 
 	/**
 	 * Determine if a given post is valid for updating.
 	 *
 	 * @param  string  $title
-	 * @param  string  $slug
 	 * @param  int  $id
 	 * @return \Illuminate\Support\MessageBag
 	 */
-	public function validForUpdate($id, $title, $slug);
+	public function validForUpdate($id, $title);
 
 }
