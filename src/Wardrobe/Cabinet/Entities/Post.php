@@ -2,8 +2,22 @@
 
 use App, Config, Cache;
 use Carbon\Carbon;
+use Cviebrock\EloquentSluggable\SluggableInterface;
+use Cviebrock\EloquentSluggable\SluggableTrait;
 
-class Post extends \Eloquent {
+class Post extends \Eloquent implements SluggableInterface {
+
+	use SluggableTrait;
+
+	/**
+	 * Sluggable configuration
+	 *
+	 * @var array
+	 */
+	protected $sluggable = array(
+		'build_from' => 'title',
+		'save_to'    => 'slug',
+	);
 
 	/**
 	 * The table associated with the model.
@@ -18,6 +32,13 @@ class Post extends \Eloquent {
 	 * @var array
 	 */
 	protected $fillable = array('title', 'slug', 'content', 'image', 'type', 'link_url', 'active', 'publish_date', 'user_id');
+
+	/**
+	 * Append the parsed content
+	 *
+	 * @var array
+	 */
+	protected $appends = array('parsed_content');
 
 	/**
 	 * Tags Relationship
@@ -39,6 +60,12 @@ class Post extends \Eloquent {
 		return $this->belongsTo('Wardrobe\Cabinet\Entities\User');
 	}
 
+	/**
+	 * Set an active scope
+	 *
+	 * @param $query
+	 * @return mixed
+	 */
 	public function scopeActive($query)
 	{
 		return $query->where('active', 1)->where('publish_date', '<=', new Carbon);

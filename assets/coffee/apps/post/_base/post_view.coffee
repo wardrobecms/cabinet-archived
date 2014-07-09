@@ -40,25 +40,22 @@
 
     # When the view is shown in the DOM setup all the plugins
     onShow: ->
-      @setUpEditor()
-      @setupUsers()
-      @setupFilm()
-      @localStorage()
       @_triggerActive()
 
       if @model.isNew()
         @$('.js-toggle').trigger "click"
-        $('#title').slugIt
-          output: "#slug"
       else
         @$("#active").val @model.get("active")
         @$("##{@model.get("type")}").prop('checked', true).parent().addClass("active")
+        @$("#content").val @model.get("content")
+
+      @setUpEditor()
+      @localStorage()
+      @setupUsers()
 
       # Fetch the tags and setup the selectize plugin.
       App.request "tag:entities", (tags) =>
         @setUpTags tags
-
-      App.vent.trigger "setup:dropzone", "#dropzone-attachment", @model.get("image")
 
     _triggerActive: ->
       return @ if @model.isNew()
@@ -69,37 +66,27 @@
 
     # Setup the markdown editor
     setUpEditor: ->
-      # Custom toolbar items.
-      toolbar = [
-        'bold', 'italic', '|'
-        'quote', 'unordered-list', 'ordered-list', 'ellipsis-horizontal', '|'
-        'link', 'image', 'code', 'film', '|'
-        'undo', 'redo'
-      ]
+      opts = {
+        apiUrl: App.request("get:url:api")
+        storage: @storage
+        model: @model
+      }
 
-      @editor = new Editor
-        element: document.getElementById("content")
-        toolbar: toolbar
+      if App.editor is "lepture"
+        @editor = new Lepture opts
+      else
+        @editor = new Redactor opts
 
-      # Render to the #content holder.
-      # @editor.render(document.getElementById("content"))
-
-      # Allow images to be drag and dropped into the editor.
-      @imageUpload @editor
-
-      # Set up the local storage saving when the editor changes.
-      @editor.codemirror.on "change", (cm, change) =>
-        @localStorage()
+      @editor.initialize()
 
     # Save the post data to local storage
     localStorage: ->
       @storage.put
         title: @$('#title').val()
-        slug: @$('#slug').val()
         image: @$('#image').val()
         type: @$('#type').val()
         active: @$('input[type=radio]:checked').val()
-        content: @editor.codemirror.getValue()
+        content: @editor.getValue()
         tags: @$("#js-tags").val()
         user_id: @$("#js-user").val()
         publish_date: @$("#publish_date").val()
@@ -169,68 +156,14 @@
 
       @tagsShown = !@tagsShown
 
-    setupFilm: ->
-      @$(".icon-film").qtip
-        show:
-          event: "click"
-        content:
-          text: $("#film-form").html()
-        position:
-          at: "right center"
-          my: "left center"
-          viewport: $(window) # Keep the tooltip on-screen at all times
-          effect: false
-        events:
-          render: (event, api) =>
-            $(".js-submitfilm").click (e) =>
-              e.preventDefault()
-              filmInput = $(e.currentTarget).parent().find('input')
-              filmUrl = filmInput.val()
-              @attachFilm filmUrl
-              filmInput.val('')
-              $('.icon-film').qtip "hide"
-
-        hide: "unfocus"
-
-    attachFilm: (filmUrl) ->
-      if filmUrl.match /youtube.com/g
-        @bulidYoutubeIframe filmUrl
-      else if filmUrl.match /vimeo.com/g
-        @buildVimeoIframe filmUrl
-      else
-        # I'd like to alert here
-        return
-
-    bulidYoutubeIframe: (filmUrl) ->
-      filmUrl = filmUrl.replace /https?:\/\//, '//'
-      filmUrl = filmUrl.replace /watch\?v=/, 'embed/'
-      filmIframe = '<iframe width="560" height="315" src="' + filmUrl + '" frameborder="0" allowfullscreen></iframe>'
-      @insert filmIframe
-
-    buildVimeoIframe: (originalFilmUrl) ->
-      filmUrl = originalFilmUrl.replace /https?:\/\/vimeo.com\//, '//player.vimeo.com/video/'
-      filmIframe = '<iframe src="' + filmUrl + '?title=0&amp;byline=0&amp;portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>'
-      @insert filmIframe
-
-    insertReadMore: ->
-      if @editor.codemirror.getValue().match /!-- more/g
-        @$("#js-errors").show().find("span").html Lang.post_more_added
-      else
-        @$(".icon-ellipsis-horizontal").addClass("disabled")
-        @insert '<!-- more -->'
-
-    insert: (string) ->
-      @editor.codemirror.replaceSelection string
-
     # Save the post data
     save: (e) ->
       e.preventDefault()
 
       @processFormSubmit
         title: @$('#title').val()
-        slug: @$('#slug').val()
         active: @$('#active').val()
-        content: @editor.codemirror.getValue()
+        content: @editor.getValue()
         tags: @$("#js-tags").val()
         type: @$('#type').val()
         image: @$("#image").val()
@@ -243,24 +176,6 @@
       @model.save data,
         collection: @collection
 
-    # Collapse the details fields
-    collapse: (@$toggle) ->
-      @$toggle.data("dir", "up").addClass("icon-chevron-sign-right").removeClass("icon-chevron-sign-down")
-      @$(".details").addClass "hide"
-
-    # Expand the details fields
-    expand: (@$toggle) ->
-      @$toggle.data("dir", "down").addClass("icon-chevron-sign-down").removeClass("icon-chevron-sign-right")
-      @$(".details").removeClass "hide"
-
-    # Toggle the post details
-    toggleDetails: (e) ->
-      @$toggle = $(e.currentTarget)
-      if @$toggle.data("dir") is "up"
-        @expand @$toggle
-      else
-        @collapse @$toggle
-
     # Toggle the save button text based on status
     setStatus: (e) ->
       e.preventDefault()
@@ -271,16 +186,3 @@
       else
         @$(".publish").text Lang.post_save
         @$(".js-active").val 0
-
-    # Setup the image uploading into the content editor.
-    imageUpload: (editor) ->
-      options =
-        uploadUrl: App.request("get:url:api") + "/dropzone/image"
-        allowedTypes: ["image/jpeg", "image/png", "image/jpg", "image/gif"]
-        progressText: "![Uploading file...]()"
-        urlText: "![file]({filename})"
-        # onUploadedFile: (json) ->
-        errorText: "Error uploading file"
-
-      # Attach it to the code mirror.
-      inlineAttach.attachToCodeMirror(editor.codemirror, options)

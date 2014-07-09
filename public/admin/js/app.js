@@ -125,14 +125,12 @@ var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<form role="form" class="post" id="post-form" method="post" action="/wardrobe/posts/edit/{{ $post->id }}">\n    <input type="hidden" name="active" id="active" class="js-active" value="1">\n\n    <div class="form-group">\n        <input type="text" class="form-control input-lg" name="title" id="title" placeholder="' +
 ((__t = ( Lang.post_title )) == null ? '' : __t) +
-'">\n    </div>\n\n    <ul class="nav nav-tabs nav-justified">\n        <li class="active"><a href="#text" data-toggle="tab"><i class="icon-file-text"></i> Text</a></li>\n        <li><a href="#photo" data-toggle="tab"><i class="icon-picture"></i> Photo</a></li>\n        <li><a href="#settings" data-toggle="tab"><i class="icon-cog"></i> Settings</a></li>\n    </ul>\n\n    <!-- Tab panes -->\n    <div class="tab-content">\n        <div class="tab-pane active" id="text">\n            <div class="content-area">\n                <textarea name="content" id="content" placeholder="' +
+'">\n    </div>\n\n    <ul class="nav nav-tabs nav-justified">\n        <li class="active"><a href="#text" data-toggle="tab"><i class="icon-file-text"></i> Text</a></li>\n        <li><a href="#settings" data-toggle="tab"><i class="icon-cog"></i> Settings</a></li>\n    </ul>\n\n    <!-- Tab panes -->\n    <div class="tab-content">\n        <div class="tab-pane active" id="text">\n            <div class="content-area">\n\n                <div class="editor-wrapper">\n                    <textarea name="content" id="content" placeholder="' +
 ((__t = ( Lang.post_content )) == null ? '' : __t) +
-'"></textarea>\n                <div class="tags">\n                    <input type="text" id="js-tags" name="tags" class="tags" style="width: 50%" value="" placeholder="' +
+'"></textarea>\n                </div>\n\n            </div>\n        </div>\n        <div class="tab-pane" id="settings">\n            <div class="panel-well">\n                <div class="form-group">\n                    <label for="tags">' +
 ((__t = ( Lang.post_tags )) == null ? '' : __t) +
-'">\n                </div>\n            </div>\n        </div>\n        <div class="tab-pane" id="photo">\n            <div class="panel-well">\n                <div class="form-group">\n                    <label for="dropzone">Post Image</label>\n                    <input type="hidden" name="image" id="image">\n                    <div class="dropzone clickable inline" id="dropzone-attachment">\n                        <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class="tab-pane" id="settings">\n            <div class="panel-well">\n                <div class="form-group">\n                    <label for="slug">' +
-((__t = ( Lang.post_slug )) == null ? '' : __t) +
-'</label>\n                    <input type="text" name="slug" id="slug" class="form-control" placeholder="' +
-((__t = ( Lang.post_slug )) == null ? '' : __t) +
+'</label>\n                    <input type="text" id="js-tags" name="tags" class="tags" value="" placeholder="' +
+((__t = ( Lang.post_tags )) == null ? '' : __t) +
 '">\n                </div>\n                <div class="form-group author">\n                    <label for="js-user">' +
 ((__t = ( Lang.post_author )) == null ? '' : __t) +
 '</label>\n                    <select id="js-user" class="form-control" name="user_id"></select>\n                </div>\n                <div class="form-group">\n                    <label for="publish_date">' +
@@ -141,7 +139,7 @@ __p += '<form role="form" class="post" id="post-form" method="post" action="/war
 ((__t = ( Lang.post_link )) == null ? '' : __t) +
 '</label>\n                    <input type="text" id="link_url" name="link_url" class="form-control" value="" placeholder="' +
 ((__t = ( Lang.post_link )) == null ? '' : __t) +
-'">\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class="field" style="margin-top: 20px;">\n        <div class="btn-group dropup pull-right">\n            <button class="btn btn-primary publish">' +
+'">\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class="field clearfix" style="margin: 20px 0;">\n        <div class="btn-group dropup pull-right">\n            <button class="btn btn-primary publish">' +
 ((__t = ( submitBtnText() )) == null ? '' : __t) +
 '</button>\n            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">\n                <span class="caret"></span>\n                <span class="sr-only">Toggle Dropdown</span>\n            </button>\n            <ul class="dropdown-menu" role="menu">\n                <li><a href="#" class="js-status" data-action="publish">' +
 ((__t = ( Lang.post_publish )) == null ? '' : __t) +
@@ -151,9 +149,7 @@ __p += '<form role="form" class="post" id="post-form" method="post" action="/war
 ((__t = ( previewUrl() )) == null ? '' : __t) +
 '" target="_blank" class="preview">' +
 ((__t = ( Lang.post_preview )) == null ? '' : __t) +
-' <i class="icon-external-link"></i></a></li>\n            </ul>\n        </div>\n    </div>\n</form>\n\n<div id="film-form" style="display: none">\n    <form class="form-inline">\n        <label for="date">Video URL</label><br>\n        <input type="text" name="date" class="form-control js-film" id="film" value=""\n               placeholder="http://youtube.com/">\n        <button class="btn btn-default js-submitfilm btn-sm">' +
-((__t = ( Lang.post_publish_date_set )) == null ? '' : __t) +
-'</button>\n    </form>\n</div>\n\n';
+' <i class="icon-external-link"></i></a></li>\n            </ul>\n        </div>\n    </div>\n</form>\n';
 
 }
 return __p
@@ -173,7 +169,7 @@ this["JST"]["post/list/templates/grid.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="page-header">\n  <ul class="nav nav-pills pull-right">\n    <li class="active js-filter" data-type="draft"><a href="#post/draft"><i class="icon-edit"></i> &nbsp; Drafts</a></li>\n    <li class="js-filter" data-type="scheduled"><a href="#post/scheduled"><i class="icon-calendar"></i> &nbsp; Scheduled</a></li>\n    <li class="js-filter" data-type="published"><a href="#post/published"><i class="icon-laptop"></i> &nbsp; Published</a></li>\n  </ul>\n  <h1>Your Posts </h1>\n</div>\n\n<form class="filter form-inline hidden-xs hide" role="form">\n  <div class="form-group">\n    <input type="text" class="form-control filter" id="js-filter" name="filter" placeholder="Filter">\n  </div>\n</form>\n<table class="table table-hover">\n\t<thead>\n\t\t<tr>\n\t\t\t<th>' +
+__p += '<div class="page-header">\n  <ul class="nav nav-pills pull-right">\n    <li class="active js-filter" data-type="draft"><a href="#post/draft"><i class="icon-edit"></i> &nbsp; Drafts</a></li>\n    <li class="js-filter" data-type="scheduled"><a href="#post/scheduled"><i class="icon-calendar"></i> &nbsp; Scheduled</a></li>\n    <li class="js-filter" data-type="published"><a href="#post/published"><i class="icon-laptop"></i> &nbsp; Published</a></li>\n  </ul>\n  <h1>Your Posts </h1>\n</div>\n\n<form class="filter form-inline hidden-xs hide" role="form">\n  <div class="form-group">\n    <input type="text" class="form-control filter" id="js-filter" name="filter" placeholder="Filter">\n  </div>\n</form>\n\n<table class="table table-hover">\n\t<thead>\n\t\t<tr>\n\t\t\t<th>' +
 ((__t = ( Lang.post_title )) == null ? '' : __t) +
 '</th>\n\t\t\t<th>' +
 ((__t = ( Lang.post_published )) == null ? '' : __t) +
@@ -243,7 +239,7 @@ $.fn.formatDates = function() {
     format = item.data("format");
     originalDate = item.data("date");
     if (typeof format === "undefined") {
-      format = "MMM Do YYYY, hh:mma";
+      format = "lll";
     }
     time = isNaN(originalDate) ? moment(originalDate, "YYYY-MM-DD HH:mm:ss") : moment.unix(originalDate);
     return item.text(time.local().format(format));
@@ -387,6 +383,7 @@ this.Wardrobe = (function(Backbone, Marionette) {
   App.on("initialize:before", function(options) {
     App.environment = $('meta[name=env]').attr("content");
     App.csrfToken = $("meta[name='token']").attr('content');
+    App.editor = options.editor;
     this.currentUser = App.request("set:current:user", options.user);
     this.allUsers = App.request("set:all:users", options.users);
     this.apiUrl = _.stripTrailingSlash(options.api_url);
@@ -1636,26 +1633,22 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
     };
 
     PostView.prototype.onShow = function() {
-      this.setUpEditor();
-      this.setupUsers();
-      this.setupFilm();
-      this.localStorage();
       this._triggerActive();
       if (this.model.isNew()) {
         this.$('.js-toggle').trigger("click");
-        $('#title').slugIt({
-          output: "#slug"
-        });
       } else {
         this.$("#active").val(this.model.get("active"));
         this.$("#" + (this.model.get("type"))).prop('checked', true).parent().addClass("active");
+        this.$("#content").val(this.model.get("content"));
       }
-      App.request("tag:entities", (function(_this) {
+      this.setUpEditor();
+      this.localStorage();
+      this.setupUsers();
+      return App.request("tag:entities", (function(_this) {
         return function(tags) {
           return _this.setUpTags(tags);
         };
       })(this));
-      return App.vent.trigger("setup:dropzone", "#dropzone-attachment", this.model.get("image"));
     };
 
     PostView.prototype._triggerActive = function() {
@@ -1670,28 +1663,27 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
     };
 
     PostView.prototype.setUpEditor = function() {
-      var toolbar;
-      toolbar = ['bold', 'italic', '|', 'quote', 'unordered-list', 'ordered-list', 'ellipsis-horizontal', '|', 'link', 'image', 'code', 'film', '|', 'undo', 'redo'];
-      this.editor = new Editor({
-        element: document.getElementById("content"),
-        toolbar: toolbar
-      });
-      this.imageUpload(this.editor);
-      return this.editor.codemirror.on("change", (function(_this) {
-        return function(cm, change) {
-          return _this.localStorage();
-        };
-      })(this));
+      var opts;
+      opts = {
+        apiUrl: App.request("get:url:api"),
+        storage: this.storage,
+        model: this.model
+      };
+      if (App.editor === "lepture") {
+        this.editor = new Lepture(opts);
+      } else {
+        this.editor = new Redactor(opts);
+      }
+      return this.editor.initialize();
     };
 
     PostView.prototype.localStorage = function() {
       return this.storage.put({
         title: this.$('#title').val(),
-        slug: this.$('#slug').val(),
         image: this.$('#image').val(),
         type: this.$('#type').val(),
         active: this.$('input[type=radio]:checked').val(),
-        content: this.editor.codemirror.getValue(),
+        content: this.editor.getValue(),
         tags: this.$("#js-tags").val(),
         user_id: this.$("#js-user").val(),
         publish_date: this.$("#publish_date").val()
@@ -1797,84 +1789,12 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
       return this.tagsShown = !this.tagsShown;
     };
 
-    PostView.prototype.setupFilm = function() {
-      return this.$(".icon-film").qtip({
-        show: {
-          event: "click"
-        },
-        content: {
-          text: $("#film-form").html()
-        },
-        position: {
-          at: "right center",
-          my: "left center",
-          viewport: $(window),
-          effect: false
-        },
-        events: {
-          render: (function(_this) {
-            return function(event, api) {
-              return $(".js-submitfilm").click(function(e) {
-                var filmInput, filmUrl;
-                e.preventDefault();
-                filmInput = $(e.currentTarget).parent().find('input');
-                filmUrl = filmInput.val();
-                _this.attachFilm(filmUrl);
-                filmInput.val('');
-                return $('.icon-film').qtip("hide");
-              });
-            };
-          })(this)
-        },
-        hide: "unfocus"
-      });
-    };
-
-    PostView.prototype.attachFilm = function(filmUrl) {
-      if (filmUrl.match(/youtube.com/g)) {
-        return this.bulidYoutubeIframe(filmUrl);
-      } else if (filmUrl.match(/vimeo.com/g)) {
-        return this.buildVimeoIframe(filmUrl);
-      } else {
-
-      }
-    };
-
-    PostView.prototype.bulidYoutubeIframe = function(filmUrl) {
-      var filmIframe;
-      filmUrl = filmUrl.replace(/https?:\/\//, '//');
-      filmUrl = filmUrl.replace(/watch\?v=/, 'embed/');
-      filmIframe = '<iframe width="560" height="315" src="' + filmUrl + '" frameborder="0" allowfullscreen></iframe>';
-      return this.insert(filmIframe);
-    };
-
-    PostView.prototype.buildVimeoIframe = function(originalFilmUrl) {
-      var filmIframe, filmUrl;
-      filmUrl = originalFilmUrl.replace(/https?:\/\/vimeo.com\//, '//player.vimeo.com/video/');
-      filmIframe = '<iframe src="' + filmUrl + '?title=0&amp;byline=0&amp;portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-      return this.insert(filmIframe);
-    };
-
-    PostView.prototype.insertReadMore = function() {
-      if (this.editor.codemirror.getValue().match(/!-- more/g)) {
-        return this.$("#js-errors").show().find("span").html(Lang.post_more_added);
-      } else {
-        this.$(".icon-ellipsis-horizontal").addClass("disabled");
-        return this.insert('<!-- more -->');
-      }
-    };
-
-    PostView.prototype.insert = function(string) {
-      return this.editor.codemirror.replaceSelection(string);
-    };
-
     PostView.prototype.save = function(e) {
       e.preventDefault();
       return this.processFormSubmit({
         title: this.$('#title').val(),
-        slug: this.$('#slug').val(),
         active: this.$('#active').val(),
-        content: this.editor.codemirror.getValue(),
+        content: this.editor.getValue(),
         tags: this.$("#js-tags").val(),
         type: this.$('#type').val(),
         image: this.$("#image").val(),
@@ -1890,27 +1810,6 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
       });
     };
 
-    PostView.prototype.collapse = function($toggle) {
-      this.$toggle = $toggle;
-      this.$toggle.data("dir", "up").addClass("icon-chevron-sign-right").removeClass("icon-chevron-sign-down");
-      return this.$(".details").addClass("hide");
-    };
-
-    PostView.prototype.expand = function($toggle) {
-      this.$toggle = $toggle;
-      this.$toggle.data("dir", "down").addClass("icon-chevron-sign-down").removeClass("icon-chevron-sign-right");
-      return this.$(".details").removeClass("hide");
-    };
-
-    PostView.prototype.toggleDetails = function(e) {
-      this.$toggle = $(e.currentTarget);
-      if (this.$toggle.data("dir") === "up") {
-        return this.expand(this.$toggle);
-      } else {
-        return this.collapse(this.$toggle);
-      }
-    };
-
     PostView.prototype.setStatus = function(e) {
       e.preventDefault();
       this.localStorage();
@@ -1921,18 +1820,6 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
         this.$(".publish").text(Lang.post_save);
         return this.$(".js-active").val(0);
       }
-    };
-
-    PostView.prototype.imageUpload = function(editor) {
-      var options;
-      options = {
-        uploadUrl: App.request("get:url:api") + "/dropzone/image",
-        allowedTypes: ["image/jpeg", "image/png", "image/jpg", "image/gif"],
-        progressText: "![Uploading file...]()",
-        urlText: "![file]({filename})",
-        errorText: "Error uploading file"
-      };
-      return inlineAttach.attachToCodeMirror(editor.codemirror, options);
     };
 
     return PostView;
@@ -2404,3 +2291,77 @@ this.Wardrobe.module("PostApp", function(PostApp, App, Backbone, Marionette, $, 
     });
   });
 });
+
+var Lepture;
+
+Lepture = (function() {
+  function Lepture(options) {
+    this.apiUrl = options.apiUrl;
+    this.storage = options.storage;
+  }
+
+  Lepture.prototype.initialize = function() {
+    this.editor = new Editor({
+      element: document.getElementById("content")
+    });
+    this.imageUpload(this.editor);
+    return this.editor.codemirror.on("change", (function(_this) {
+      return function(cm, change) {
+        return _this.storage.put({
+          content: _this.getValue()
+        });
+      };
+    })(this));
+  };
+
+  Lepture.prototype.imageUpload = function(editor) {
+    var options;
+    options = {
+      uploadUrl: this.apiUrl + "/dropzone/image",
+      allowedTypes: ["image/jpeg", "image/png", "image/jpg", "image/gif"],
+      progressText: "![Uploading file...]()",
+      urlText: "![file]({filename})",
+      errorText: "Error uploading file"
+    };
+    return inlineAttach.attachToCodeMirror(editor.codemirror, options);
+  };
+
+  Lepture.prototype.getValue = function() {
+    return this.editor.codemirror.getValue();
+  };
+
+  return Lepture;
+
+})();
+
+var Redactor;
+
+Redactor = (function() {
+  function Redactor(options) {
+    this.apiUrl = options.apiUrl;
+    this.storage = options.storage;
+    this.model = options.model;
+  }
+
+  Redactor.prototype.initialize = function() {
+    return $('#content').val(this.model.get("parsed_content")).redactor({
+      toolbarFixedBox: true,
+      minHeight: 200,
+      imageUpload: this.apiUrl + "/dropzone/image",
+      changeCallback: (function(_this) {
+        return function(html) {
+          return _this.storage.put({
+            content: html
+          });
+        };
+      })(this)
+    });
+  };
+
+  Redactor.prototype.getValue = function() {
+    return $("#content").val();
+  };
+
+  return Redactor;
+
+})();

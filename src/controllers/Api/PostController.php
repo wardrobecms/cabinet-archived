@@ -46,7 +46,7 @@ class PostController extends BaseController {
 	 */
 	public function store()
 	{
-		$messages = $this->posts->validForCreation(Input::get('title'), Input::get('slug'));
+		$messages = $this->posts->validForCreation(Input::get('title'));
 
 		if (count($messages) > 0)
 		{
@@ -58,7 +58,6 @@ class PostController extends BaseController {
 		$post = $this->posts->create([
 			'title' => Input::get('title'),
 			'content' => Input::get('content'),
-			'slug' => Input::get('slug'),
 			'link_url' => Input::get('link_url'),
 			'type' => Input::get('type', 'text'),
 			'image' => Input::get('image'),
@@ -114,7 +113,6 @@ class PostController extends BaseController {
 			'id' => $id,
 			'title' => Input::get('title'),
 			'content' => Input::get('content'),
-			'slug' => Input::get('slug'),
 			'link_url' => Input::get('link_url'),
 			'type' => Input::get('type'),
 			'image' => Input::get('image'),

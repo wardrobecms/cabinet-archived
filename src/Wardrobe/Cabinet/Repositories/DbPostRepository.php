@@ -198,6 +198,7 @@ class DbPostRepository implements PostRepositoryInterface {
 	 */
 	public function delete($id)
 	{
+		Event::fire('post.delete', $id);
 		$this->post->where('id', $id)->delete();
 	}
 
@@ -215,40 +216,36 @@ class DbPostRepository implements PostRepositoryInterface {
 	 * Determine if the given post is valid for creation.
 	 *
 	 * @param  string  $title
-	 * @param  string  $slug
 	 * @return \Illuminate\Support\MessageBag
 	 */
-	public function validForCreation($title, $slug)
+	public function validForCreation($title)
 	{
-		return $this->validatePost($title, $slug);
+		return $this->validatePost($title);
 	}
 
 	/**
 	 * Determine if a given post is valid for updating.
 	 *
 	 * @param  string  $title
-	 * @param  string  $slug
 	 * @param  int  $id
 	 * @return \Illuminate\Support\MessageBag
 	 */
-	public function validForUpdate($id, $title, $slug)
+	public function validForUpdate($id, $title)
 	{
-		return $this->validatePost($title, $slug, $id);
+		return $this->validatePost($title, $id);
 	}
 
 	/**
 	 * Determine if the given post is valid.
 	 *
 	 * @param  string  $title
-	 * @param  string  $slug
 	 * @param  int  $id
 	 * @return \Illuminate\Support\MessageBag
 	 */
-	protected function validatePost($title, $slug, $id = null)
+	protected function validatePost($title, $id = null)
 	{
 		$rules = [
 			'title' => 'required',
-			'slug'  => 'required|unique:posts,slug',
 			'link_url' => 'url',
 		];
 

@@ -65,7 +65,10 @@ class DropzoneController extends Controller {
 
 		if (File::exists($destinationPath.$filename))
 		{
-			return Response::json(array('filename' => "/{$imageDir}/".$filename));
+			return Response::json(array(
+				'filename' => "/{$imageDir}/".$filename,
+				'filelink' => "/{$imageDir}/".$filename,
+			));
 		}
 		return Response::json(array('error' => 'Upload failed. Please ensure your public/'.$imageDir.' directory is writable.'));
 	}
