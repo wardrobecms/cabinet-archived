@@ -249,12 +249,7 @@ class DbPostRepository implements PostRepositoryInterface {
 			'link_url' => 'url',
 		];
 
-		if ($id)
-		{
-			$rules['slug'] .= ','.$id;
-		}
-
-		with($validator = Validator::make(compact('title', 'slug'), $rules))->fails();
+		with($validator = Validator::make(compact('title'), $rules))->fails();
 
 		return $validator->errors();
 	}
