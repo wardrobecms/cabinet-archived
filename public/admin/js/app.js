@@ -127,7 +127,7 @@ __p += '<form role="form" class="post" id="post-form" method="post" action="/war
 ((__t = ( Lang.post_title )) == null ? '' : __t) +
 '">\n    </div>\n\n    <ul class="nav nav-tabs nav-justified">\n        <li class="active"><a href="#text" data-toggle="tab"><i class="icon-file-text"></i> Text</a></li>\n        <li><a href="#settings" data-toggle="tab"><i class="icon-cog"></i> Settings</a></li>\n    </ul>\n\n    <!-- Tab panes -->\n    <div class="tab-content">\n        <div class="tab-pane active" id="text">\n            <div class="content-area">\n\n                <div class="editor-wrapper">\n                    <textarea name="content" id="content" placeholder="' +
 ((__t = ( Lang.post_content )) == null ? '' : __t) +
-'"></textarea>\n                </div>\n\n            </div>\n        </div>\n        <div class="tab-pane" id="settings">\n            <div class="panel-well">\n                <div class="form-group">\n                    <label for="tags">' +
+'"></textarea>\n                </div>\n\n            </div>\n        </div>\n        <div class="tab-pane" id="settings">\n            <div class="panel-well">\n                <div class="form-group">\n                    <label for="dropzone">Leader Image</label>\n                    <input type="hidden" name="image" id="image">\n\n                    <div class="dropzone clickable inline" id="dropzone-attachment">\n                        <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>\n                    </div>\n                </div>\n                <div class="form-group">\n                    <label for="tags">' +
 ((__t = ( Lang.post_tags )) == null ? '' : __t) +
 '</label>\n                    <input type="text" id="js-tags" name="tags" class="tags" value="" placeholder="' +
 ((__t = ( Lang.post_tags )) == null ? '' : __t) +
@@ -1651,11 +1651,12 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
       this.setUpEditor();
       this.localStorage();
       this.setupUsers();
-      return App.request("tag:entities", (function(_this) {
+      App.request("tag:entities", (function(_this) {
         return function(tags) {
           return _this.setUpTags(tags);
         };
       })(this));
+      return App.vent.trigger("setup:dropzone", "#dropzone-attachment", this.model.get("image"));
     };
 
     PostView.prototype._triggerActive = function() {

@@ -24,6 +24,14 @@
         <div class="tab-pane" id="settings">
             <div class="panel-well">
                 <div class="form-group">
+                    <label for="dropzone">Leader Image</label>
+                    <input type="hidden" name="image" id="image">
+
+                    <div class="dropzone clickable inline" id="dropzone-attachment">
+                        <div class="dz-default dz-message"><span>Drag and Drop image here</span></div>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="tags"><%= Lang.post_tags %></label>
                     <input type="text" id="js-tags" name="tags" class="tags" value="" placeholder="<%= Lang.post_tags %>">
                 </div>

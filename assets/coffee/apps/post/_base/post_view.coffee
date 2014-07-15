@@ -57,6 +57,8 @@
       App.request "tag:entities", (tags) =>
         @setUpTags tags
 
+      App.vent.trigger "setup:dropzone", "#dropzone-attachment", @model.get("image")
+
     _triggerActive: ->
       return @ if @model.isNew()
       if @model.get("active")
