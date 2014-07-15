@@ -26,4 +26,5 @@
     getNewView: (post) ->
       new New.Post
         model: post
+        collection: App.request "post:entities"
         storage: @storage

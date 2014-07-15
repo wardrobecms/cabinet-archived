@@ -10,6 +10,9 @@
       App.request("get:url:api") + "/post"
 
   API =
+    setAllPosts: (posts) ->
+      new Entities.PostCollection posts
+
     getAll: ->
       post = new Entities.PostCollection
       post.fetch
@@ -25,8 +28,11 @@
     newPost: ->
       new Entities.Post
 
-  App.reqres.setHandler "post:entities", ->
-    API.getAll()
+  App.reqres.setHandler "set:all:posts", (posts) ->
+    API.setAllPosts posts
+
+#  App.reqres.setHandler "post:entities", ->
+#    API.getAll()
 
   App.reqres.setHandler "post:entity", (id) ->
     API.getPost id

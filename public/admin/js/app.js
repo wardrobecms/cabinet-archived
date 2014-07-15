@@ -386,6 +386,7 @@ this.Wardrobe = (function(Backbone, Marionette) {
     App.editor = options.editor;
     this.currentUser = App.request("set:current:user", options.user);
     this.allUsers = App.request("set:all:users", options.users);
+    this.allPosts = App.request("set:all:posts", options.posts);
     this.apiUrl = _.stripTrailingSlash(options.api_url);
     this.adminUrl = _.stripTrailingSlash(options.admin_url);
     return this.blogUrl = _.stripTrailingSlash(options.blog_url);
@@ -395,6 +396,9 @@ this.Wardrobe = (function(Backbone, Marionette) {
   });
   App.reqres.setHandler("get:all:users", function() {
     return App.allUsers;
+  });
+  App.reqres.setHandler("post:entities", function() {
+    return App.allPosts;
   });
   App.reqres.setHandler("get:url:api", function() {
     return App.apiUrl;
@@ -647,6 +651,9 @@ this.Wardrobe.module("Entities", function(Entities, App, Backbone, Marionette, $
 
   })(App.Entities.Collection);
   API = {
+    setAllPosts: function(posts) {
+      return new Entities.PostCollection(posts);
+    },
     getAll: function() {
       var post;
       post = new Entities.PostCollection;
@@ -667,8 +674,8 @@ this.Wardrobe.module("Entities", function(Entities, App, Backbone, Marionette, $
       return new Entities.Post;
     }
   };
-  App.reqres.setHandler("post:entities", function() {
-    return API.getAll();
+  App.reqres.setHandler("set:all:posts", function(posts) {
+    return API.setAllPosts(posts);
   });
   App.reqres.setHandler("post:entity", function(id) {
     return API.getPost(id);
@@ -1805,6 +1812,7 @@ this.Wardrobe.module("Views", function(Views, App, Backbone, Marionette, $, _) {
     };
 
     PostView.prototype.processFormSubmit = function(data) {
+      this.storage.destroy();
       return this.model.save(data, {
         collection: this.collection
       });
@@ -1934,29 +1942,23 @@ this.Wardrobe.module("PostApp.List", function(List, App, Backbone, Marionette, $
     }
 
     Controller.prototype.initialize = function() {
-      var post;
-      post = App.request("post:entities");
-      return App.execute("when:fetched", post, (function(_this) {
-        return function() {
-          var view;
-          view = _this.getListView(post);
-          _this.show(view);
-          return _this.listenTo(view, "childview:post:delete:clicked", function(child, args) {
-            var model;
-            model = args.model;
-            if (confirm(Lang.post_delete_confirm.replace("##post##", _.escape(model.get("title"))))) {
-              return model.destroy();
-            } else {
-              return false;
-            }
-          });
-        };
-      })(this));
+      var view;
+      view = this.getListView();
+      this.show(view);
+      return this.listenTo(view, "childview:post:delete:clicked", function(child, args) {
+        var model;
+        model = args.model;
+        if (confirm(Lang.post_delete_confirm.replace("##post##", _.escape(model.get("title"))))) {
+          return model.destroy();
+        } else {
+          return false;
+        }
+      });
     };
 
-    Controller.prototype.getListView = function(post) {
+    Controller.prototype.getListView = function() {
       return new List.Posts({
-        collection: post
+        collection: App.request("post:entities")
       });
     };
 
@@ -2180,6 +2182,7 @@ this.Wardrobe.module("PostApp.New", function(New, App, Backbone, Marionette, $, 
     Controller.prototype.getNewView = function(post) {
       return new New.Post({
         model: post,
+        collection: App.request("post:entities"),
         storage: this.storage
       });
     };

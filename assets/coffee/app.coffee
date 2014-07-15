@@ -9,6 +9,7 @@
     App.editor = options.editor
     @currentUser = App.request "set:current:user", options.user
     @allUsers = App.request "set:all:users", options.users
+    @allPosts = App.request "set:all:posts", options.posts
     @apiUrl = _.stripTrailingSlash options.api_url
     @adminUrl = _.stripTrailingSlash options.admin_url
     @blogUrl = _.stripTrailingSlash options.blog_url
@@ -19,6 +20,9 @@
 
   App.reqres.setHandler "get:all:users", ->
     App.allUsers
+
+  App.reqres.setHandler "post:entities", ->
+    App.allPosts
 
   App.reqres.setHandler "get:url:api", ->
     App.apiUrl

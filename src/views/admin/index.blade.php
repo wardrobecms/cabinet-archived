@@ -14,6 +14,7 @@
 		Wardrobe.start({
 			user: {{ $user }},
 			users: {{ $users }},
+			posts: {{ $posts }},
 			api_url: "{{ route('wardrobe.api.index') }}",
 			admin_url: "{{ route('wardrobe.admin.index') }}",
 			blog_url: "/",

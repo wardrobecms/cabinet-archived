@@ -173,6 +173,7 @@
 
     # Process the form and sync to the server
     processFormSubmit: (data) ->
+      @storage.destroy()
       @model.save data,
         collection: @collection
 

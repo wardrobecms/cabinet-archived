@@ -1,6 +1,7 @@
 <?php namespace Wardrobe\Cabinet\Controllers;
 
 use View, Lang;
+use Wardrobe\Cabinet\Repositories\PostRepositoryInterface;
 use Wardrobe\Cabinet\Repositories\UserRepositoryInterface;
 
 class AdminController extends BaseController {
@@ -10,10 +11,20 @@ class AdminController extends BaseController {
 	 */
 	private $user;
 
-	public function __construct(UserRepositoryInterface $user)
+	/**
+	 * @var PostRepositoryInterface
+	 */
+	private $posts;
+
+	/**
+	 * @param UserRepositoryInterface $user
+	 * @param PostRepositoryInterface $posts
+	 */
+	public function __construct(UserRepositoryInterface $user, PostRepositoryInterface $posts)
 	{
 		parent::__construct();
 		$this->user = $user;
+		$this->posts = $posts;
 	}
 
 	/**
@@ -24,6 +35,7 @@ class AdminController extends BaseController {
 	public function index()
 	{
 		return View::make('cabinet::admin.index')
+			->with('posts', $this->posts->all())
 			->with('users', $this->user->all())
 			->with('user', \Auth::user())
 			->with('locale', $this->loadLanguage());

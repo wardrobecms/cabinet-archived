@@ -3,17 +3,13 @@
   class List.Controller extends App.Controllers.Base
 
     initialize: ->
-      post = App.request "post:entities"
+      view = @getListView()
+      @show view
 
-      # After the post is fetched then load up everything.
-      App.execute "when:fetched", post, =>
-        view = @getListView post
-        @show view
+      @listenTo view, "childview:post:delete:clicked", (child, args) ->
+        model = args.model
+        if confirm Lang.post_delete_confirm.replace("##post##", _.escape(model.get("title"))) then model.destroy() else false
 
-        @listenTo view, "childview:post:delete:clicked", (child, args) ->
-          model = args.model
-          if confirm Lang.post_delete_confirm.replace("##post##", _.escape(model.get("title"))) then model.destroy() else false
-
-    getListView: (post) ->
+    getListView: ->
       new List.Posts
-        collection: post
+        collection: App.request "post:entities"
