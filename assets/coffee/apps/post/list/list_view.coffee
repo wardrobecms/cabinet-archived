@@ -5,9 +5,9 @@
     tagName: "tr"
 
     attributes: ->
-      if @model.get("active") is 1 and @model.get("publish_date") > moment().format('YYYY-MM-DD HH:mm:ss')
+      if String(@model.get("active")) is 1 and @model.get("publish_date") > moment().format('YYYY-MM-DD HH:mm:ss')
         class: "post-item scheduled post-#{@model.id}"
-      else if @model.get("active") is 1
+      else if String(@model.get("active")) is "1"
         class: "post-item published post-#{@model.id}"
       else
         class: "post-item draft post-#{@model.id}"
