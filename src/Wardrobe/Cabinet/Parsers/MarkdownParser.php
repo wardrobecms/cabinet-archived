@@ -19,6 +19,31 @@ class MarkdownParser implements ParserInterface {
 	 */
 	public function parse($str)
 	{
+		if (\Config::get('wardrobe.auto_replace_twitter_links'))
+		{
+			$str = $this->replaceTwitterLinks($str);
+		}
+
 		return $this->markdown->defaultTransform($str);
 	}
+
+	/**
+	 * Replace Twitter links in string
+	 * @param  $str
+	 * @return string
+	 */
+	public function replaceTwitterLinks($str)
+	{
+		preg_match_all("/@(\w+)/", $str, $matches);
+
+		if (count($matches))
+		{
+			foreach ($matches[0] as $index => $html) {
+				$str = str_replace($html, '<a href="http://www.twitter.com/'.$matches[1][$index].'" target="_blank">'.$html.'</a>', $str);
+			}
+		}
+
+		return $str;
+	}
+	
 }
